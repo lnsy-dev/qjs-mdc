@@ -1,0 +1,2 @@
+#!/bin/bash
+qjs "$(dirname "$0")/compiler.js" "$@"
