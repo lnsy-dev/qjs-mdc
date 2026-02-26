@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" data-name="California Cities" data-description="Major cities and highways in California">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 69.67200000000048 22.509999999999764 L 133.64399999999932 66.17999999999995 L 280.8359999999999 271.7199999999998 L 396.216 357.92 L 570.7559999999995 394.7800000000001" fill="none" stroke="black" stroke-width="2" class="data-element data-index-2" data-name="US Route 101" data-type="highway" data-geometry-type="LineString"/>
+  <g transform="translate(59.67200000000048,12.509999999999764)" class="data-element data-index-0" data-name="San Francisco" data-type="city" data-population="873965" data-geometry-type="Point" data-lon="-122.4194" data-lat="37.7749">
+    <circle cx="10" cy="10" r="8" fill="#4285F4" stroke="white" stroke-width="2"/>
+  </g>
+  <g transform="translate(560.7559999999995,384.7800000000001)" class="data-element data-index-1" data-name="Los Angeles" data-type="city" data-population="3979576" data-geometry-type="Point" data-lon="-118.2437" data-lat="34.0522">
+    <circle cx="10" cy="10" r="8" fill="#4285F4" stroke="white" stroke-width="2"/>
+  </g>
+</svg>

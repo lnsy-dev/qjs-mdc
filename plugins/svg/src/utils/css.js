@@ -1,0 +1,40 @@
+export function generateDefaultCSS() {
+  return `:root {
+  /* Pattern colors - used in SVG pattern fills */
+  --pattern-fill: white;
+  --pattern-stroke: black;
+  
+  /* Data element colors */
+  --data-element-fill: url(#pattern-0);
+  --data-element-stroke: black;
+  --data-element-stroke-width: 1;
+  
+  /* Axis colors */
+  --axis-stroke: black;
+  --axis-stroke-width: 1;
+  
+  /* Label/text colors */
+  --label-fill: black;
+  --label-font-size: 12px;
+}
+
+/* Data elements (bars, circles, paths, etc.) */
+.data-element {
+  fill: var(--data-element-fill);
+  stroke: var(--data-element-stroke);
+  stroke-width: var(--data-element-stroke-width);
+}
+
+/* Axes */
+.axis {
+  stroke: var(--axis-stroke);
+  stroke-width: var(--axis-stroke-width);
+}
+
+/* Labels and text */
+.label {
+  fill: var(--label-fill);
+  font-size: var(--label-font-size);
+}
+`;
+}

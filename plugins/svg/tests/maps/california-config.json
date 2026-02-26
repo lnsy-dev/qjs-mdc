@@ -1,0 +1,56 @@
+{
+  "northWestBounds": [38.0, -123.0],
+  "southEastBounds": [34.0, -118.0],
+  "name": "California Cities",
+  "description": "Major cities and highways in California",
+  "iconList": {
+    "city": "<svg width=\"20\" height=\"20\"><circle cx=\"10\" cy=\"10\" r=\"8\" fill=\"#4285F4\" stroke=\"white\" stroke-width=\"2\"/></svg>",
+    "highway": "<svg width=\"16\" height=\"16\"><rect x=\"4\" y=\"7\" width=\"8\" height=\"2\" fill=\"#666\"/></svg>"
+  },
+  "geojson": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.4194, 37.7749]
+        },
+        "properties": {
+          "name": "San Francisco",
+          "type": "city",
+          "population": 873965
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-118.2437, 34.0522]
+        },
+        "properties": {
+          "name": "Los Angeles",
+          "type": "city",
+          "population": 3979576
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [-122.4194, 37.7749],
+            [-121.8863, 37.3382],
+            [-120.6597, 35.2828],
+            [-119.6982, 34.4208],
+            [-118.2437, 34.0522]
+          ]
+        },
+        "properties": {
+          "name": "US Route 101",
+          "type": "highway"
+        }
+      }
+    ]
+  }
+}

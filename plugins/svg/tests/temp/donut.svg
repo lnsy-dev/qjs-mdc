@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 471.19017293312766 255.62305898749054 A 180 180 0 0 0 300 20 L 402.7141037598766 233.37383539249433 M 300 92 A 108 108 0 0 0 402.7141037598766 233.37383539249433 Z" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-label="A" data-value="30" data-percentage="30.0"/>
+  <text x="457.75831390311475" y="85.38187580296774" font-size="10" text-anchor="middle" fill="black" class="label">A</text>
+  <path d="M 128.80982706687237 144.3769410125094 A 180 180 0 0 0 471.19017293312766 255.62305898749054 L 197.2858962401234 166.62616460750564 M 402.7141037598766 233.37383539249433 A 108 108 0 0 0 197.2858962401234 166.62616460750564 Z" fill="url(#pattern-1)" stroke="black" stroke-width="1" class="data-element data-index-1" data-label="B" data-value="50" data-percentage="50.0"/>
+  <text x="239.74168609688527" y="385.456020677555" font-size="10" text-anchor="middle" fill="black" class="label">B</text>
+  <path d="M 299.99999999999994 20 A 180 180 0 0 0 128.80982706687237 144.3769410125094 L 300 92 M 197.2858962401234 166.62616460750564 A 108 108 0 0 0 300 92 Z" fill="url(#pattern-2)" stroke="black" stroke-width="1" class="data-element data-index-2" data-label="C" data-value="20" data-percentage="20.0"/>
+  <text x="185.38187580296773" y="42.241686096885275" font-size="10" text-anchor="middle" fill="black" class="label">C</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 0 400 L 600 0" fill="none" stroke="black" stroke-width="2" class="data-element data-index-1" data-name="Broadway" data-geometry-type="LineString"/>
+  <circle cx="300" cy="200" r="5" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-name="Central Park" data-type="park" data-geometry-type="Point" data-lon="-73.95" data-lat="40.75"/>
+</svg>

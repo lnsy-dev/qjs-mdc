@@ -1,0 +1,63 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.4194, 37.7749]
+      },
+      "properties": {
+        "name": "San Francisco",
+        "city": "San Francisco",
+        "state": "CA",
+        "type": "city"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-118.2437, 34.0522]
+      },
+      "properties": {
+        "name": "Los Angeles",
+        "city": "Los Angeles",
+        "state": "CA",
+        "type": "city"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.4194, 37.7749],
+          [-121.8863, 37.3382],
+          [-118.2437, 34.0522]
+        ]
+      },
+      "properties": {
+        "name": "Highway 101",
+        "type": "highway"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-122.5, 37.8],
+          [-122.3, 37.8],
+          [-122.3, 37.7],
+          [-122.5, 37.7],
+          [-122.5, 37.8]
+        ]]
+      },
+      "properties": {
+        "name": "Bay Area",
+        "type": "region"
+      }
+    }
+  ]
+}

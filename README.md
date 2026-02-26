@@ -7,6 +7,7 @@ A QuickJS-based static site generator that compiles markdown files with YAML fro
 ✅ **YAML Front Matter** - Parse metadata from markdown files  
 ✅ **Template System** - Flexible HTML templates with variable substitution  
 ✅ **Wikilinks** - `[[link text]]` syntax for internal linking  
+✅ **SVG Charts** - Inline chart generation (bar, line, scatter, donut, heikin-ashi, map)  
 ✅ **Code Highlighting** - Syntax highlighting for JavaScript, Python, Rust  
 ✅ **Pagination** - Automatic index pagination (10 posts per page)  
 ✅ **Tags** - Tag-based organization with individual tag pages  
@@ -116,6 +117,72 @@ Use `[[Page Title]]` to link to other pages. The compiler will:
 - Handle conflicts by appending numbers
 
 Example: `[[My Page]]` → `<a href="my-page.html">My Page</a>`
+
+## SVG Charts
+
+Code blocks with chart type languages are automatically converted to inline SVG charts during compilation.
+
+### Supported Chart Types
+
+- `bar` or `chart` - Bar charts (vertical or horizontal)
+- `line` - Line graphs with multiple series
+- `scatter` - Scatter plots
+- `donut` - Donut/pie charts
+- `heikin-ashi` - Heikin-Ashi candlestick charts
+- `map` - Geographic maps from GeoJSON
+
+### Basic Usage
+
+````markdown
+```bar
+[
+  {"label": "Product A", "value": 45},
+  {"label": "Product B", "value": 67},
+  {"label": "Product C", "value": 32}
+]
+```
+````
+
+### Configuration with YAML Front Matter
+
+````markdown
+```bar
+---
+width: 800
+height: 400
+orientation: horizontal
+---
+[
+  {"label": "Q1", "value": 1200},
+  {"label": "Q2", "value": 1450}
+]
+```
+````
+
+### Configuration Options
+
+- `width` - Chart width in pixels (default: 600)
+- `height` - Chart height in pixels (default: 400)
+- `orientation` - Bar chart orientation: `vertical` or `horizontal` (default: vertical)
+- `nwLat`, `nwLon` - Map: Northwest corner coordinates
+- `seLat`, `seLon` - Map: Southeast corner coordinates
+- Field mappings: `labelField`, `valueField`, `xField`, `yField`, `categoryField`, etc.
+
+### Data Formats
+
+**JSON** (recommended):
+```json
+[{"label": "A", "value": 30}, {"label": "B", "value": 50}]
+```
+
+**CSV**:
+```csv
+label,value
+A,30
+B,50
+```
+
+See `plugins/svg/README.md` for complete chart documentation.
 
 ## Code Highlighting
 

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <line x1="320" y1="20" x2="320" y2="340" class="data-element data-index-0" data-open="182.64" data-high="188" data-low="182.4" data-close="185.55" data-date="2025-12-08"/>
+  <rect x="315" y="159.9999999999995" width="10" height="166.28571428571587" class="data-element data-index-0" data-open="182.64" data-high="188" data-low="182.4" data-close="185.55" data-date="2025-12-08"/>
+  <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
+  <line x1="60" y1="340" x2="580" y2="340" class="axis"/>
+  <text x="320" y="360" font-size="9" text-anchor="middle" class="label">2025-12-08</text>
+</svg>

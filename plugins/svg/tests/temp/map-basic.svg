@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 80 30.000000000000426 L 112.00000000000045 30.000000000000426 L 112.00000000000045 44.999999999999574 L 80 44.999999999999574 L 80 30.000000000000426 Z " fill="url(#pattern-3)" stroke="black" stroke-width="1" class="data-element data-index-3" data-name="Bay Area" data-type="region" data-geometry-type="Polygon"/>
+  <path d="M 92.89600000000064 33.764999999999645 L 178.1919999999991 99.26999999999992 L 761.0079999999994 592.1700000000001" fill="none" stroke="black" stroke-width="2" class="data-element data-index-2" data-name="Highway 101" data-type="highway" data-geometry-type="LineString"/>
+  <circle cx="92.89600000000064" cy="33.764999999999645" r="5" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-name="San Francisco" data-city="San Francisco" data-state="CA" data-type="city" data-geometry-type="Point" data-lon="-122.4194" data-lat="37.7749"/>
+  <circle cx="761.0079999999994" cy="592.1700000000001" r="5" fill="url(#pattern-1)" stroke="black" stroke-width="1" class="data-element data-index-1" data-name="Los Angeles" data-city="Los Angeles" data-state="CA" data-type="city" data-geometry-type="Point" data-lon="-118.2437" data-lat="34.0522"/>
+</svg>

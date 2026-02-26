@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <line x1="146.66666666666669" y1="20" x2="146.66666666666669" y2="340" stroke="black" stroke-width="1" class="data-element data-index-0" data-open="182.64" data-high="188" data-low="182.4" data-close="185.55" data-date="2025-12-08"/>
+  <rect x="141.66666666666669" y="159.9999999999995" width="10" height="166.28571428571587" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-open="182.64" data-high="188" data-low="182.4" data-close="185.55" data-date="2025-12-08"/>
+  <line x1="320" y1="150.2857142857145" x2="320" y2="287.42857142857207" stroke="black" stroke-width="1" class="data-element data-index-1" data-open="185.56" data-high="185.72" data-low="183.32" data-close="184.97" data-date="2025-12-09"/>
+  <rect x="315" y="159.42857142857144" width="10" height="33.71428571428595" fill="black" stroke="black" stroke-width="1" class="data-element data-index-1" data-open="185.56" data-high="185.72" data-low="183.32" data-close="184.97" data-date="2025-12-09"/>
+  <line x1="493.33333333333337" y1="122.85714285714363" x2="493.33333333333337" y2="300.0000000000006" stroke="black" stroke-width="1" class="data-element data-index-2" data-open="184.5" data-high="186.2" data-low="183.1" data-close="185.8" data-date="2025-12-10"/>
+  <rect x="488.33333333333337" y="145.7142857142852" width="10" height="74.28571428571499" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-2" data-open="184.5" data-high="186.2" data-low="183.1" data-close="185.8" data-date="2025-12-10"/>
+  <line x1="60" y1="20" x2="60" y2="340" stroke="black" stroke-width="1" class="axis"/>
+  <line x1="60" y1="340" x2="580" y2="340" stroke="black" stroke-width="1" class="axis"/>
+  <text x="146.66666666666669" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-08</text>
+  <text x="320" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-09</text>
+  <text x="493.33333333333337" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-10</text>
+</svg>

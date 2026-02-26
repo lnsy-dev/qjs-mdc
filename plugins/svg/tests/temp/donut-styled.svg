@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 427.27922061357856 327.27922061357856 A 180 180 0 0 0 300 20 L 376.3675323681471 276.3675323681471 M 300 92 A 108 108 0 0 0 376.3675323681471 276.3675323681471 Z" class="data-element data-index-0" data-label="A" data-value="30" data-percentage="37.5"/>
+  <text x="480.1565088397009" y="125.3767306888075" font-size="10" text-anchor="middle" class="label">A</text>
+  <path d="M 299.99999999999994 20 A 180 180 0 1 0 427.27922061357856 327.27922061357856 L 300 92 M 376.3675323681471 276.3675323681471 A 108 108 0 0 0 300 92 Z" class="data-element data-index-1" data-label="B" data-value="50" data-percentage="62.5"/>
+  <text x="119.8434911602991" y="274.62326931119253" font-size="10" text-anchor="middle" class="label">B</text>
+</svg>

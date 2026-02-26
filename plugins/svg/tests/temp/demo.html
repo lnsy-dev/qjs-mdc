@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS-Styled SVG Charts Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    .chart-container {
+      margin: 40px 0;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    h2 {
+      margin-top: 0;
+    }
+    
+    /* Default monochrome styles */
+    :root {
+      --pattern-fill: white;
+      --pattern-stroke: black;
+    }
+
+    .data-element {
+      stroke: black;
+      stroke-width: 1;
+    }
+
+    .axis {
+      stroke: black;
+      stroke-width: 1;
+    }
+
+    .label {
+      fill: black;
+      font-size: 12px;
+    }
+    
+    /* Custom colored styles for demo */
+    .chart-container.colored :root {
+      --pattern-fill: #e3f2fd;
+      --pattern-stroke: #1976d2;
+    }
+    
+    .chart-container.colored .data-element {
+      stroke: #1976d2;
+      stroke-width: 2;
+    }
+    
+    .chart-container.colored .axis {
+      stroke: #666;
+      stroke-width: 1.5;
+    }
+    
+    .chart-container.colored .label {
+      fill: #333;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS-Styled SVG Charts Demo</h1>
+  
+  <div class="chart-container">
+    <h2>Default Monochrome Style</h2>
+    <p>Generated with <code>--externally-styled</code> flag, using default CSS variables.</p>
+    <!-- Embed your externally-styled SVG here -->
+  </div>
+  
+  <div class="chart-container colored">
+    <h2>Custom Colored Style</h2>
+    <p>Same SVG, different CSS! Pattern colors and strokes are customized via CSS variables.</p>
+    <!-- Embed the same SVG here with different styling -->
+  </div>
+  
+  <div class="instructions">
+    <h2>How to Use</h2>
+    <ol>
+      <li>Generate an externally-styled SVG:
+        <pre>./generate-svg.js data.json --externally-styled > chart.svg</pre>
+      </li>
+      <li>Generate the CSS template:
+        <pre>./tests/generate-css.js > styles.css</pre>
+      </li>
+      <li>Customize the CSS variables in <code>styles.css</code></li>
+      <li>Link the CSS to your SVG or embed it in HTML</li>
+    </ol>
+    
+    <h3>Available CSS Classes</h3>
+    <ul>
+      <li><code>.data-element</code> - All data visualization elements (bars, circles, paths)</li>
+      <li><code>.data-index-N</code> - Specific data element by index (e.g., <code>.data-index-0</code>)</li>
+      <li><code>.data-category-{name}</code> - Elements grouped by category (e.g., <code>.data-category-A</code>)</li>
+      <li><code>.axis</code> - Chart axes</li>
+      <li><code>.label</code> - Text labels</li>
+    </ul>
+    
+    <h3>Available CSS Variables</h3>
+    <ul>
+      <li><code>--pattern-fill</code> - Background color for patterns</li>
+      <li><code>--pattern-stroke</code> - Stroke color for patterns</li>
+      <li><code>--data-element-fill</code> - Fill for data elements</li>
+      <li><code>--data-element-stroke</code> - Stroke for data elements</li>
+      <li><code>--data-element-stroke-width</code> - Stroke width for data elements</li>
+      <li><code>--axis-stroke</code> - Stroke color for axes</li>
+      <li><code>--axis-stroke-width</code> - Stroke width for axes</li>
+      <li><code>--label-fill</code> - Text color for labels</li>
+      <li><code>--label-font-size</code> - Font size for labels</li>
+    </ul>
+  </div>
+</body>
+</html>

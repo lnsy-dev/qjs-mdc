@@ -1,0 +1,41 @@
+// Example: Simple histogram renderer
+// This demonstrates how easy it is to add a new chart type
+
+import { rect, line, text } from '../utils/svg.js';
+import { getPattern } from '../utils/patterns.js';
+
+export const metadata = {
+  name: 'histogram',
+  detectFields: ['bin', 'frequency']
+};
+
+export function render(data, width, height, options = {}) {
+  const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+  const chartWidth = width - margin.left - margin.right;
+  const chartHeight = height - margin.top - margin.bottom;
+  
+  const maxFreq = Math.max(...data.map(d => d.frequency));
+  const binWidth = chartWidth / data.length;
+  
+  let svg = '';
+  
+  data.forEach((d, i) => {
+    const barHeight = (d.frequency / maxFreq) * chartHeight;
+    const x = margin.left + i * binWidth;
+    const y = margin.top + chartHeight - barHeight;
+    
+    svg += rect(x, y, binWidth - 2, barHeight, getPattern(0));
+    svg += text(x + binWidth / 2, height - margin.bottom + 15, d.bin, 9);
+  });
+  
+  svg += line(margin.left, margin.top, margin.left, height - margin.bottom);
+  svg += line(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom);
+  
+  return svg;
+}
+
+// To enable this renderer:
+// 1. Uncomment this file
+// 2. Add to src/registry.js: import * as histogram from './renderers/histogram.js';
+// 3. Add 'histogram' to the renderers array
+// 4. Test: echo '[{"bin":"0-10","frequency":5}]' | ./generate-svg.js --type=histogram
