@@ -14,15 +14,9 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   };
 }
 
-function describeArc(x, y, radius, startAngle, endAngle) {
-  const start = polarToCartesian(x, y, radius, endAngle);
-  const end = polarToCartesian(x, y, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
-}
-
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
+  const chartId = options.chartId;
   const centerX = width / 2;
   const centerY = height / 2;
   const radius = Math.min(width, height) / 2 - 20;
@@ -36,12 +30,15 @@ export function render(data, width, height, options = {}) {
     const sliceAngle = (d.value / total) * 360;
     const endAngle = currentAngle + sliceAngle;
     
-    const outerArc = describeArc(centerX, centerY, radius, currentAngle, endAngle);
-    const innerArc = describeArc(centerX, centerY, innerRadius, endAngle, currentAngle);
+    const outerStart = polarToCartesian(centerX, centerY, radius, endAngle);
+    const outerEnd = polarToCartesian(centerX, centerY, radius, currentAngle);
+    const innerStart = polarToCartesian(centerX, centerY, innerRadius, currentAngle);
+    const innerEnd = polarToCartesian(centerX, centerY, innerRadius, endAngle);
+    const largeArcFlag = sliceAngle > 180 ? "1" : "0";
     
-    const pathData = `${outerArc} L ${polarToCartesian(centerX, centerY, innerRadius, endAngle).x} ${polarToCartesian(centerX, centerY, innerRadius, endAngle).y} ${innerArc} Z`;
+    const pathData = `M ${outerStart.x} ${outerStart.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${outerEnd.x} ${outerEnd.y} L ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 1 ${innerEnd.x} ${innerEnd.y} Z`;
     
-    svg += path(pathData, getPattern(i), 'black', 1, { label: d.label, value: d.value, percentage: ((d.value / total) * 100).toFixed(1) }, `data-element data-index-${i}`, externallyStyled);
+    svg += path(pathData, getPattern(i, chartId), 'black', 1, { label: d.label, value: d.value, percentage: ((d.value / total) * 100).toFixed(1) }, `data-element data-index-${i}`, externallyStyled);
     
     const labelAngle = currentAngle + sliceAngle / 2;
     const labelRadius = radius + 15;

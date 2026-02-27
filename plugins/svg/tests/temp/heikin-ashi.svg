@@ -25,7 +25,7 @@
   <rect x="488.33333333333337" y="145.7142857142852" width="10" height="74.28571428571499" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-2" data-open="184.5" data-high="186.2" data-low="183.1" data-close="185.8" data-date="2025-12-10"/>
   <line x1="60" y1="20" x2="60" y2="340" stroke="black" stroke-width="1" class="axis"/>
   <line x1="60" y1="340" x2="580" y2="340" stroke="black" stroke-width="1" class="axis"/>
-  <text x="146.66666666666669" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-08</text>
-  <text x="320" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-09</text>
-  <text x="493.33333333333337" y="360" font-size="9" text-anchor="middle" fill="black" class="label">2025-12-10</text>
+  <text x="146.66666666666669" y="355" font-size="9" text-anchor="end" fill="black" class="label" transform="rotate(-45, 146.66666666666669, 355)">2025-12-08</text>
+  <text x="320" y="355" font-size="9" text-anchor="end" fill="black" class="label" transform="rotate(-45, 320, 355)">2025-12-09</text>
+  <text x="493.33333333333337" y="355" font-size="9" text-anchor="end" fill="black" class="label" transform="rotate(-45, 493.33333333333337, 355)">2025-12-10</text>
 </svg>

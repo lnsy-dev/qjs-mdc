@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Debug: Donut Chart — QJS-MD Test Notebook</title>
+<style>
+:root {
+  --bg-color: #ddd;
+  --fg-color: #282828;
+
+  /* SVG pattern fills */
+  --pattern-fill: var(--bg-color);
+  --pattern-stroke: var(--fg-color);
+
+  /* SVG data elements (bars, circles, paths, slices) */
+  --data-element-stroke: var(--fg-color);
+  --data-element-stroke-width: 1;
+
+  /* SVG axes */
+  --axis-stroke: #999;
+  --axis-stroke-width: 1;
+
+  /* SVG labels */
+  --label-fill: var(--fg-color);
+  --label-font-size: 10px;
+  --label-font-family: monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: monospace;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: var(--bg-color);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+header {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav-links a {
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  color: #000;
+}
+
+main {
+  min-height: 60vh;
+  padding-bottom: 2rem;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  margin-bottom: 1em;
+}
+
+a {
+  color: #0055aa;
+}
+
+a:hover {
+  color: #003366;
+}
+
+article {
+  padding-bottom: 2rem;
+}
+
+.post-meta {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-meta time {
+  font-style: italic;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  background: var(--bg-color);
+}
+
+.data-element {
+  stroke: var(--data-element-stroke);
+  stroke-width: var(--data-element-stroke-width);
+}
+
+.axis {
+  stroke: var(--axis-stroke);
+  stroke-width: var(--axis-stroke-width);
+}
+
+.label {
+  fill: var(--label-fill);
+  font-size: var(--label-font-size);
+  font-family: var(--label-font-family);
+}
+
+.chart-error {
+  border: 2px solid #d00;
+  padding: 10px;
+  margin: 10px 0;
+  background: #fee;
+}
+
+pre.code {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: #f0f0f0;
+  padding: 0.15em 0.3em;
+  border-radius: 3px;
+}
+
+pre.code code {
+  background: none;
+  padding: 0;
+}
+
+.keyword { color: #7928a1; font-weight: 600; }
+.string  { color: #067d17; }
+.comment { color: #888; font-style: italic; }
+.literal { color: #0055aa; }
+
+ul, ol {
+  margin: 0.5em 0 1em 1.5em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+.post-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.post-list li {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.post-list li:last-child {
+  border-bottom: none;
+}
+
+.post-list h3 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.post-list p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.25em;
+}
+
+.post-list small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.tags-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags-list li a {
+  display: inline-block;
+  background: #eee;
+  padding: 0.3rem 0.75rem;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.tags-list li a:hover {
+  background: #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.pagination span {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.site-description {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+#search-input,
+#tag-search {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+#search-input:focus,
+#tag-search:focus {
+  outline: none;
+  border-color: #0055aa;
+  box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
+}
+
+.search-results {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.search-results li {
+  border-bottom: 1px solid #eee;
+  padding: 0.75rem 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  color: #555;
+}
+
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+footer {
+  border-top: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  color: #999;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+</style>
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="index.html" class="site-title">QJS-MD Test Notebook</a>
+    <div class="nav-links">
+      <a href="index.html">Posts</a>
+      <a href="tags.html">Tags</a>
+      <a href="search.html">Search</a>
+    </div>
+  </nav>
+</header>
+
+  <main>
+    <article>
+      <div class="post-meta">
+        <time>2026-02-27</time>
+      </div>
+      <h1>Donut Charts</h1>Testing donut chart rendering with various datasets.<h2>Regional Market Share</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-0-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 386.7156613383088 357.73520240789543 A 180 180 0 0 0 300 20 L 300 92 A 108 108 0 0 1 352.0293968029853 294.6411214447372 Z" fill="url(#pattern-0-0)" class="data-element data-index-0" data-label="Southern California" data-value="42" data-percentage="42.0"/>
+  <text x="488.87371642008304" y="151.5054720028533" font-size="10" text-anchor="middle" class="label">Southern California</text>
+  <path d="M 128.80982706687237 255.62305898749054 A 180 180 0 0 0 386.7156613383088 357.73520240789543 L 352.0293968029853 294.6411214447372 A 108 108 0 0 1 197.2858962401234 233.37383539249433 Z" fill="url(#pattern-0-1)" class="data-element data-index-1" data-label="Northern California" data-value="28" data-percentage="28.0"/>
+  <text x="228.21571222648782" y="381.306414748209" font-size="10" text-anchor="middle" class="label">Northern California</text>
+  <path d="M 176.78152093283597 68.78564706414596 A 180 180 0 0 0 128.80982706687237 255.62305898749054 L 197.2858962401234 233.37383539249433 A 108 108 0 0 1 226.06891255970157 121.27138823848757 Z" fill="url(#pattern-0-2)" class="data-element data-index-2" data-label="Central Valley" data-value="18" data-percentage="18.0"/>
+  <text x="111.1262835799169" y="151.50547200285342" font-size="10" text-anchor="middle" class="label">Central Valley</text>
+  <path d="M 299.99999999999994 20 A 180 180 0 0 0 176.78152093283597 68.78564706414596 L 226.06891255970157 121.27138823848757 A 108 108 0 0 1 300 92 Z" fill="url(#pattern-0-3)" class="data-element data-index-3" data-label="Inland Empire" data-value="12" data-percentage="12.0"/>
+  <text x="228.215712226488" y="18.693585251790893" font-size="10" text-anchor="middle" class="label">Inland Empire</text>
+</svg><br />Four-segment donut chart. Each segment gets a distinct monochrome pattern for print-friendly differentiation.<h2>Binary Split</h2>Edge case with only two segments.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-1-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 154.3769410125095 305.8013454126452 A 180 180 0 1 0 300 20 L 300 92 A 108 108 0 1 1 212.6261646075057 263.4808072475871 Z" fill="url(#pattern-1-0)" class="data-element data-index-0" data-label="Urban" data-value="65" data-percentage="65.0"/>
+  <text x="473.74627221673177" y="288.5281474492116" font-size="10" text-anchor="middle" class="label">Urban</text>
+  <path d="M 299.99999999999994 20 A 180 180 0 0 0 154.3769410125095 305.8013454126452 L 212.6261646075057 263.4808072475871 A 108 108 0 0 1 300 92 Z" fill="url(#pattern-1-1)" class="data-element data-index-1" data-label="Rural" data-value="35" data-percentage="35.0"/>
+  <text x="126.2537277832682" y="111.47185255078848" font-size="10" text-anchor="middle" class="label">Rural</text>
+</svg><h2>Five Segments</h2>Testing pattern cycling with five data elements (wraps back to pattern 0 on the 5th).<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 500">
+<defs>
+  <pattern id="pattern-2-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 463.84859175429784 334.6686471174759 A 230 230 0 0 0 250 20 L 250 112 A 138 138 0 0 1 378.3091550525787 300.80118827048557 Z" fill="url(#pattern-2-0)" class="data-element data-index-0" data-label="Tech" data-value="31" data-percentage="31.0"/>
+  <text x="452.63474069726766" y="112.289572426228" font-size="10" text-anchor="middle" class="label">Tech</text>
+  <path d="M 206.90229764528328 475.9260676675984 A 230 230 0 0 0 463.84859175429784 334.6686471174759 L 378.3091550525787 300.80118827048557 A 138 138 0 0 1 224.14137858716998 385.55564060055906 Z" fill="url(#pattern-2-1)" class="data-element data-index-1" data-label="Healthcare" data-value="22" data-percentage="22.0"/>
+  <text x="368.0296501549203" y="464.69513661074654" font-size="10" text-anchor="middle" class="label">Healthcare</text>
+  <path d="M 24.073932332401597 293.09770235471655 A 230 230 0 0 0 206.90229764528328 475.9260676675984 L 224.14137858716998 385.55564060055906 A 138 138 0 0 1 114.44435939944097 275.8586214128299 Z" fill="url(#pattern-2-2)" class="data-element data-index-2" data-label="Finance" data-value="19" data-percentage="19.0"/>
+  <text x="76.75883860929588" y="423.2411613907042" font-size="10" text-anchor="middle" class="label">Finance</text>
+  <path d="M 92.55416563640176 82.3372156930752 A 230 230 0 0 0 24.073932332401597 293.09770235471655 L 114.44435939944097 275.8586214128299 A 138 138 0 0 1 155.53249938184106 149.40232941584512 Z" fill="url(#pattern-2-3)" class="data-element data-index-3" data-label="Manufacturing" data-value="16" data-percentage="16.0"/>
+  <text x="16.991153507687443" y="174.29083637813773" font-size="10" text-anchor="middle" class="label">Manufacturing</text>
+  <path d="M 250.00000000000017 20 A 230 230 0 0 0 92.55416563640176 82.3372156930752 L 155.53249938184106 149.40232941584512 A 138 138 0 0 1 250.00000000000009 112 Z" fill="url(#pattern-2-0)" class="data-element data-index-4" data-label="Retail" data-value="12" data-percentage="12.0"/>
+  <text x="159.80948459225414" y="22.204760957378312" font-size="10" text-anchor="middle" class="label">Retail</text>
+</svg><br />Employment distribution by sector. The fifth segment reuses the first pattern (diagonal stripes).<h2>Single Segment</h2>Edge case: a donut with just one category should render as a full circle.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-3-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-3-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-3-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M 299.99999999999994 20 A 180 180 0 1 0 300 20 L 300 92 A 108 108 0 1 1 300 92 Z" fill="url(#pattern-3-0)" class="data-element data-index-0" data-label="Complete" data-value="100" data-percentage="100.0"/>
+  <text x="300" y="395" font-size="10" text-anchor="middle" class="label">Complete</text>
+</svg>
+    </article>
+  </main>
+  <footer>
+  <p>&copy; 2026 QJS-MD Test Notebook</p>
+</footer>
+
+</body>
+</html>

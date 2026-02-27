@@ -150,6 +150,7 @@ function parseMapConfig(data) {
  */
 export function processSVGCharts(html) {
   const regex = /<pre class="code" data-lang="([^"]*)">\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/g;
+  let chartCount = 0;
   
   return html.replace(regex, (match, lang, code) => {
     const renderer = RENDERERS[lang];
@@ -180,6 +181,7 @@ export function processSVGCharts(html) {
         width,
         height,
         orientation: config.orientation,
+        externallyStyled: true,
         nwLat: config.nwLat || config.northWestLat || null,
         nwLon: config.nwLon || config.northWestLon || null,
         seLat: config.seLat || config.southEastLat || null,
@@ -214,9 +216,11 @@ export function processSVGCharts(html) {
       // Apply field mappings
       const mappedData = applyFieldMappings(data, config);
       
-      // Generate SVG
+      // Generate SVG with unique pattern IDs per chart
+      const chartId = chartCount++;
+      options.chartId = chartId;
       let svg = createSVGContainer(width, height, options.name, options.description);
-      svg += generatePatternDefs();
+      svg += generatePatternDefs(chartId);
       svg += renderer.render(mappedData, width, height, options);
       svg += closeSVGContainer();
       

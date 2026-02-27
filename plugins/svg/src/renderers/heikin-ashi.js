@@ -6,7 +6,7 @@ export const metadata = {
   detectFields: ['open', 'high', 'low', 'close']
 };
 
-function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, date, index, externallyStyled) {
+function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, date, index, externallyStyled, chartId) {
   const y1 = yScale(high);
   const y2 = yScale(low);
   const yOpen = yScale(open);
@@ -23,7 +23,7 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
   svg += line(x, y1, x, y2, 'black', 1, dataAttrs, className, externallyStyled);
   
   if (isBullish) {
-    svg += rect(bodyX, bodyTop, width, bodyHeight, getPattern(0), 'black', 1, dataAttrs, className, externallyStyled);
+    svg += rect(bodyX, bodyTop, width, bodyHeight, getPattern(0, chartId), 'black', 1, dataAttrs, className, externallyStyled);
   } else {
     svg += rect(bodyX, bodyTop, width, bodyHeight, 'black', 'black', 1, dataAttrs, className, externallyStyled);
   }
@@ -33,6 +33,7 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
 
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
+  const chartId = options.chartId;
   const margin = { top: 20, right: 20, bottom: 60, left: 60 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
@@ -52,18 +53,22 @@ export function render(data, width, height, options = {}) {
   data.forEach((d, i) => {
     const x = margin.left + i * candleSpacing + candleSpacing / 2;
     const isBullish = d.close >= d.open;
-    svg += renderCandlestick(x, d.open, d.high, d.low, d.close, candleWidth, yScale, isBullish, d.date, i, externallyStyled);
+    svg += renderCandlestick(x, d.open, d.high, d.low, d.close, candleWidth, yScale, isBullish, d.date, i, externallyStyled, chartId);
   });
   
   svg += line(margin.left, margin.top, margin.left, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   svg += line(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   
-  const sampleInterval = Math.max(1, Math.floor(data.length / 10));
+  const maxLabelLen = data.reduce((max, d) => Math.max(max, (d.date || '').length), 4);
+  const estLabelWidth = maxLabelLen * 5.5;
+  const minLabelSpacing = estLabelWidth * 0.7 + 10;
+  const maxLabels = Math.max(1, Math.floor(chartWidth / minLabelSpacing));
+  const sampleInterval = Math.max(1, Math.ceil(data.length / maxLabels));
   data.forEach((d, i) => {
     if (i % sampleInterval === 0 || i === data.length - 1) {
       const x = margin.left + i * candleSpacing + candleSpacing / 2;
       const label = d.date || i.toString();
-      svg += text(x, height - margin.bottom + 20, label, 9, 'middle', 'label', externallyStyled);
+      svg += text(x, height - margin.bottom + 15, label, 9, 'end', 'label', externallyStyled, -45);
     }
   });
   

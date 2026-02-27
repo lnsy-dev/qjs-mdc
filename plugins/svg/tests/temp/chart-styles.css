@@ -1,37 +1,41 @@
 :root {
-  /* Pattern colors - used in SVG pattern fills */
-  --pattern-fill: white;
-  --pattern-stroke: black;
-  
-  /* Data element colors */
-  --data-element-fill: url(#pattern-0);
-  --data-element-stroke: black;
+  --bg-color: #fafafa;
+  --fg-color: #1a1a1a;
+
+  /* SVG pattern fills */
+  --pattern-fill: var(--bg-color);
+  --pattern-stroke: var(--fg-color);
+
+  /* SVG data elements (bars, circles, paths, slices) */
+  --data-element-stroke: var(--fg-color);
   --data-element-stroke-width: 1;
-  
-  /* Axis colors */
-  --axis-stroke: black;
+
+  /* SVG axes */
+  --axis-stroke: #999;
   --axis-stroke-width: 1;
-  
-  /* Label/text colors */
-  --label-fill: black;
-  --label-font-size: 12px;
+
+  /* SVG labels */
+  --label-fill: var(--fg-color);
+  --label-font-size: 10px;
+  --label-font-family: monospace;
 }
 
-/* Data elements (bars, circles, paths, etc.) */
+svg {
+  background: var(--bg-color);
+}
+
 .data-element {
-  fill: var(--data-element-fill);
   stroke: var(--data-element-stroke);
   stroke-width: var(--data-element-stroke-width);
 }
 
-/* Axes */
 .axis {
   stroke: var(--axis-stroke);
   stroke-width: var(--axis-stroke-width);
 }
 
-/* Labels and text */
 .label {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
+  font-family: var(--label-font-family);
 }

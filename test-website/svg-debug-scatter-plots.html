@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Debug: Scatter Plots — QJS-MD Test Notebook</title>
+<style>
+:root {
+  --bg-color: #ddd;
+  --fg-color: #282828;
+
+  /* SVG pattern fills */
+  --pattern-fill: var(--bg-color);
+  --pattern-stroke: var(--fg-color);
+
+  /* SVG data elements (bars, circles, paths, slices) */
+  --data-element-stroke: var(--fg-color);
+  --data-element-stroke-width: 1;
+
+  /* SVG axes */
+  --axis-stroke: #999;
+  --axis-stroke-width: 1;
+
+  /* SVG labels */
+  --label-fill: var(--fg-color);
+  --label-font-size: 10px;
+  --label-font-family: monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: monospace;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: var(--bg-color);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+header {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav-links a {
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  color: #000;
+}
+
+main {
+  min-height: 60vh;
+  padding-bottom: 2rem;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  margin-bottom: 1em;
+}
+
+a {
+  color: #0055aa;
+}
+
+a:hover {
+  color: #003366;
+}
+
+article {
+  padding-bottom: 2rem;
+}
+
+.post-meta {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-meta time {
+  font-style: italic;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  background: var(--bg-color);
+}
+
+.data-element {
+  stroke: var(--data-element-stroke);
+  stroke-width: var(--data-element-stroke-width);
+}
+
+.axis {
+  stroke: var(--axis-stroke);
+  stroke-width: var(--axis-stroke-width);
+}
+
+.label {
+  fill: var(--label-fill);
+  font-size: var(--label-font-size);
+  font-family: var(--label-font-family);
+}
+
+.chart-error {
+  border: 2px solid #d00;
+  padding: 10px;
+  margin: 10px 0;
+  background: #fee;
+}
+
+pre.code {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: #f0f0f0;
+  padding: 0.15em 0.3em;
+  border-radius: 3px;
+}
+
+pre.code code {
+  background: none;
+  padding: 0;
+}
+
+.keyword { color: #7928a1; font-weight: 600; }
+.string  { color: #067d17; }
+.comment { color: #888; font-style: italic; }
+.literal { color: #0055aa; }
+
+ul, ol {
+  margin: 0.5em 0 1em 1.5em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+.post-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.post-list li {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.post-list li:last-child {
+  border-bottom: none;
+}
+
+.post-list h3 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.post-list p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.25em;
+}
+
+.post-list small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.tags-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags-list li a {
+  display: inline-block;
+  background: #eee;
+  padding: 0.3rem 0.75rem;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.tags-list li a:hover {
+  background: #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.pagination span {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.site-description {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+#search-input,
+#tag-search {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+#search-input:focus,
+#tag-search:focus {
+  outline: none;
+  border-color: #0055aa;
+  box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
+}
+
+.search-results {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.search-results li {
+  border-bottom: 1px solid #eee;
+  padding: 0.75rem 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  color: #555;
+}
+
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+footer {
+  border-top: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  color: #999;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+</style>
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="index.html" class="site-title">QJS-MD Test Notebook</a>
+    <div class="nav-links">
+      <a href="index.html">Posts</a>
+      <a href="tags.html">Tags</a>
+      <a href="search.html">Search</a>
+    </div>
+  </nav>
+</header>
+
+  <main>
+    <article>
+      <div class="post-meta">
+        <time>2026-02-27</time>
+      </div>
+      <h1>Scatter Plots</h1>Testing scatter plot rendering with categories, variable radius, and edge cases.<h2>Categorized Scatter with Variable Radius</h2>Housing price vs square footage across SoCal neighborhoods, with bubble size representing lot size.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-0-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <circle cx="85" cy="319.0740740740741" r="6" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1200" data-y="450" data-c="LA" data-r="6"/>
+  <circle cx="220" cy="234.07407407407408" r="8" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1800" data-y="720" data-c="LA" data-r="8"/>
+  <circle cx="355" cy="161.66666666666666" r="10" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="2400" data-y="950" data-c="LA" data-r="10"/>
+  <circle cx="535" cy="20" r="14" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="3200" data-y="1400" data-c="LA" data-r="14"/>
+  <circle cx="40" cy="341.1111111111111" r="7" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1000" data-y="380" data-c="San Diego" data-r="7"/>
+  <circle cx="175" cy="278.14814814814815" r="9" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1600" data-y="580" data-c="San Diego" data-r="9"/>
+  <circle cx="310" cy="215.1851851851852" r="11" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2200" data-y="780" data-c="San Diego" data-r="11"/>
+  <circle cx="445" cy="130.1851851851852" r="12" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2800" data-y="1050" data-c="San Diego" data-r="12"/>
+  <circle cx="130" cy="360" r="10" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="1400" data-y="320" data-c="Inland" data-r="10"/>
+  <circle cx="265" cy="328.51851851851853" r="13" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2000" data-y="420" data-c="Inland" data-r="13"/>
+  <circle cx="400" cy="287.5925925925926" r="15" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2600" data-y="550" data-c="Inland" data-r="15"/>
+  <circle cx="580" cy="246.66666666666669" r="18" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="3400" data-y="680" data-c="Inland" data-r="18"/>
+  <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
+  <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
+</svg><br />X-axis: square footage. Y-axis: price ($K). Bubble radius: relative lot size. Each category gets a distinct pattern fill.<h2>Minimal Scatter (No Categories, No Radius)</h2>Testing default circle size (r=5) and no category grouping.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+<defs>
+  <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-1-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <circle cx="40" cy="360" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="1" data-y="4" data-c="default" data-r="5"/>
+  <circle cx="130" cy="214.2857142857143" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="2" data-y="7" data-c="default" data-r="5"/>
+  <circle cx="220" cy="311.42857142857144" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="3" data-y="5" data-c="default" data-r="5"/>
+  <circle cx="310" cy="117.14285714285714" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="4" data-y="9" data-c="default" data-r="5"/>
+  <circle cx="400" cy="262.8571428571429" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="5" data-y="6" data-c="default" data-r="5"/>
+  <circle cx="490" cy="20" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="6" data-y="11" data-c="default" data-r="5"/>
+  <circle cx="580" cy="165.71428571428572" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="7" data-y="8" data-c="default" data-r="5"/>
+  <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
+  <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
+</svg><h2>Large Custom Scatter</h2>Wide-format scatter with many points across four categories.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 500">
+<defs>
+  <pattern id="pattern-2-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <circle cx="132.5" cy="87.69230769230768" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="10" data-y="85" data-c="Spring" data-r="4"/>
+  <circle cx="225" cy="135.07692307692304" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="15" data-y="78" data-c="Spring" data-r="5"/>
+  <circle cx="317.5" cy="175.69230769230768" r="6" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="20" data-y="72" data-c="Spring" data-r="6"/>
+  <circle cx="410" cy="223.0769230769231" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="25" data-y="65" data-c="Spring" data-r="5"/>
+  <circle cx="502.5" cy="290.7692307692308" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="30" data-y="55" data-c="Summer" data-r="4"/>
+  <circle cx="595" cy="378.7692307692308" r="7" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="35" data-y="42" data-c="Summer" data-r="7"/>
+  <circle cx="687.5" cy="426.15384615384613" r="8" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="40" data-y="35" data-c="Summer" data-r="8"/>
+  <circle cx="780" cy="460" r="6" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="45" data-y="30" data-c="Summer" data-r="6"/>
+  <circle cx="317.5" cy="53.84615384615381" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="20" data-y="90" data-c="Fall" data-r="5"/>
+  <circle cx="410" cy="108" r="6" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="25" data-y="82" data-c="Fall" data-r="6"/>
+  <circle cx="502.5" cy="155.38461538461542" r="7" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="30" data-y="75" data-c="Fall" data-r="7"/>
+  <circle cx="595" cy="202.76923076923077" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="35" data-y="68" data-c="Fall" data-r="5"/>
+  <circle cx="40" cy="40.307692307692264" r="6" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="5" data-y="92" data-c="Winter" data-r="6"/>
+  <circle cx="132.5" cy="67.38461538461536" r="7" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="10" data-y="88" data-c="Winter" data-r="7"/>
+  <circle cx="225" cy="20" r="8" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="15" data-y="95" data-c="Winter" data-r="8"/>
+  <circle cx="317.5" cy="47.076923076923094" r="5" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="20" data-y="91" data-c="Winter" data-r="5"/>
+  <line x1="40" y1="20" x2="40" y2="460" class="axis"/>
+  <line x1="40" y1="460" x2="780" y2="460" class="axis"/>
+</svg><br />Temperature (x, °C) vs humidity (y, %) by season. Four categories exercise the full pattern set.
+    </article>
+  </main>
+  <footer>
+  <p>&copy; 2026 QJS-MD Test Notebook</p>
+</footer>
+
+</body>
+</html>

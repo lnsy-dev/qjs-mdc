@@ -34,16 +34,18 @@ function verticalPattern(id) {
   </pattern>`;
 }
 
-export function generatePatternDefs() {
+export function generatePatternDefs(chartId) {
+  const prefix = chartId != null ? `pattern-${chartId}` : 'pattern';
   return `<defs>
-  ${diagonalPattern('pattern-0')}
-  ${dotsPattern('pattern-1')}
-  ${horizontalPattern('pattern-2')}
-  ${verticalPattern('pattern-3')}
+  ${diagonalPattern(`${prefix}-0`)}
+  ${dotsPattern(`${prefix}-1`)}
+  ${horizontalPattern(`${prefix}-2`)}
+  ${verticalPattern(`${prefix}-3`)}
 </defs>
 `;
 }
 
-export function getPattern(index) {
-  return `url(#pattern-${index % 4})`;
+export function getPattern(index, chartId) {
+  const prefix = chartId != null ? `pattern-${chartId}` : 'pattern';
+  return `url(#${prefix}-${index % 4})`;
 }

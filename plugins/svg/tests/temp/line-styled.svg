@@ -17,9 +17,9 @@
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <path d="M40,360 L580,20" class="data-element data-category-Series-A" data-c="Series A"/>
-  <circle cx="40" cy="360" r="4" class="data-element data-category-Series-A" data-x="1" data-y="10" data-c="Series A" data-r="4"/>
-  <circle cx="580" cy="20" r="4" class="data-element data-category-Series-A" data-x="2" data-y="15" data-c="Series A" data-r="4"/>
+  <path d="M40,360 L580,20" fill="none" class="data-element data-category-Series-A" data-c="Series A"/>
+  <circle cx="40" cy="360" r="4" fill="url(#pattern-0)" class="data-element data-category-Series-A" data-x="1" data-y="10" data-c="Series A" data-r="4"/>
+  <circle cx="580" cy="20" r="4" fill="url(#pattern-0)" class="data-element data-category-Series-A" data-x="2" data-y="15" data-c="Series A" data-r="4"/>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
 </svg>

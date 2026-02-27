@@ -9,6 +9,7 @@ export const metadata = {
 export function render(data, width, height, options = {}) {
   const orientation = options.orientation || 'vertical';
   const externallyStyled = options.externallyStyled || false;
+  const chartId = options.chartId;
   const margin = { top: 20, right: 20, bottom: 60, left: 60 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
@@ -27,7 +28,7 @@ export function render(data, width, height, options = {}) {
       const x = margin.left + i * barSpacing + barSpacing * 0.1;
       const y = margin.top + chartHeight - barHeight;
       
-      svg += rect(x, y, barWidth, barHeight, getPattern(i), 'black', 1, { label: d.label, value: d.value }, `data-element data-index-${i}`, externallyStyled);
+      svg += rect(x, y, barWidth, barHeight, getPattern(i, chartId), 'black', 1, { label: d.label, value: d.value }, `data-element data-index-${i}`, externallyStyled);
       svg += text(x + barWidth / 2, height - margin.bottom + 20, d.label, 10, 'middle', 'label', externallyStyled);
     });
     
@@ -43,7 +44,7 @@ export function render(data, width, height, options = {}) {
       const x = margin.left;
       const y = margin.top + i * barSpacing + barSpacing * 0.1;
       
-      svg += rect(x, y, barWidth, barHeight, getPattern(i), 'black', 1, { label: d.label, value: d.value }, `data-element data-index-${i}`, externallyStyled);
+      svg += rect(x, y, barWidth, barHeight, getPattern(i, chartId), 'black', 1, { label: d.label, value: d.value }, `data-element data-index-${i}`, externallyStyled);
       svg += text(margin.left - 10, y + barHeight / 2 + 4, d.label, 10, 'end', 'label', externallyStyled);
     });
     

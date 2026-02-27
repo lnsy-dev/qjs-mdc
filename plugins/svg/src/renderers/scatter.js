@@ -30,6 +30,7 @@ export function render(data, width, height, options = {}) {
   });
   
   const catList = Object.keys(categories);
+  const chartId = options.chartId;
   let svg = '';
   
   const sanitize = (str) => String(str).replace(/[^a-zA-Z0-9-_]/g, '-');
@@ -37,7 +38,7 @@ export function render(data, width, height, options = {}) {
   catList.forEach((cat, catIndex) => {
     categories[cat].forEach(d => {
       const r = d.r || 5;
-      svg += circle(xScale(d.x), yScale(d.y), r, getPattern(catIndex), 'black', 1, { x: d.x, y: d.y, c: d.c || 'default', r }, `data-element data-category-${sanitize(cat)}`, externallyStyled);
+      svg += circle(xScale(d.x), yScale(d.y), r, getPattern(catIndex, chartId), 'black', 1, { x: d.x, y: d.y, c: d.c || 'default', r }, `data-element data-category-${sanitize(cat)}`, externallyStyled);
     });
   });
   
