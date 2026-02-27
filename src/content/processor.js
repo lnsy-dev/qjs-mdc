@@ -21,19 +21,16 @@ export function processWikilinks(content) {
  * @returns {string} HTML with URLs converted to anchor tags
  */
 export function makeUrlsClickable(html) {
-  let result = html;
   const urlRegex = /(https?:\/\/[^\s<"]+)/g;
   
-  result = result.replace(urlRegex, (match) => {
-    const index = result.indexOf(match);
-    const before = result.substring(Math.max(0, index - 10), index);
-    if (before.includes('href="') || before.includes('">')) {
+  return html.replace(urlRegex, (match, _url, offset) => {
+    const before = html.substring(Math.max(0, offset - 100), offset);
+    // Skip URLs inside any HTML attribute value (xmlns=", href=", src=", etc.)
+    if (/=["'][^"']*$/.test(before)) {
       return match;
     }
     return `<a href="${match}">${match}</a>`;
   });
-  
-  return result;
 }
 
 /**
