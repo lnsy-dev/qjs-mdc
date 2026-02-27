@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
 <defs>
   <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -17,6 +17,6 @@
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <path d="M 0 400 L 600 0" fill="none" stroke="black" stroke-width="2" class="data-element data-index-1" data-name="Broadway" data-geometry-type="LineString"/>
-  <circle cx="300" cy="200" r="5" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-name="Central Park" data-type="park" data-geometry-type="Point" data-lon="-73.95" data-lat="40.75"/>
+  <path d="M 0 400 L 600 0" fill="none" stroke="black" stroke-width="2" class="data-element data-index-1" data-name="Broadway" data-geometry-type="LineString" aria-label="name: Broadway, geometry-type: LineString"/>
+  <circle cx="300" cy="200" r="5" fill="url(#pattern-0)" stroke="black" stroke-width="1" class="data-element data-index-0" data-name="Central Park" data-type="park" data-geometry-type="Point" data-lon="-73.95" data-lat="40.75" aria-label="name: Central Park, type: park, geometry-type: Point, lon: -73.95, lat: 40.75"/>
 </svg>

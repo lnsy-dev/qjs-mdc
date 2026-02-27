@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
 <defs>
   <pattern id="pattern-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -17,8 +17,8 @@
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <circle cx="40" cy="360" r="5" fill="url(#pattern-0)" class="data-element data-category-A" data-x="1" data-y="10" data-c="A" data-r="5"/>
-  <circle cx="580" cy="20" r="5" fill="url(#pattern-0)" class="data-element data-category-A" data-x="2" data-y="20" data-c="A" data-r="5"/>
+  <circle cx="40" cy="360" r="5" fill="url(#pattern-0)" class="data-element data-category-A" data-x="1" data-y="10" data-c="A" data-r="5" aria-label="x: 1, y: 10, c: A, r: 5"/>
+  <circle cx="580" cy="20" r="5" fill="url(#pattern-0)" class="data-element data-category-A" data-x="2" data-y="20" data-c="A" data-r="5" aria-label="x: 2, y: 20, c: A, r: 5"/>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
 </svg>

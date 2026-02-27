@@ -321,6 +321,27 @@ abbr {
   cursor: help;
 }
 
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-top: none;
+  font-size: 0.85rem;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chart-figcaption td:first-child {
+  width: 30%;
+}
+
 footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;
@@ -331,6 +352,53 @@ footer {
 }
 
 </style>
+<script>
+// Chart interaction handler
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('figure.chart-figure').forEach(function(figure) {
+    const svg = figure.querySelector('svg');
+    const figcaption = figure.querySelector('figcaption');
+    
+    if (!svg || !figcaption) return;
+    
+    // Store default content
+    const defaultContent = svg.dataset.name || svg.dataset.description 
+      ? formatData({ name: svg.dataset.name, description: svg.dataset.description })
+      : '<em>Click on a chart element to see details</em>';
+    
+    figcaption.innerHTML = defaultContent;
+    
+    // Add click handlers to data elements
+    svg.querySelectorAll('.data-element').forEach(function(elem) {
+      elem.style.cursor = 'pointer';
+      
+      elem.addEventListener('click', function() {
+        const data = {};
+        Array.from(elem.attributes).forEach(function(attr) {
+          if (attr.name.startsWith('data-')) {
+            const key = attr.name.replace('data-', '');
+            data[key] = attr.value;
+          }
+        });
+        figcaption.innerHTML = formatData(data);
+      });
+    });
+  });
+});
+
+function formatData(data) {
+  if (!data || Object.keys(data).length === 0) return '';
+  
+  const parts = [];
+  for (const key in data) {
+    if (data[key]) {
+      parts.push(key + ': <i>' + data[key] + '</i>');
+    }
+  }
+  return parts.join(', ');
+}
+
+</script>
 </head>
 <body>
   <header>
@@ -349,8 +417,8 @@ footer {
     <p class="site-description">Debug blog for testing all SVG chart plugin features.</p>
     <ul class="post-list">
   <li>
-    <h3><a href="svg-debug-line-charts.html">SVG Debug: Line Charts</a></h3>
-    <p>Testing line chart rendering with single and multiple series.</p>
+    <h3><a href="svg-debug-scatter-plots.html">SVG Debug: Scatter Plots</a></h3>
+    <p>Testing scatter plot rendering with categories, variable radius, and edge cases.</p>
     <small>2026-02-27</small>
   </li>
   <li>
@@ -359,13 +427,18 @@ footer {
     <small>2026-02-27</small>
   </li>
   <li>
+    <h3><a href="svg-debug-line-charts.html">SVG Debug: Line Charts</a></h3>
+    <p>Testing line chart rendering with single and multiple series.</p>
+    <small>2026-02-27</small>
+  </li>
+  <li>
     <h3><a href="svg-debug-heikin-ashi-chart.html">SVG Debug: Heikin-Ashi Chart</a></h3>
     <p>Testing heikin-ashi candlestick rendering with OHLC data.</p>
     <small>2026-02-27</small>
   </li>
   <li>
-    <h3><a href="svg-debug-yaml-field-mapping-with-csv.html">SVG Debug: YAML Field Mapping with CSV</a></h3>
-    <p>Testing the YAML front matter format with CSV data and custom field mappings.</p>
+    <h3><a href="svg-debug-donut-chart.html">SVG Debug: Donut Chart</a></h3>
+    <p>Testing donut chart rendering with various datasets.</p>
     <small>2026-02-27</small>
   </li>
   <li>
@@ -374,13 +447,8 @@ footer {
     <small>2026-02-27</small>
   </li>
   <li>
-    <h3><a href="svg-debug-scatter-plots.html">SVG Debug: Scatter Plots</a></h3>
-    <p>Testing scatter plot rendering with categories, variable radius, and edge cases.</p>
-    <small>2026-02-27</small>
-  </li>
-  <li>
-    <h3><a href="svg-debug-donut-chart.html">SVG Debug: Donut Chart</a></h3>
-    <p>Testing donut chart rendering with various datasets.</p>
+    <h3><a href="svg-debug-yaml-field-mapping-with-csv.html">SVG Debug: YAML Field Mapping with CSV</a></h3>
+    <p>Testing the YAML front matter format with CSV data and custom field mappings.</p>
     <small>2026-02-27</small>
   </li>
 </ul>

@@ -314,6 +314,27 @@ abbr {
   cursor: help;
 }
 
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-top: none;
+  font-size: 0.85rem;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chart-figcaption td:first-child {
+  width: 30%;
+}
+
 footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;

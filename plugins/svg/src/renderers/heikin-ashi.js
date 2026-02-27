@@ -1,5 +1,6 @@
 import { rect, line, text } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
+import { createLinearScale, calculateMargins } from '../utils/chart.js';
 
 export const metadata = {
   name: 'heikin-ashi',
@@ -34,7 +35,7 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;
-  const margin = { top: 20, right: 20, bottom: 60, left: 60 };
+  const margin = calculateMargins('heikin-ashi', data, options);
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
   
@@ -43,7 +44,7 @@ export function render(data, width, height, options = {}) {
   const minPrice = Math.min(...allLows);
   const maxPrice = Math.max(...allHighs);
   
-  const yScale = (price) => margin.top + chartHeight - ((price - minPrice) / (maxPrice - minPrice)) * chartHeight;
+  const yScale = createLinearScale([minPrice, maxPrice], [margin.top + chartHeight, margin.top]);
   
   const candleWidth = Math.min(chartWidth / data.length * 0.6, 10);
   const candleSpacing = chartWidth / data.length;

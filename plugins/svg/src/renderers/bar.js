@@ -1,5 +1,6 @@
 import { rect, line, text } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
+import { calculateMargins } from '../utils/chart.js';
 
 export const metadata = {
   name: 'bar',
@@ -10,7 +11,8 @@ export function render(data, width, height, options = {}) {
   const orientation = options.orientation || 'vertical';
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;
-  const margin = { top: 20, right: 20, bottom: 60, left: 60 };
+  const margin = calculateMargins('bar', data, options);
+  
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
   

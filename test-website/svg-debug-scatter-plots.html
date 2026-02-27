@@ -321,6 +321,27 @@ abbr {
   cursor: help;
 }
 
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-top: none;
+  font-size: 0.85rem;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chart-figcaption td:first-child {
+  width: 30%;
+}
+
 footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;
@@ -331,6 +352,53 @@ footer {
 }
 
 </style>
+<script>
+// Chart interaction handler
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('figure.chart-figure').forEach(function(figure) {
+    const svg = figure.querySelector('svg');
+    const figcaption = figure.querySelector('figcaption');
+    
+    if (!svg || !figcaption) return;
+    
+    // Store default content
+    const defaultContent = svg.dataset.name || svg.dataset.description 
+      ? formatData({ name: svg.dataset.name, description: svg.dataset.description })
+      : '<em>Click on a chart element to see details</em>';
+    
+    figcaption.innerHTML = defaultContent;
+    
+    // Add click handlers to data elements
+    svg.querySelectorAll('.data-element').forEach(function(elem) {
+      elem.style.cursor = 'pointer';
+      
+      elem.addEventListener('click', function() {
+        const data = {};
+        Array.from(elem.attributes).forEach(function(attr) {
+          if (attr.name.startsWith('data-')) {
+            const key = attr.name.replace('data-', '');
+            data[key] = attr.value;
+          }
+        });
+        figcaption.innerHTML = formatData(data);
+      });
+    });
+  });
+});
+
+function formatData(data) {
+  if (!data || Object.keys(data).length === 0) return '';
+  
+  const parts = [];
+  for (const key in data) {
+    if (data[key]) {
+      parts.push(key + ': <i>' + data[key] + '</i>');
+    }
+  }
+  return parts.join(', ');
+}
+
+</script>
 </head>
 <body>
   <header>
@@ -349,7 +417,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Scatter Plots</h1>Testing scatter plot rendering with categories, variable radius, and edge cases.<h2>Categorized Scatter with Variable Radius</h2>Housing price vs square footage across SoCal neighborhoods, with bubble size representing lot size.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+      <h1>Scatter Plots</h1>Testing scatter plot rendering with categories, variable radius, and edge cases.<h2>Categorized Scatter with Variable Radius</h2>Housing price vs square footage across SoCal neighborhoods, with bubble size representing lot size.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
 <defs>
   <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -368,21 +436,21 @@ footer {
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <circle cx="85" cy="319.0740740740741" r="6" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1200" data-y="450" data-c="LA" data-r="6"/>
-  <circle cx="220" cy="234.07407407407408" r="8" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1800" data-y="720" data-c="LA" data-r="8"/>
-  <circle cx="355" cy="161.66666666666666" r="10" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="2400" data-y="950" data-c="LA" data-r="10"/>
-  <circle cx="535" cy="20" r="14" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="3200" data-y="1400" data-c="LA" data-r="14"/>
-  <circle cx="40" cy="341.1111111111111" r="7" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1000" data-y="380" data-c="San Diego" data-r="7"/>
-  <circle cx="175" cy="278.14814814814815" r="9" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1600" data-y="580" data-c="San Diego" data-r="9"/>
-  <circle cx="310" cy="215.1851851851852" r="11" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2200" data-y="780" data-c="San Diego" data-r="11"/>
-  <circle cx="445" cy="130.1851851851852" r="12" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2800" data-y="1050" data-c="San Diego" data-r="12"/>
-  <circle cx="130" cy="360" r="10" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="1400" data-y="320" data-c="Inland" data-r="10"/>
-  <circle cx="265" cy="328.51851851851853" r="13" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2000" data-y="420" data-c="Inland" data-r="13"/>
-  <circle cx="400" cy="287.5925925925926" r="15" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2600" data-y="550" data-c="Inland" data-r="15"/>
-  <circle cx="580" cy="246.66666666666669" r="18" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="3400" data-y="680" data-c="Inland" data-r="18"/>
+  <circle cx="85" cy="319.0740740740741" r="6" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1200" data-y="450" data-c="LA" data-r="6" aria-label="x: 1200, y: 450, c: LA, r: 6"/>
+  <circle cx="220" cy="234.07407407407408" r="8" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="1800" data-y="720" data-c="LA" data-r="8" aria-label="x: 1800, y: 720, c: LA, r: 8"/>
+  <circle cx="355" cy="161.66666666666666" r="10" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="2400" data-y="950" data-c="LA" data-r="10" aria-label="x: 2400, y: 950, c: LA, r: 10"/>
+  <circle cx="535" cy="20" r="14" fill="url(#pattern-0-0)" class="data-element data-category-LA" data-x="3200" data-y="1400" data-c="LA" data-r="14" aria-label="x: 3200, y: 1400, c: LA, r: 14"/>
+  <circle cx="40" cy="341.1111111111111" r="7" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1000" data-y="380" data-c="San Diego" data-r="7" aria-label="x: 1000, y: 380, c: San Diego, r: 7"/>
+  <circle cx="175" cy="278.14814814814815" r="9" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1600" data-y="580" data-c="San Diego" data-r="9" aria-label="x: 1600, y: 580, c: San Diego, r: 9"/>
+  <circle cx="310" cy="215.1851851851852" r="11" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2200" data-y="780" data-c="San Diego" data-r="11" aria-label="x: 2200, y: 780, c: San Diego, r: 11"/>
+  <circle cx="445" cy="130.1851851851852" r="12" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2800" data-y="1050" data-c="San Diego" data-r="12" aria-label="x: 2800, y: 1050, c: San Diego, r: 12"/>
+  <circle cx="130" cy="360" r="10" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="1400" data-y="320" data-c="Inland" data-r="10" aria-label="x: 1400, y: 320, c: Inland, r: 10"/>
+  <circle cx="265" cy="328.51851851851853" r="13" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2000" data-y="420" data-c="Inland" data-r="13" aria-label="x: 2000, y: 420, c: Inland, r: 13"/>
+  <circle cx="400" cy="287.5925925925926" r="15" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="2600" data-y="550" data-c="Inland" data-r="15" aria-label="x: 2600, y: 550, c: Inland, r: 15"/>
+  <circle cx="580" cy="246.66666666666666" r="18" fill="url(#pattern-0-2)" class="data-element data-category-Inland" data-x="3400" data-y="680" data-c="Inland" data-r="18" aria-label="x: 3400, y: 680, c: Inland, r: 18"/>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><br />X-axis: square footage. Y-axis: price ($K). Bubble radius: relative lot size. Each category gets a distinct pattern fill.<h2>Minimal Scatter (No Categories, No Radius)</h2>Testing default circle size (r=5) and no category grouping.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400">
+</svg><figcaption class="chart-figcaption"></figcaption></figure><br />X-axis: square footage. Y-axis: price ($K). Bubble radius: relative lot size. Each category gets a distinct pattern fill.<h2>Minimal Scatter (No Categories, No Radius)</h2>Testing default circle size (r=5) and no category grouping.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
 <defs>
   <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -401,16 +469,16 @@ footer {
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <circle cx="40" cy="360" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="1" data-y="4" data-c="default" data-r="5"/>
-  <circle cx="130" cy="214.2857142857143" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="2" data-y="7" data-c="default" data-r="5"/>
-  <circle cx="220" cy="311.42857142857144" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="3" data-y="5" data-c="default" data-r="5"/>
-  <circle cx="310" cy="117.14285714285714" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="4" data-y="9" data-c="default" data-r="5"/>
-  <circle cx="400" cy="262.8571428571429" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="5" data-y="6" data-c="default" data-r="5"/>
-  <circle cx="490" cy="20" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="6" data-y="11" data-c="default" data-r="5"/>
-  <circle cx="580" cy="165.71428571428572" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="7" data-y="8" data-c="default" data-r="5"/>
+  <circle cx="40" cy="360" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="1" data-y="4" data-c="default" data-r="5" aria-label="x: 1, y: 4, c: default, r: 5"/>
+  <circle cx="130" cy="214.28571428571428" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="2" data-y="7" data-c="default" data-r="5" aria-label="x: 2, y: 7, c: default, r: 5"/>
+  <circle cx="220" cy="311.42857142857144" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="3" data-y="5" data-c="default" data-r="5" aria-label="x: 3, y: 5, c: default, r: 5"/>
+  <circle cx="310" cy="117.14285714285717" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="4" data-y="9" data-c="default" data-r="5" aria-label="x: 4, y: 9, c: default, r: 5"/>
+  <circle cx="400" cy="262.8571428571429" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="5" data-y="6" data-c="default" data-r="5" aria-label="x: 5, y: 6, c: default, r: 5"/>
+  <circle cx="490" cy="20" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="6" data-y="11" data-c="default" data-r="5" aria-label="x: 6, y: 11, c: default, r: 5"/>
+  <circle cx="580" cy="165.71428571428572" r="5" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="7" data-y="8" data-c="default" data-r="5" aria-label="x: 7, y: 8, c: default, r: 5"/>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><h2>Large Custom Scatter</h2>Wide-format scatter with many points across four categories.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 500">
+</svg><figcaption class="chart-figcaption"></figcaption></figure><h2>Large Custom Scatter</h2>Wide-format scatter with many points across four categories.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 500" role="img">
 <defs>
   <pattern id="pattern-2-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -429,25 +497,25 @@ footer {
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <circle cx="132.5" cy="87.69230769230768" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="10" data-y="85" data-c="Spring" data-r="4"/>
-  <circle cx="225" cy="135.07692307692304" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="15" data-y="78" data-c="Spring" data-r="5"/>
-  <circle cx="317.5" cy="175.69230769230768" r="6" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="20" data-y="72" data-c="Spring" data-r="6"/>
-  <circle cx="410" cy="223.0769230769231" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="25" data-y="65" data-c="Spring" data-r="5"/>
-  <circle cx="502.5" cy="290.7692307692308" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="30" data-y="55" data-c="Summer" data-r="4"/>
-  <circle cx="595" cy="378.7692307692308" r="7" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="35" data-y="42" data-c="Summer" data-r="7"/>
-  <circle cx="687.5" cy="426.15384615384613" r="8" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="40" data-y="35" data-c="Summer" data-r="8"/>
-  <circle cx="780" cy="460" r="6" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="45" data-y="30" data-c="Summer" data-r="6"/>
-  <circle cx="317.5" cy="53.84615384615381" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="20" data-y="90" data-c="Fall" data-r="5"/>
-  <circle cx="410" cy="108" r="6" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="25" data-y="82" data-c="Fall" data-r="6"/>
-  <circle cx="502.5" cy="155.38461538461542" r="7" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="30" data-y="75" data-c="Fall" data-r="7"/>
-  <circle cx="595" cy="202.76923076923077" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="35" data-y="68" data-c="Fall" data-r="5"/>
-  <circle cx="40" cy="40.307692307692264" r="6" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="5" data-y="92" data-c="Winter" data-r="6"/>
-  <circle cx="132.5" cy="67.38461538461536" r="7" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="10" data-y="88" data-c="Winter" data-r="7"/>
-  <circle cx="225" cy="20" r="8" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="15" data-y="95" data-c="Winter" data-r="8"/>
-  <circle cx="317.5" cy="47.076923076923094" r="5" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="20" data-y="91" data-c="Winter" data-r="5"/>
+  <circle cx="132.5" cy="87.69230769230768" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="10" data-y="85" data-c="Spring" data-r="4" aria-label="x: 10, y: 85, c: Spring, r: 4"/>
+  <circle cx="225" cy="135.0769230769231" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="15" data-y="78" data-c="Spring" data-r="5" aria-label="x: 15, y: 78, c: Spring, r: 5"/>
+  <circle cx="317.5" cy="175.69230769230768" r="6" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="20" data-y="72" data-c="Spring" data-r="6" aria-label="x: 20, y: 72, c: Spring, r: 6"/>
+  <circle cx="410" cy="223.07692307692307" r="5" fill="url(#pattern-2-0)" class="data-element data-category-Spring" data-x="25" data-y="65" data-c="Spring" data-r="5" aria-label="x: 25, y: 65, c: Spring, r: 5"/>
+  <circle cx="502.5" cy="290.7692307692308" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="30" data-y="55" data-c="Summer" data-r="4" aria-label="x: 30, y: 55, c: Summer, r: 4"/>
+  <circle cx="595" cy="378.7692307692308" r="7" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="35" data-y="42" data-c="Summer" data-r="7" aria-label="x: 35, y: 42, c: Summer, r: 7"/>
+  <circle cx="687.5" cy="426.15384615384613" r="8" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="40" data-y="35" data-c="Summer" data-r="8" aria-label="x: 40, y: 35, c: Summer, r: 8"/>
+  <circle cx="780" cy="460" r="6" fill="url(#pattern-2-1)" class="data-element data-category-Summer" data-x="45" data-y="30" data-c="Summer" data-r="6" aria-label="x: 45, y: 30, c: Summer, r: 6"/>
+  <circle cx="317.5" cy="53.84615384615387" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="20" data-y="90" data-c="Fall" data-r="5" aria-label="x: 20, y: 90, c: Fall, r: 5"/>
+  <circle cx="410" cy="108" r="6" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="25" data-y="82" data-c="Fall" data-r="6" aria-label="x: 25, y: 82, c: Fall, r: 6"/>
+  <circle cx="502.5" cy="155.38461538461542" r="7" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="30" data-y="75" data-c="Fall" data-r="7" aria-label="x: 30, y: 75, c: Fall, r: 7"/>
+  <circle cx="595" cy="202.76923076923077" r="5" fill="url(#pattern-2-2)" class="data-element data-category-Fall" data-x="35" data-y="68" data-c="Fall" data-r="5" aria-label="x: 35, y: 68, c: Fall, r: 5"/>
+  <circle cx="40" cy="40.30769230769232" r="6" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="5" data-y="92" data-c="Winter" data-r="6" aria-label="x: 5, y: 92, c: Winter, r: 6"/>
+  <circle cx="132.5" cy="67.38461538461542" r="7" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="10" data-y="88" data-c="Winter" data-r="7" aria-label="x: 10, y: 88, c: Winter, r: 7"/>
+  <circle cx="225" cy="20" r="8" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="15" data-y="95" data-c="Winter" data-r="8" aria-label="x: 15, y: 95, c: Winter, r: 8"/>
+  <circle cx="317.5" cy="47.076923076923094" r="5" fill="url(#pattern-2-3)" class="data-element data-category-Winter" data-x="20" data-y="91" data-c="Winter" data-r="5" aria-label="x: 20, y: 91, c: Winter, r: 5"/>
   <line x1="40" y1="20" x2="40" y2="460" class="axis"/>
   <line x1="40" y1="460" x2="780" y2="460" class="axis"/>
-</svg><br />Temperature (x, °C) vs humidity (y, %) by season. Four categories exercise the full pattern set.
+</svg><figcaption class="chart-figcaption"></figcaption></figure><br />Temperature (x, °C) vs humidity (y, %) by season. Four categories exercise the full pattern set.
     </article>
   </main>
   <footer>

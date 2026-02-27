@@ -224,7 +224,7 @@ export function processSVGCharts(html) {
       svg += renderer.render(mappedData, width, height, options);
       svg += closeSVGContainer();
       
-      return svg;
+      return `<figure class="chart-figure">${svg}<figcaption class="chart-figcaption"></figcaption></figure>`;
     } catch (e) {
       return `<div class="chart-error" style="border: 2px solid #d00; padding: 10px; margin: 10px 0; background: #fee;">
         <strong>Error generating ${lang} chart:</strong> ${e.message}

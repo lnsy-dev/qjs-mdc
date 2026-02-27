@@ -321,6 +321,27 @@ abbr {
   cursor: help;
 }
 
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-top: none;
+  font-size: 0.85rem;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chart-figcaption td:first-child {
+  width: 30%;
+}
+
 footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;
@@ -331,6 +352,53 @@ footer {
 }
 
 </style>
+<script>
+// Chart interaction handler
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('figure.chart-figure').forEach(function(figure) {
+    const svg = figure.querySelector('svg');
+    const figcaption = figure.querySelector('figcaption');
+    
+    if (!svg || !figcaption) return;
+    
+    // Store default content
+    const defaultContent = svg.dataset.name || svg.dataset.description 
+      ? formatData({ name: svg.dataset.name, description: svg.dataset.description })
+      : '<em>Click on a chart element to see details</em>';
+    
+    figcaption.innerHTML = defaultContent;
+    
+    // Add click handlers to data elements
+    svg.querySelectorAll('.data-element').forEach(function(elem) {
+      elem.style.cursor = 'pointer';
+      
+      elem.addEventListener('click', function() {
+        const data = {};
+        Array.from(elem.attributes).forEach(function(attr) {
+          if (attr.name.startsWith('data-')) {
+            const key = attr.name.replace('data-', '');
+            data[key] = attr.value;
+          }
+        });
+        figcaption.innerHTML = formatData(data);
+      });
+    });
+  });
+});
+
+function formatData(data) {
+  if (!data || Object.keys(data).length === 0) return '';
+  
+  const parts = [];
+  for (const key in data) {
+    if (data[key]) {
+      parts.push(key + ': <i>' + data[key] + '</i>');
+    }
+  }
+  return parts.join(', ');
+}
+
+</script>
 </head>
 <body>
   <header>
@@ -349,7 +417,8 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Map Chart with Background SVG</h1>Testing the map renderer with the socal-map.svg satellite image as background and GeoJSON feature overlays.<h2>Southern California Points of Interest</h2>Map with custom icons for different feature types (city, beach, park, airport), a LineString route, and a Polygon zone overlay, all rendered on top of the satellite background image.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" data-name="Southern California Points of Interest">
+      <h1>Map Chart with Background SVG</h1>Testing the map renderer with the socal-map.svg satellite image as background and GeoJSON feature overlays.<h2>Southern California Points of Interest</h2>Map with custom icons for different feature types (city, beach, park, airport), a LineString route, and a Polygon zone overlay, all rendered on top of the satellite background image.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img" aria-labelledby="chart-title">
+  <title id="chart-title">Southern California Points of Interest</title>
 <defs>
   <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -368,7 +437,7 @@ footer {
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <g transform="scale(6,4)" class="background">
+  <g class="background">
     
     <use xlink:href="#_Image1" x="0" y="0" width="640px" height="640px"/>
     <defs>
@@ -376,8 +445,8 @@ footer {
     </defs>
 
   </g>
-  <path d="M 115.38461538461564 99.99999999999822 L 207.69230769230944 99.99999999999822 L 207.69230769230944 174.99999999999778 L 115.38461538461564 174.99999999999778 L 115.38461538461564 99.99999999999822 Z " fill="url(#pattern-0-1)" class="data-element data-index-9" data-name="West LA Zone" data-type="zone" data-geometry-type="Polygon"/>
-  <path d="M 143.07692307692443 145.00000000000009 L 258.4615384615401 125.00000000000044 L 406.15384615384494 244.99999999999832 L 447.6923076923082 309.99999999999983" fill="none" class="data-element data-index-8" data-name="Pacific Coast Route" data-type="route" data-geometry-type="LineString"/>
+  <path d="M 115.38461538461564 99.99999999999822 L 207.69230769230944 99.99999999999822 L 207.69230769230944 174.99999999999778 L 115.38461538461564 174.99999999999778 L 115.38461538461564 99.99999999999822 Z " fill="url(#pattern-0-1)" class="data-element data-index-9" data-name="West LA Zone" data-type="zone" data-geometry-type="Polygon" aria-label="name: West LA Zone, type: zone, geometry-type: Polygon"/>
+  <path d="M 143.07692307692443 145.00000000000009 L 258.4615384615401 125.00000000000044 L 406.15384615384494 244.99999999999832 L 447.6923076923082 309.99999999999983" fill="none" class="data-element data-index-8" data-name="Pacific Coast Route" data-type="route" data-geometry-type="LineString" aria-label="name: Pacific Coast Route, type: route, geometry-type: LineString"/>
   <g transform="translate(250.4615384615401,117.00000000000044)" class="data-element data-index-0" data-name="Downtown Los Angeles" data-type="city" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05">
     <rect x="3" y="3" width="10" height="10" fill="#333" stroke="#000" stroke-width="1"/>
   </g>
@@ -402,7 +471,7 @@ footer {
   <g transform="translate(421.2307692307668,172.00000000000037)" class="data-element data-index-7" data-name="Fullerton" data-type="city" data-geometry-type="Point" data-lon="-117.87" data-lat="33.94">
     <rect x="3" y="3" width="10" height="10" fill="#333" stroke="#000" stroke-width="1"/>
   </g>
-</svg><br />Features demonstrated:<ul><li><strong>backgroundSvg</strong>: Satellite image scaled to fill the map viewport</li><li><strong>iconList</strong>: Custom SVG icons mapped by feature type</li><li><strong>Point geometry</strong>: Individual locations with type-based icons</li><li><strong>LineString geometry</strong>: A route connecting Santa Monica to Laguna Beach</li><li><strong>Polygon geometry</strong>: A rectangular zone highlighting West LA</li><li><strong>Data attributes</strong>: All GeoJSON properties become SVG data attributes</li></ul><h2>Simple Map (No Background, No Icons)</h2>Testing map auto-detection with raw GeoJSON and YAML front matter bounds.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 400">
+</svg><figcaption class="chart-figcaption"></figcaption></figure><br />Features demonstrated:<ul><li><strong>backgroundSvg</strong>: Satellite image scaled to fill the map viewport</li><li><strong>iconList</strong>: Custom SVG icons mapped by feature type</li><li><strong>Point geometry</strong>: Individual locations with type-based icons</li><li><strong>LineString geometry</strong>: A route connecting Santa Monica to Laguna Beach</li><li><strong>Polygon geometry</strong>: A rectangular zone highlighting West LA</li><li><strong>Data attributes</strong>: All GeoJSON properties become SVG data attributes</li></ul><h2>Simple Map (No Background, No Icons)</h2>Testing map auto-detection with raw GeoJSON and YAML front matter bounds.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 400" role="img">
 <defs>
   <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -421,11 +490,11 @@ footer {
     <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
   </pattern>
 </defs>
-  <path d="M 68.7499999999999 190.00000000000213 L 225.00000000000045 150.00000000000355 L 281.2499999999939 50.00000000000355" fill="none" class="data-element data-index-3" data-name="West to East Route" data-geometry-type="LineString"/>
-  <circle cx="225.00000000000045" cy="150.00000000000355" r="5" fill="url(#pattern-1-0)" class="data-element data-index-0" data-name="DTLA" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05"/>
-  <circle cx="68.7499999999999" cy="190.00000000000213" r="5" fill="url(#pattern-1-1)" class="data-element data-index-1" data-name="Santa Monica" data-geometry-type="Point" data-lon="-118.49" data-lat="34.01"/>
-  <circle cx="281.2499999999939" cy="50.00000000000355" r="5" fill="url(#pattern-1-2)" class="data-element data-index-2" data-name="Pasadena" data-geometry-type="Point" data-lon="-118.15" data-lat="34.15"/>
-</svg><br />This simpler map uses YAML front matter for bounds and renders points as pattern-filled circles without custom icons.
+  <path d="M 68.7499999999999 190.00000000000213 L 225.00000000000045 150.00000000000355 L 281.2499999999939 50.00000000000355" fill="none" class="data-element data-index-3" data-name="West to East Route" data-geometry-type="LineString" aria-label="name: West to East Route, geometry-type: LineString"/>
+  <circle cx="225.00000000000045" cy="150.00000000000355" r="5" fill="url(#pattern-1-0)" class="data-element data-index-0" data-name="DTLA" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05" aria-label="name: DTLA, geometry-type: Point, lon: -118.24, lat: 34.05"/>
+  <circle cx="68.7499999999999" cy="190.00000000000213" r="5" fill="url(#pattern-1-1)" class="data-element data-index-1" data-name="Santa Monica" data-geometry-type="Point" data-lon="-118.49" data-lat="34.01" aria-label="name: Santa Monica, geometry-type: Point, lon: -118.49, lat: 34.01"/>
+  <circle cx="281.2499999999939" cy="50.00000000000355" r="5" fill="url(#pattern-1-2)" class="data-element data-index-2" data-name="Pasadena" data-geometry-type="Point" data-lon="-118.15" data-lat="34.15" aria-label="name: Pasadena, geometry-type: Point, lon: -118.15, lat: 34.15"/>
+</svg><figcaption class="chart-figcaption"></figcaption></figure><br />This simpler map uses YAML front matter for bounds and renders points as pattern-filled circles without custom icons.
     </article>
   </main>
   <footer>

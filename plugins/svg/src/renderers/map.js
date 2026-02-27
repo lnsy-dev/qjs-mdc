@@ -1,6 +1,6 @@
 import { circle, path } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
-import { createProjection, projectCoordinates, clipCoordinates } from '../utils/geo.js';
+import { createProjection } from '../utils/geo.js';
 
 export const metadata = {
   name: 'map',
@@ -27,14 +27,23 @@ function parseIconSvg(iconSvg) {
   const svgTag = iconSvg.match(/<svg[^>]*>/i)[0];
   
   // Extract width and height
-  const widthMatch = svgTag.match(/width=["']?(\d+)/i);
-  const heightMatch = svgTag.match(/height=["']?(\d+)/i);
+  const widthMatch = svgTag.match(/width=["']?(\d+(?:\.\d+)?)/i);
+  const heightMatch = svgTag.match(/height=["']?(\d+(?:\.\d+)?)/i);
   
-  return {
-    content,
-    width: widthMatch ? parseInt(widthMatch[1]) : 20,
-    height: heightMatch ? parseInt(heightMatch[1]) : 20
-  };
+  // Extract viewBox if no width/height
+  const viewBoxMatch = svgTag.match(/viewBox=["']?([^"']+)/i);
+  let width = widthMatch ? parseFloat(widthMatch[1]) : 20;
+  let height = heightMatch ? parseFloat(heightMatch[1]) : 20;
+  
+  if (!widthMatch && !heightMatch && viewBoxMatch) {
+    const vb = viewBoxMatch[1].split(/[\s,]+/).map(parseFloat);
+    if (vb.length === 4) {
+      width = vb[2];
+      height = vb[3];
+    }
+  }
+  
+  return { content, width, height };
 }
 
 function embedIcon(iconSvg, x, y, data, className) {
@@ -52,16 +61,13 @@ function embedIcon(iconSvg, x, y, data, className) {
   return `  <g transform="translate(${offsetX},${offsetY})" class="${className}"${dataAttrs}>\n    ${parsed.content}\n  </g>\n`;
 }
 
-function embedBackgroundSvg(backgroundSvg, width, height) {
+function embedBackgroundSvg(backgroundSvg) {
   if (!backgroundSvg) return '';
   
   const parsed = parseIconSvg(backgroundSvg);
   if (!parsed) return '';
   
-  const scaleX = width / parsed.width;
-  const scaleY = height / parsed.height;
-  
-  return `  <g transform="scale(${scaleX},${scaleY})" class="background">\n    ${parsed.content}\n  </g>\n`;
+  return `  <g class="background">\n    ${parsed.content}\n  </g>\n`;
 }
 
 function renderPoint(feature, project, externallyStyled, index, iconList, chartId) {
@@ -222,7 +228,7 @@ export function render(data, width, height, options = {}) {
   
   // Render background first
   if (backgroundSvg) {
-    svg += embedBackgroundSvg(backgroundSvg, width, height);
+    svg += embedBackgroundSvg(backgroundSvg);
   }
   
   // Render by geometry type for proper layering
@@ -252,4 +258,9 @@ export function render(data, width, height, options = {}) {
   });
   
   return svg;
+}
+
+export function getBackgroundDimensions(backgroundSvg) {
+  const parsed = parseIconSvg(backgroundSvg);
+  return parsed ? { width: parsed.width, height: parsed.height } : null;
 }

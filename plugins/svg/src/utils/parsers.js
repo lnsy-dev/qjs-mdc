@@ -112,7 +112,7 @@ export function parseData(rawData) {
   return format === 'json' ? parseJSON(rawData) : parseCSV(rawData);
 }
 
-export function isMapConfigWrapper(data) {
+function isMapConfigWrapper(data) {
   return data && typeof data === 'object' && 
          (data.northWestBounds || data.southEastBounds || data.geojson || data.iconList);
 }
@@ -129,4 +129,44 @@ export function parseMapConfig(data) {
     iconList: data.iconList,
     backgroundSvg: data.backgroundSvg
   };
+}
+
+export function mergeConfig(options, yamlConfig = {}, mapConfig = null) {
+  const merged = { ...options };
+  
+  // Merge YAML config
+  if (yamlConfig.width && !merged.width) merged.width = yamlConfig.width;
+  if (yamlConfig.height && !merged.height) merged.height = yamlConfig.height;
+  if (yamlConfig.type && !merged.type) merged.type = yamlConfig.type;
+  if (yamlConfig.orientation && !merged.orientation) merged.orientation = yamlConfig.orientation;
+  if (yamlConfig.nwLat && merged.nwLat === null) merged.nwLat = yamlConfig.nwLat;
+  if (yamlConfig.nwLon && merged.nwLon === null) merged.nwLon = yamlConfig.nwLon;
+  if (yamlConfig.seLat && merged.seLat === null) merged.seLat = yamlConfig.seLat;
+  if (yamlConfig.seLon && merged.seLon === null) merged.seLon = yamlConfig.seLon;
+  if (yamlConfig.iconList) merged.iconList = yamlConfig.iconList;
+  if (yamlConfig.backgroundSvg) merged.backgroundSvg = yamlConfig.backgroundSvg;
+  if (yamlConfig.name) merged.name = yamlConfig.name;
+  if (yamlConfig.description) merged.description = yamlConfig.description;
+  
+  // Merge map config
+  if (mapConfig) {
+    if (mapConfig.northWestBounds && merged.nwLat === null) {
+      merged.nwLat = mapConfig.northWestBounds[0];
+      merged.nwLon = mapConfig.northWestBounds[1];
+    }
+    if (mapConfig.southEastBounds && merged.seLat === null) {
+      merged.seLat = mapConfig.southEastBounds[0];
+      merged.seLon = mapConfig.southEastBounds[1];
+    }
+    if (mapConfig.iconList) merged.iconList = mapConfig.iconList;
+    if (mapConfig.backgroundSvg) merged.backgroundSvg = mapConfig.backgroundSvg;
+    if (mapConfig.name) merged.name = mapConfig.name;
+    if (mapConfig.description) merged.description = mapConfig.description;
+  }
+  
+  // Set defaults
+  if (!merged.width) merged.width = 600;
+  if (!merged.height) merged.height = 400;
+  
+  return merged;
 }

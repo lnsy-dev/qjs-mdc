@@ -19,7 +19,7 @@ export function render(data, width, height, options = {}) {
   const chartId = options.chartId;
   const centerX = width / 2;
   const centerY = height / 2;
-  const radius = Math.min(width, height) / 2 - 20;
+  const radius = Math.min(width, height) / 2 - 80;
   const innerRadius = radius * 0.6;
   
   const total = data.reduce((sum, d) => sum + d.value, 0);
@@ -41,7 +41,7 @@ export function render(data, width, height, options = {}) {
     svg += path(pathData, getPattern(i, chartId), 'black', 1, { label: d.label, value: d.value, percentage: ((d.value / total) * 100).toFixed(1) }, `data-element data-index-${i}`, externallyStyled);
     
     const labelAngle = currentAngle + sliceAngle / 2;
-    const labelRadius = radius + 15;
+    const labelRadius = radius + 50;
     const labelPos = polarToCartesian(centerX, centerY, labelRadius, labelAngle);
     svg += text(labelPos.x, labelPos.y, d.label, 10, 'middle', 'label', externallyStyled);
     
