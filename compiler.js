@@ -34,6 +34,7 @@ import { collectAssets, embedAssets, embedImages } from './src/assets/handler.js
 import { generateIndex } from './src/generators/index.js';
 import { generateTagPages } from './src/generators/tags.js';
 import { generateSearchPage } from './src/generators/search.js';
+import { generateRSSFeed } from './src/generators/rss.js';
 import { processSVGCharts } from './src/plugins/svg-charts.js';
 import { extractCSSColors } from './src/utils/css-parser.js';
 
@@ -131,6 +132,9 @@ function main() {
   
   // Generate search page
   generateSearchPage(files, config.output, templatesDir, globalVars, assets);
+  
+  // Generate RSS feed
+  generateRSSFeed(files, config.output, templatesDir, globalVars, assets);
 }
 
 main();

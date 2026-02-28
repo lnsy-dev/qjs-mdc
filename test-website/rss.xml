@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QJS-MD Test Notebook</title>
+    <link>https://example.com</link>
+    <description>Debug blog for testing all SVG chart plugin features.</description>
+    <atom:link href="https://example.com/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Feb 2026 14:23:18 GMT</lastBuildDate>
+    <item>
+      <title>Getting Started</title>
+      <link>https://example.com/getting-started.html</link>
+      <guid>https://example.com/getting-started.html</guid>
+      <description>Learn how to build your own static site with qjs-md</description>
+      <pubDate>Sat, 28 Feb 2026 00:00:00 GMT</pubDate>
+      <category>tutorial</category>
+      <category>guide</category>
+    </item>
+    <item>
+      <title>SVG Debug: Scatter Plots</title>
+      <link>https://example.com/svg-debug-scatter-plots.html</link>
+      <guid>https://example.com/svg-debug-scatter-plots.html</guid>
+      <description>Testing scatter plot rendering with categories, variable radius, and edge cases.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>scatter</category>
+    </item>
+    <item>
+      <title>Simple Map Test</title>
+      <link>https://example.com/simple-map-test.html</link>
+      <guid>https://example.com/simple-map-test.html</guid>
+      <description>Testing map with a simple colored background instead of huge image.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>test</category>
+      <category>map</category>
+    </item>
+    <item>
+      <title>SVG Debug: Bar Charts</title>
+      <link>https://example.com/svg-debug-bar-charts.html</link>
+      <guid>https://example.com/svg-debug-bar-charts.html</guid>
+      <description>Testing bar chart rendering with vertical and horizontal orientations.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>bar</category>
+    </item>
+    <item>
+      <title>SVG Debug: Line Charts</title>
+      <link>https://example.com/svg-debug-line-charts.html</link>
+      <guid>https://example.com/svg-debug-line-charts.html</guid>
+      <description>Testing line chart rendering with single and multiple series.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>line</category>
+    </item>
+    <item>
+      <title>SVG Debug: Heikin-Ashi Chart</title>
+      <link>https://example.com/svg-debug-heikin-ashi-chart.html</link>
+      <guid>https://example.com/svg-debug-heikin-ashi-chart.html</guid>
+      <description>Testing heikin-ashi candlestick rendering with OHLC data.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>heikin-ashi</category>
+    </item>
+    <item>
+      <title>SVG Debug: Donut Chart</title>
+      <link>https://example.com/svg-debug-donut-chart.html</link>
+      <guid>https://example.com/svg-debug-donut-chart.html</guid>
+      <description>Testing donut chart rendering with various datasets.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>donut</category>
+    </item>
+    <item>
+      <title>SVG Debug: Map with Background</title>
+      <link>https://example.com/svg-debug-map-with-background.html</link>
+      <guid>https://example.com/svg-debug-map-with-background.html</guid>
+      <description>Testing the map renderer with the socal-map.svg satellite image as background and GeoJSON feature overlays.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>map</category>
+    </item>
+    <item>
+      <title>SVG Debug: YAML Field Mapping with CSV</title>
+      <link>https://example.com/svg-debug-yaml-field-mapping-with-csv.html</link>
+      <guid>https://example.com/svg-debug-yaml-field-mapping-with-csv.html</guid>
+      <description>Testing the YAML front matter format with CSV data and custom field mappings.</description>
+      <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+      <category>debug</category>
+      <category>svg</category>
+      <category>yaml</category>
+      <category>csv</category>
+    </item>
+  </channel>
+</rss>
