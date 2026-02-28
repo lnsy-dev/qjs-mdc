@@ -1,5 +1,5 @@
-import { path, text } from '../utils/svg.js';
-import { getPattern } from '../utils/patterns.js';
+import { path, text, createDataLabelGroup } from '../utils/svg.js';
+import { getPattern, getColor } from '../utils/patterns.js';
 
 export const metadata = {
   name: 'donut',
@@ -17,6 +17,7 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;
+  const cssColors = options.cssColors;
   const centerX = width / 2;
   const centerY = height / 2;
   const radius = Math.min(width, height) / 2 - 80;
@@ -38,7 +39,15 @@ export function render(data, width, height, options = {}) {
     
     const pathData = `M ${outerStart.x} ${outerStart.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${outerEnd.x} ${outerEnd.y} L ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 1 ${innerEnd.x} ${innerEnd.y} Z`;
     
-    svg += path(pathData, getPattern(i, chartId), 'black', 1, { label: d.label, value: d.value, percentage: ((d.value / total) * 100).toFixed(1) }, `data-element data-index-${i}`, externallyStyled);
+    const color = getColor(i, cssColors);
+    const fill = color || getPattern(i, chartId);
+    const linkId = `donut-${chartId}-${i}`;
+    const percentage = ((d.value / total) * 100).toFixed(1);
+    
+    svg += `  <g class="chart-item">\n`;
+    svg += path(pathData, fill, 'black', 1, { label: d.label, value: d.value, percentage }, `data-element data-index-${i}`, externallyStyled, linkId);
+    svg += createDataLabelGroup(linkId, width / 2, height + 40, { label: d.label, value: d.value, percentage: percentage + '%' }, width);
+    svg += `  </g>\n`;
     
     const labelAngle = currentAngle + sliceAngle / 2;
     const labelRadius = radius + 50;

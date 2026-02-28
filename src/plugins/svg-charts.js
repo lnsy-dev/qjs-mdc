@@ -147,9 +147,11 @@ function parseMapConfig(data) {
 /**
  * Process HTML and replace chart code blocks with inline SVG
  * @param {string} html - HTML content with code blocks
+ * @param {string} sourceDir - Source directory for loading files
+ * @param {Object|null} cssColors - CSS custom properties for colors
  * @returns {string} HTML with charts rendered as SVG
  */
-export function processSVGCharts(html, sourceDir = '.') {
+export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
   const regex = /<pre class="code" data-lang="([^"]*)">\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/g;
   let chartCount = 0;
   
@@ -244,12 +246,13 @@ export function processSVGCharts(html, sourceDir = '.') {
       // Generate SVG with unique pattern IDs per chart
       const chartId = chartCount++;
       options.chartId = chartId;
+      options.cssColors = cssColors;
       let svg = createSVGContainer(width, height, options.name, options.description);
       svg += generatePatternDefs(chartId);
       svg += renderer.render(mappedData, width, height, options);
       svg += closeSVGContainer();
       
-      return `<figure class="chart-figure">${svg}<figcaption class="chart-figcaption"></figcaption></figure>`;
+      return svg;
     } catch (e) {
       return `<div class="chart-error" style="border: 2px solid #d00; padding: 10px; margin: 10px 0; background: #fee;">
         <strong>Error generating ${lang} chart:</strong> ${e.message}

@@ -1,5 +1,5 @@
-import { rect, line, text } from '../utils/svg.js';
-import { getPattern } from '../utils/patterns.js';
+import { rect, line, text, createDataLabelGroup } from '../utils/svg.js';
+import { getPattern, getColor } from '../utils/patterns.js';
 import { createLinearScale, calculateMargins } from '../utils/chart.js';
 
 export const metadata = {
@@ -7,7 +7,7 @@ export const metadata = {
   detectFields: ['open', 'high', 'low', 'close']
 };
 
-function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, date, index, externallyStyled, chartId) {
+function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, date, index, externallyStyled, chartId, cssColors, linkId) {
   const y1 = yScale(high);
   const y2 = yScale(low);
   const yOpen = yScale(open);
@@ -24,9 +24,11 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
   svg += line(x, y1, x, y2, 'black', 1, dataAttrs, className, externallyStyled);
   
   if (isBullish) {
-    svg += rect(bodyX, bodyTop, width, bodyHeight, getPattern(0, chartId), 'black', 1, dataAttrs, className, externallyStyled);
+    const color = getColor(0, cssColors);
+    const fill = color || getPattern(0, chartId);
+    svg += rect(bodyX, bodyTop, width, bodyHeight, fill, 'black', 1, dataAttrs, className, externallyStyled, linkId);
   } else {
-    svg += rect(bodyX, bodyTop, width, bodyHeight, 'black', 'black', 1, dataAttrs, className, externallyStyled);
+    svg += rect(bodyX, bodyTop, width, bodyHeight, 'black', 'black', 1, dataAttrs, className, externallyStyled, linkId);
   }
   
   return svg;
@@ -35,6 +37,7 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;
+  const cssColors = options.cssColors;
   const margin = calculateMargins('heikin-ashi', data, options);
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
@@ -54,20 +57,26 @@ export function render(data, width, height, options = {}) {
   data.forEach((d, i) => {
     const x = margin.left + i * candleSpacing + candleSpacing / 2;
     const isBullish = d.close >= d.open;
-    svg += renderCandlestick(x, d.open, d.high, d.low, d.close, candleWidth, yScale, isBullish, d.date, i, externallyStyled, chartId);
+    const linkId = `heikin-${chartId}-${i}`;
+    
+    svg += `  <g class="chart-item">\n`;
+    svg += renderCandlestick(x, d.open, d.high, d.low, d.close, candleWidth, yScale, isBullish, d.date, i, externallyStyled, chartId, cssColors, linkId);
+    svg += createDataLabelGroup(linkId, width / 2, height + 40, { date: d.date || i, open: d.open, high: d.high, low: d.low, close: d.close }, width);
+    svg += `  </g>\n`;
   });
   
   svg += line(margin.left, margin.top, margin.left, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   svg += line(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   
   // Axis labels
-  svg += text(margin.left + chartWidth / 2, height - 5, 'Date', 10, 'middle', 'axis-label', externallyStyled);
   svg += text(10, margin.top + chartHeight / 2, 'Price', 10, 'middle', 'axis-label', externallyStyled, -90);
   
   // Legend
   const legendX = margin.left + 10;
   const legendY = margin.top + 10;
-  svg += rect(legendX, legendY, 12, 12, getPattern(0, chartId), 'black', 1, null, 'legend', externallyStyled);
+  const color = getColor(0, cssColors);
+  const fill = color || getPattern(0, chartId);
+  svg += rect(legendX, legendY, 12, 12, fill, 'black', 1, null, 'legend', externallyStyled);
   svg += text(legendX + 18, legendY + 9, 'Bullish', 9, 'start', 'legend', externallyStyled);
   svg += rect(legendX, legendY + 20, 12, 12, 'black', 'black', 1, null, 'legend', externallyStyled);
   svg += text(legendX + 18, legendY + 29, 'Bearish', 9, 'start', 'legend', externallyStyled);

@@ -49,3 +49,11 @@ export function getPattern(index, chartId) {
   const prefix = chartId != null ? `pattern-${chartId}` : 'pattern';
   return `url(#${prefix}-${index % 4})`;
 }
+
+export function getColor(index, cssColors) {
+  if (!cssColors) return null;
+  
+  const colorKeys = ['--color-primary', '--color-secondary', '--color-tertiary', '--color-quaternary'];
+  const key = colorKeys[index % 4];
+  return cssColors[key] || null;
+}

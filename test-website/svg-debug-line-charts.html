@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SVG Debug: Line Charts — QJS-MD Test Notebook</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
+
+
 :root {
-  --bg-color: #ddd;
-  --fg-color: #282828;
+  --bg-color: #FDF8E7;
+  --fg-color: #2d3a2d;
+  --highlight-color: #8C001A;
+
+  --color-text: #2d3a2d;
+  --color-bg: var(--bg-color);
+  --neutral-color: #FEF6F3;
+  --color-border: var(--neutral-color);
+  --font-family: "Poly", serif;
 
   /* SVG pattern fills */
   --pattern-fill: var(--bg-color);
@@ -24,7 +34,8 @@
   /* SVG labels */
   --label-fill: var(--fg-color);
   --label-font-size: 10px;
-  --label-font-family: monospace;
+  --label-font-family:  "Poly", serif;
+;
 }
 
 *,
@@ -36,13 +47,17 @@
 }
 
 body {
-  font-family: monospace;
+  font-family: var(--font-family);
   line-height: 1.6;
-  color: #1a1a1a;
+  color: var(--fg-color);
   background: var(--bg-color);
   max-width: 860px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+a {
+  color: var(--highlight-color);
 }
 
 header {
@@ -62,7 +77,7 @@ header nav {
 .site-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--fg-color);
   text-decoration: none;
 }
 
@@ -72,13 +87,13 @@ header nav {
 }
 
 .nav-links a {
-  color: #555;
+  color: var(--fg-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
 
 .nav-links a:hover {
-  color: #000;
+  color: var(--highlight-color);
 }
 
 main {
@@ -100,20 +115,12 @@ p {
   margin-bottom: 1em;
 }
 
-a {
-  color: #0055aa;
-}
-
-a:hover {
-  color: #003366;
-}
-
 article {
   padding-bottom: 2rem;
 }
 
 .post-meta {
-  color: #777;
+  color: var(--neutral);
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
 }
@@ -164,7 +171,7 @@ pre.code {
 }
 
 code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: monospace;
   font-size: 0.85em;
   background: #f0f0f0;
   padding: 0.15em 0.3em;
@@ -231,11 +238,11 @@ li {
 
 .tags-list li a {
   display: inline-block;
-  background: #eee;
+  background: var(--neutral-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
-  color: #333;
+  color: var(--highlight-color);
   font-size: 0.9rem;
 }
 
@@ -305,7 +312,7 @@ th, td {
 }
 
 th {
-  background: #f4f4f4;
+  background: var(--bg-color);
   font-weight: 600;
 }
 
@@ -327,10 +334,9 @@ figure.chart-figure {
 
 .chart-figcaption {
   padding: 0.75rem;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
   border-top: none;
   font-size: 0.85rem;
+  text-align: center;
 }
 
 .chart-figcaption table {
@@ -346,57 +352,15 @@ footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;
   margin-top: 2rem;
-  color: #999;
+  color: var(--fg-color);
   font-size: 0.85rem;
   text-align: center;
 }
 
 </style>
 <script>
-// Chart interaction handler
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('figure.chart-figure').forEach(function(figure) {
-    const svg = figure.querySelector('svg');
-    const figcaption = figure.querySelector('figcaption');
-    
-    if (!svg || !figcaption) return;
-    
-    // Store default content
-    const defaultContent = svg.dataset.name || svg.dataset.description 
-      ? formatData({ name: svg.dataset.name, description: svg.dataset.description })
-      : '<em>Click on a chart element to see details</em>';
-    
-    figcaption.innerHTML = defaultContent;
-    
-    // Add click handlers to data elements
-    svg.querySelectorAll('.data-element').forEach(function(elem) {
-      elem.style.cursor = 'pointer';
-      
-      elem.addEventListener('click', function() {
-        const data = {};
-        Array.from(elem.attributes).forEach(function(attr) {
-          if (attr.name.startsWith('data-')) {
-            const key = attr.name.replace('data-', '');
-            data[key] = attr.value;
-          }
-        });
-        figcaption.innerHTML = formatData(data);
-      });
-    });
-  });
-});
-
-function formatData(data) {
-  if (!data || Object.keys(data).length === 0) return '';
-  
-  const parts = [];
-  for (const key in data) {
-    if (data[key]) {
-      parts.push(key + ': <i>' + data[key] + '</i>');
-    }
-  }
-  return parts.join(', ');
-}
+// Chart interactivity is now handled natively by SVG using :target selectors
+// No external JavaScript needed for chart interactions
 
 </script>
 </head>
@@ -417,7 +381,13 @@ function formatData(data) {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Line Charts</h1>Testing line chart rendering with single and multiple series.<h2>Multi-Series Line Chart</h2>Three data series showing temperature trends across Southern California locations.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
+      <h1>Line Charts</h1>Testing line chart rendering with single and multiple series.<h2>Multi-Series Line Chart</h2>Three data series showing temperature trends across Southern California locations.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
 <defs>
   <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -437,47 +407,305 @@ function formatData(data) {
   </pattern>
 </defs>
   <path d="M40,282.72727272727275 L89.0909090909091,267.27272727272725 L138.1818181818182,251.8181818181818 L187.27272727272728,228.63636363636363 L236.36363636363637,197.72727272727272 L285.4545454545455,166.8181818181818 L334.54545454545456,143.63636363636363 L383.6363636363636,135.9090909090909 L432.72727272727275,151.36363636363635 L481.81818181818187,190 L530.909090909091,244.0909090909091 L580,282.72727272727275" fill="none" class="data-element data-category-LA-Coast" data-c="LA Coast" aria-label="c: LA Coast"/>
-  <circle cx="40" cy="282.72727272727275" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="1" data-y="58" data-c="LA Coast" data-r="4" aria-label="x: 1, y: 58, c: LA Coast, r: 4"/>
-  <circle cx="89.0909090909091" cy="267.27272727272725" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="2" data-y="60" data-c="LA Coast" data-r="4" aria-label="x: 2, y: 60, c: LA Coast, r: 4"/>
-  <circle cx="138.1818181818182" cy="251.8181818181818" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="3" data-y="62" data-c="LA Coast" data-r="4" aria-label="x: 3, y: 62, c: LA Coast, r: 4"/>
-  <circle cx="187.27272727272728" cy="228.63636363636363" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="4" data-y="65" data-c="LA Coast" data-r="4" aria-label="x: 4, y: 65, c: LA Coast, r: 4"/>
-  <circle cx="236.36363636363637" cy="197.72727272727272" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="5" data-y="69" data-c="LA Coast" data-r="4" aria-label="x: 5, y: 69, c: LA Coast, r: 4"/>
-  <circle cx="285.4545454545455" cy="166.8181818181818" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="6" data-y="73" data-c="LA Coast" data-r="4" aria-label="x: 6, y: 73, c: LA Coast, r: 4"/>
-  <circle cx="334.54545454545456" cy="143.63636363636363" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="7" data-y="76" data-c="LA Coast" data-r="4" aria-label="x: 7, y: 76, c: LA Coast, r: 4"/>
-  <circle cx="383.6363636363636" cy="135.9090909090909" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="8" data-y="77" data-c="LA Coast" data-r="4" aria-label="x: 8, y: 77, c: LA Coast, r: 4"/>
-  <circle cx="432.72727272727275" cy="151.36363636363635" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="9" data-y="75" data-c="LA Coast" data-r="4" aria-label="x: 9, y: 75, c: LA Coast, r: 4"/>
-  <circle cx="481.81818181818187" cy="190" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="10" data-y="70" data-c="LA Coast" data-r="4" aria-label="x: 10, y: 70, c: LA Coast, r: 4"/>
-  <circle cx="530.909090909091" cy="244.0909090909091" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="11" data-y="63" data-c="LA Coast" data-r="4" aria-label="x: 11, y: 63, c: LA Coast, r: 4"/>
-  <circle cx="580" cy="282.72727272727275" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="12" data-y="58" data-c="LA Coast" data-r="4" aria-label="x: 12, y: 58, c: LA Coast, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-0" tabindex="0">
+    <circle cx="40" cy="282.72727272727275" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="1" data-y="58" data-c="LA Coast" data-r="4" aria-label="x: 1, y: 58, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-0">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 58, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-1" tabindex="0">
+    <circle cx="89.0909090909091" cy="267.27272727272725" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="2" data-y="60" data-c="LA Coast" data-r="4" aria-label="x: 2, y: 60, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-1">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 60, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-2" tabindex="0">
+    <circle cx="138.1818181818182" cy="251.8181818181818" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="3" data-y="62" data-c="LA Coast" data-r="4" aria-label="x: 3, y: 62, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-2">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 62, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-3" tabindex="0">
+    <circle cx="187.27272727272728" cy="228.63636363636363" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="4" data-y="65" data-c="LA Coast" data-r="4" aria-label="x: 4, y: 65, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-3">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 65, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-4" tabindex="0">
+    <circle cx="236.36363636363637" cy="197.72727272727272" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="5" data-y="69" data-c="LA Coast" data-r="4" aria-label="x: 5, y: 69, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-4">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 69, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-5" tabindex="0">
+    <circle cx="285.4545454545455" cy="166.8181818181818" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="6" data-y="73" data-c="LA Coast" data-r="4" aria-label="x: 6, y: 73, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-5">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 73, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-6" tabindex="0">
+    <circle cx="334.54545454545456" cy="143.63636363636363" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="7" data-y="76" data-c="LA Coast" data-r="4" aria-label="x: 7, y: 76, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-6">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 7, y: 76, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-7" tabindex="0">
+    <circle cx="383.6363636363636" cy="135.9090909090909" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="8" data-y="77" data-c="LA Coast" data-r="4" aria-label="x: 8, y: 77, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-7">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 8, y: 77, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-8" tabindex="0">
+    <circle cx="432.72727272727275" cy="151.36363636363635" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="9" data-y="75" data-c="LA Coast" data-r="4" aria-label="x: 9, y: 75, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-8">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 9, y: 75, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-9" tabindex="0">
+    <circle cx="481.81818181818187" cy="190" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="10" data-y="70" data-c="LA Coast" data-r="4" aria-label="x: 10, y: 70, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-9">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 10, y: 70, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-10" tabindex="0">
+    <circle cx="530.909090909091" cy="244.0909090909091" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="11" data-y="63" data-c="LA Coast" data-r="4" aria-label="x: 11, y: 63, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-10">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 11, y: 63, category: LA Coast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-11" tabindex="0">
+    <circle cx="580" cy="282.72727272727275" r="4" fill="url(#pattern-0-0)" class="data-element data-category-LA-Coast" data-x="12" data-y="58" data-c="LA Coast" data-r="4" aria-label="x: 12, y: 58, c: LA Coast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-11">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 12, y: 58, category: LA Coast</text>
+  </g>
+  </g>
   <path d="M40,298.1818181818182 L89.0909090909091,282.72727272727275 L138.1818181818182,267.27272727272725 L187.27272727272728,244.0909090909091 L236.36363636363637,220.9090909090909 L285.4545454545455,190 L334.54545454545456,159.0909090909091 L383.6363636363636,151.36363636363635 L432.72727272727275,166.8181818181818 L481.81818181818187,213.1818181818182 L530.909090909091,259.54545454545456 L580,298.1818181818182" fill="none" class="data-element data-category-San-Diego" data-c="San Diego" aria-label="c: San Diego"/>
-  <circle cx="40" cy="298.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1" data-y="56" data-c="San Diego" data-r="4" aria-label="x: 1, y: 56, c: San Diego, r: 4"/>
-  <circle cx="89.0909090909091" cy="282.72727272727275" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2" data-y="58" data-c="San Diego" data-r="4" aria-label="x: 2, y: 58, c: San Diego, r: 4"/>
-  <circle cx="138.1818181818182" cy="267.27272727272725" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="3" data-y="60" data-c="San Diego" data-r="4" aria-label="x: 3, y: 60, c: San Diego, r: 4"/>
-  <circle cx="187.27272727272728" cy="244.0909090909091" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="4" data-y="63" data-c="San Diego" data-r="4" aria-label="x: 4, y: 63, c: San Diego, r: 4"/>
-  <circle cx="236.36363636363637" cy="220.9090909090909" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="5" data-y="66" data-c="San Diego" data-r="4" aria-label="x: 5, y: 66, c: San Diego, r: 4"/>
-  <circle cx="285.4545454545455" cy="190" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="6" data-y="70" data-c="San Diego" data-r="4" aria-label="x: 6, y: 70, c: San Diego, r: 4"/>
-  <circle cx="334.54545454545456" cy="159.0909090909091" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="7" data-y="74" data-c="San Diego" data-r="4" aria-label="x: 7, y: 74, c: San Diego, r: 4"/>
-  <circle cx="383.6363636363636" cy="151.36363636363635" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="8" data-y="75" data-c="San Diego" data-r="4" aria-label="x: 8, y: 75, c: San Diego, r: 4"/>
-  <circle cx="432.72727272727275" cy="166.8181818181818" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="9" data-y="73" data-c="San Diego" data-r="4" aria-label="x: 9, y: 73, c: San Diego, r: 4"/>
-  <circle cx="481.81818181818187" cy="213.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="10" data-y="67" data-c="San Diego" data-r="4" aria-label="x: 10, y: 67, c: San Diego, r: 4"/>
-  <circle cx="530.909090909091" cy="259.54545454545456" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="11" data-y="61" data-c="San Diego" data-r="4" aria-label="x: 11, y: 61, c: San Diego, r: 4"/>
-  <circle cx="580" cy="298.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="12" data-y="56" data-c="San Diego" data-r="4" aria-label="x: 12, y: 56, c: San Diego, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-12" tabindex="0">
+    <circle cx="40" cy="298.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="1" data-y="56" data-c="San Diego" data-r="4" aria-label="x: 1, y: 56, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-12">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 56, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-13" tabindex="0">
+    <circle cx="89.0909090909091" cy="282.72727272727275" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="2" data-y="58" data-c="San Diego" data-r="4" aria-label="x: 2, y: 58, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-13">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 58, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-14" tabindex="0">
+    <circle cx="138.1818181818182" cy="267.27272727272725" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="3" data-y="60" data-c="San Diego" data-r="4" aria-label="x: 3, y: 60, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-14">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 60, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-15" tabindex="0">
+    <circle cx="187.27272727272728" cy="244.0909090909091" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="4" data-y="63" data-c="San Diego" data-r="4" aria-label="x: 4, y: 63, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-15">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 63, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-16" tabindex="0">
+    <circle cx="236.36363636363637" cy="220.9090909090909" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="5" data-y="66" data-c="San Diego" data-r="4" aria-label="x: 5, y: 66, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-16">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 66, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-17" tabindex="0">
+    <circle cx="285.4545454545455" cy="190" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="6" data-y="70" data-c="San Diego" data-r="4" aria-label="x: 6, y: 70, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-17">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 70, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-18" tabindex="0">
+    <circle cx="334.54545454545456" cy="159.0909090909091" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="7" data-y="74" data-c="San Diego" data-r="4" aria-label="x: 7, y: 74, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-18">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 7, y: 74, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-19" tabindex="0">
+    <circle cx="383.6363636363636" cy="151.36363636363635" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="8" data-y="75" data-c="San Diego" data-r="4" aria-label="x: 8, y: 75, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-19">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 8, y: 75, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-20" tabindex="0">
+    <circle cx="432.72727272727275" cy="166.8181818181818" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="9" data-y="73" data-c="San Diego" data-r="4" aria-label="x: 9, y: 73, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-20">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 9, y: 73, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-21" tabindex="0">
+    <circle cx="481.81818181818187" cy="213.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="10" data-y="67" data-c="San Diego" data-r="4" aria-label="x: 10, y: 67, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-21">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 10, y: 67, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-22" tabindex="0">
+    <circle cx="530.909090909091" cy="259.54545454545456" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="11" data-y="61" data-c="San Diego" data-r="4" aria-label="x: 11, y: 61, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-22">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 11, y: 61, category: San Diego</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-23" tabindex="0">
+    <circle cx="580" cy="298.1818181818182" r="4" fill="url(#pattern-0-1)" class="data-element data-category-San-Diego" data-x="12" data-y="56" data-c="San Diego" data-r="4" aria-label="x: 12, y: 56, c: San Diego, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-23">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 12, y: 56, category: San Diego</text>
+  </g>
+  </g>
   <path d="M40,360 L89.0909090909091,329.09090909090907 L138.1818181818182,282.72727272727275 L187.27272727272728,220.9090909090909 L236.36363636363637,151.36363636363635 L285.4545454545455,81.81818181818181 L334.54545454545456,20 L383.6363636363636,27.72727272727269 L432.72727272727275,81.81818181818181 L481.81818181818187,174.54545454545453 L530.909090909091,282.72727272727275 L580,360" fill="none" class="data-element data-category-Palm-Springs" data-c="Palm Springs" aria-label="c: Palm Springs"/>
-  <circle cx="40" cy="360" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="1" data-y="48" data-c="Palm Springs" data-r="4" aria-label="x: 1, y: 48, c: Palm Springs, r: 4"/>
-  <circle cx="89.0909090909091" cy="329.09090909090907" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="2" data-y="52" data-c="Palm Springs" data-r="4" aria-label="x: 2, y: 52, c: Palm Springs, r: 4"/>
-  <circle cx="138.1818181818182" cy="282.72727272727275" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="3" data-y="58" data-c="Palm Springs" data-r="4" aria-label="x: 3, y: 58, c: Palm Springs, r: 4"/>
-  <circle cx="187.27272727272728" cy="220.9090909090909" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="4" data-y="66" data-c="Palm Springs" data-r="4" aria-label="x: 4, y: 66, c: Palm Springs, r: 4"/>
-  <circle cx="236.36363636363637" cy="151.36363636363635" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="5" data-y="75" data-c="Palm Springs" data-r="4" aria-label="x: 5, y: 75, c: Palm Springs, r: 4"/>
-  <circle cx="285.4545454545455" cy="81.81818181818181" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="6" data-y="84" data-c="Palm Springs" data-r="4" aria-label="x: 6, y: 84, c: Palm Springs, r: 4"/>
-  <circle cx="334.54545454545456" cy="20" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="7" data-y="92" data-c="Palm Springs" data-r="4" aria-label="x: 7, y: 92, c: Palm Springs, r: 4"/>
-  <circle cx="383.6363636363636" cy="27.72727272727269" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="8" data-y="91" data-c="Palm Springs" data-r="4" aria-label="x: 8, y: 91, c: Palm Springs, r: 4"/>
-  <circle cx="432.72727272727275" cy="81.81818181818181" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="9" data-y="84" data-c="Palm Springs" data-r="4" aria-label="x: 9, y: 84, c: Palm Springs, r: 4"/>
-  <circle cx="481.81818181818187" cy="174.54545454545453" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="10" data-y="72" data-c="Palm Springs" data-r="4" aria-label="x: 10, y: 72, c: Palm Springs, r: 4"/>
-  <circle cx="530.909090909091" cy="282.72727272727275" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="11" data-y="58" data-c="Palm Springs" data-r="4" aria-label="x: 11, y: 58, c: Palm Springs, r: 4"/>
-  <circle cx="580" cy="360" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="12" data-y="48" data-c="Palm Springs" data-r="4" aria-label="x: 12, y: 48, c: Palm Springs, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-24" tabindex="0">
+    <circle cx="40" cy="360" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="1" data-y="48" data-c="Palm Springs" data-r="4" aria-label="x: 1, y: 48, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-24">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 48, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-25" tabindex="0">
+    <circle cx="89.0909090909091" cy="329.09090909090907" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="2" data-y="52" data-c="Palm Springs" data-r="4" aria-label="x: 2, y: 52, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-25">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 52, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-26" tabindex="0">
+    <circle cx="138.1818181818182" cy="282.72727272727275" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="3" data-y="58" data-c="Palm Springs" data-r="4" aria-label="x: 3, y: 58, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-26">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 58, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-27" tabindex="0">
+    <circle cx="187.27272727272728" cy="220.9090909090909" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="4" data-y="66" data-c="Palm Springs" data-r="4" aria-label="x: 4, y: 66, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-27">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 66, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-28" tabindex="0">
+    <circle cx="236.36363636363637" cy="151.36363636363635" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="5" data-y="75" data-c="Palm Springs" data-r="4" aria-label="x: 5, y: 75, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-28">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 75, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-29" tabindex="0">
+    <circle cx="285.4545454545455" cy="81.81818181818181" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="6" data-y="84" data-c="Palm Springs" data-r="4" aria-label="x: 6, y: 84, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-29">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 84, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-30" tabindex="0">
+    <circle cx="334.54545454545456" cy="20" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="7" data-y="92" data-c="Palm Springs" data-r="4" aria-label="x: 7, y: 92, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-30">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 7, y: 92, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-31" tabindex="0">
+    <circle cx="383.6363636363636" cy="27.72727272727269" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="8" data-y="91" data-c="Palm Springs" data-r="4" aria-label="x: 8, y: 91, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-31">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 8, y: 91, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-32" tabindex="0">
+    <circle cx="432.72727272727275" cy="81.81818181818181" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="9" data-y="84" data-c="Palm Springs" data-r="4" aria-label="x: 9, y: 84, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-32">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 9, y: 84, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-33" tabindex="0">
+    <circle cx="481.81818181818187" cy="174.54545454545453" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="10" data-y="72" data-c="Palm Springs" data-r="4" aria-label="x: 10, y: 72, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-33">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 10, y: 72, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-34" tabindex="0">
+    <circle cx="530.909090909091" cy="282.72727272727275" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="11" data-y="58" data-c="Palm Springs" data-r="4" aria-label="x: 11, y: 58, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-34">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 11, y: 58, category: Palm Springs</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-0-35" tabindex="0">
+    <circle cx="580" cy="360" r="4" fill="url(#pattern-0-2)" class="data-element data-category-Palm-Springs" data-x="12" data-y="48" data-c="Palm Springs" data-r="4" aria-label="x: 12, y: 48, c: Palm Springs, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-0-35">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 12, y: 48, category: Palm Springs</text>
+  </g>
+  </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><figcaption class="chart-figcaption"></figcaption></figure><br />Monthly average high temperatures (°F) by month number (1-12). Each series gets a distinct line style through pattern differentiation.<h2>Single Series</h2>A line chart without the <code>c</code> category field renders as a single line.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
+</svg><br />Monthly average high temperatures (°F) by month number (1-12). Each series gets a distinct line style through pattern differentiation.<h2>Single Series</h2>A line chart without the <code>c</code> category field renders as a single line.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
 <defs>
   <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -497,17 +725,79 @@ function formatData(data) {
   </pattern>
 </defs>
   <path d="M40,360 L117.14285714285714,261.9230769230769 L194.28571428571428,307.6923076923077 L271.42857142857144,150.76923076923077 L348.57142857142856,196.53846153846155 L425.71428571428567,65.76923076923077 L502.85714285714283,111.53846153846155 L580,20" fill="none" class="data-element data-category-default" data-c="default" aria-label="c: default"/>
-  <circle cx="40" cy="360" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="0" data-y="10" data-c="default" data-r="4" aria-label="x: 0, y: 10, c: default, r: 4"/>
-  <circle cx="117.14285714285714" cy="261.9230769230769" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="1" data-y="25" data-c="default" data-r="4" aria-label="x: 1, y: 25, c: default, r: 4"/>
-  <circle cx="194.28571428571428" cy="307.6923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="2" data-y="18" data-c="default" data-r="4" aria-label="x: 2, y: 18, c: default, r: 4"/>
-  <circle cx="271.42857142857144" cy="150.76923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="3" data-y="42" data-c="default" data-r="4" aria-label="x: 3, y: 42, c: default, r: 4"/>
-  <circle cx="348.57142857142856" cy="196.53846153846155" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="4" data-y="35" data-c="default" data-r="4" aria-label="x: 4, y: 35, c: default, r: 4"/>
-  <circle cx="425.71428571428567" cy="65.76923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="5" data-y="55" data-c="default" data-r="4" aria-label="x: 5, y: 55, c: default, r: 4"/>
-  <circle cx="502.85714285714283" cy="111.53846153846155" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="6" data-y="48" data-c="default" data-r="4" aria-label="x: 6, y: 48, c: default, r: 4"/>
-  <circle cx="580" cy="20" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="7" data-y="62" data-c="default" data-r="4" aria-label="x: 7, y: 62, c: default, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-0" tabindex="0">
+    <circle cx="40" cy="360" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="0" data-y="10" data-c="default" data-r="4" aria-label="x: 0, y: 10, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-0">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 0, y: 10, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-1" tabindex="0">
+    <circle cx="117.14285714285714" cy="261.9230769230769" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="1" data-y="25" data-c="default" data-r="4" aria-label="x: 1, y: 25, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-1">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 25, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-2" tabindex="0">
+    <circle cx="194.28571428571428" cy="307.6923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="2" data-y="18" data-c="default" data-r="4" aria-label="x: 2, y: 18, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-2">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 18, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-3" tabindex="0">
+    <circle cx="271.42857142857144" cy="150.76923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="3" data-y="42" data-c="default" data-r="4" aria-label="x: 3, y: 42, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-3">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 42, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-4" tabindex="0">
+    <circle cx="348.57142857142856" cy="196.53846153846155" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="4" data-y="35" data-c="default" data-r="4" aria-label="x: 4, y: 35, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-4">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 35, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-5" tabindex="0">
+    <circle cx="425.71428571428567" cy="65.76923076923077" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="5" data-y="55" data-c="default" data-r="4" aria-label="x: 5, y: 55, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-5">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 55, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-6" tabindex="0">
+    <circle cx="502.85714285714283" cy="111.53846153846155" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="6" data-y="48" data-c="default" data-r="4" aria-label="x: 6, y: 48, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-6">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 48, category: default</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-1-7" tabindex="0">
+    <circle cx="580" cy="20" r="4" fill="url(#pattern-1-0)" class="data-element data-category-default" data-x="7" data-y="62" data-c="default" data-r="4" aria-label="x: 7, y: 62, c: default, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-1-7">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 7, y: 62, category: default</text>
+  </g>
+  </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><figcaption class="chart-figcaption"></figcaption></figure><h2>Custom Dimensions</h2>Testing width/height override via YAML front matter in the code block.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 300" role="img">
+</svg><h2>Custom Dimensions</h2>Testing width/height override via YAML front matter in the code block.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 380" role="img">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
 <defs>
   <pattern id="pattern-2-0" patternUnits="userSpaceOnUse" width="8" height="8">
     <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
@@ -527,22 +817,106 @@ function formatData(data) {
   </pattern>
 </defs>
   <path d="M40,260 L188,180 L336,200 L484,100 L632,20 L780,40" fill="none" class="data-element data-category-Actual" data-c="Actual" aria-label="c: Actual"/>
-  <circle cx="40" cy="260" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="1" data-y="100" data-c="Actual" data-r="4" aria-label="x: 1, y: 100, c: Actual, r: 4"/>
-  <circle cx="188" cy="180" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="2" data-y="120" data-c="Actual" data-r="4" aria-label="x: 2, y: 120, c: Actual, r: 4"/>
-  <circle cx="336" cy="200" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="3" data-y="115" data-c="Actual" data-r="4" aria-label="x: 3, y: 115, c: Actual, r: 4"/>
-  <circle cx="484" cy="100" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="4" data-y="140" data-c="Actual" data-r="4" aria-label="x: 4, y: 140, c: Actual, r: 4"/>
-  <circle cx="632" cy="20" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="5" data-y="160" data-c="Actual" data-r="4" aria-label="x: 5, y: 160, c: Actual, r: 4"/>
-  <circle cx="780" cy="40" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="6" data-y="155" data-c="Actual" data-r="4" aria-label="x: 6, y: 155, c: Actual, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-0" tabindex="0">
+    <circle cx="40" cy="260" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="1" data-y="100" data-c="Actual" data-r="4" aria-label="x: 1, y: 100, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-0">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 100, category: Actual</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-1" tabindex="0">
+    <circle cx="188" cy="180" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="2" data-y="120" data-c="Actual" data-r="4" aria-label="x: 2, y: 120, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-1">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 120, category: Actual</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-2" tabindex="0">
+    <circle cx="336" cy="200" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="3" data-y="115" data-c="Actual" data-r="4" aria-label="x: 3, y: 115, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-2">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 115, category: Actual</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-3" tabindex="0">
+    <circle cx="484" cy="100" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="4" data-y="140" data-c="Actual" data-r="4" aria-label="x: 4, y: 140, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-3">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 140, category: Actual</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-4" tabindex="0">
+    <circle cx="632" cy="20" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="5" data-y="160" data-c="Actual" data-r="4" aria-label="x: 5, y: 160, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-4">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 160, category: Actual</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-5" tabindex="0">
+    <circle cx="780" cy="40" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Actual" data-x="6" data-y="155" data-c="Actual" data-r="4" aria-label="x: 6, y: 155, c: Actual, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-5">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 155, category: Actual</text>
+  </g>
+  </g>
   <path d="M40,240 L188,200 L336,160 L484,120 L632,80 L780,40" fill="none" class="data-element data-category-Forecast" data-c="Forecast" aria-label="c: Forecast"/>
-  <circle cx="40" cy="240" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="1" data-y="105" data-c="Forecast" data-r="4" aria-label="x: 1, y: 105, c: Forecast, r: 4"/>
-  <circle cx="188" cy="200" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="2" data-y="115" data-c="Forecast" data-r="4" aria-label="x: 2, y: 115, c: Forecast, r: 4"/>
-  <circle cx="336" cy="160" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="3" data-y="125" data-c="Forecast" data-r="4" aria-label="x: 3, y: 125, c: Forecast, r: 4"/>
-  <circle cx="484" cy="120" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="4" data-y="135" data-c="Forecast" data-r="4" aria-label="x: 4, y: 135, c: Forecast, r: 4"/>
-  <circle cx="632" cy="80" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="5" data-y="145" data-c="Forecast" data-r="4" aria-label="x: 5, y: 145, c: Forecast, r: 4"/>
-  <circle cx="780" cy="40" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="6" data-y="155" data-c="Forecast" data-r="4" aria-label="x: 6, y: 155, c: Forecast, r: 4"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-6" tabindex="0">
+    <circle cx="40" cy="240" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="1" data-y="105" data-c="Forecast" data-r="4" aria-label="x: 1, y: 105, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-6">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 105, category: Forecast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-7" tabindex="0">
+    <circle cx="188" cy="200" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="2" data-y="115" data-c="Forecast" data-r="4" aria-label="x: 2, y: 115, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-7">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 115, category: Forecast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-8" tabindex="0">
+    <circle cx="336" cy="160" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="3" data-y="125" data-c="Forecast" data-r="4" aria-label="x: 3, y: 125, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-8">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 125, category: Forecast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-9" tabindex="0">
+    <circle cx="484" cy="120" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="4" data-y="135" data-c="Forecast" data-r="4" aria-label="x: 4, y: 135, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-9">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 135, category: Forecast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-10" tabindex="0">
+    <circle cx="632" cy="80" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="5" data-y="145" data-c="Forecast" data-r="4" aria-label="x: 5, y: 145, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-10">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 5, y: 145, category: Forecast</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-11" tabindex="0">
+    <circle cx="780" cy="40" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Forecast" data-x="6" data-y="155" data-c="Forecast" data-r="4" aria-label="x: 6, y: 155, c: Forecast, r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-11">
+    <text x="400" y="340" text-anchor="middle" font-size="14" font-weight="bold">x: 6, y: 155, category: Forecast</text>
+  </g>
+  </g>
   <line x1="40" y1="20" x2="40" y2="260" class="axis"/>
   <line x1="40" y1="260" x2="780" y2="260" class="axis"/>
-</svg><figcaption class="chart-figcaption"></figcaption></figure><br />Wide-format chart at 800x300 comparing actual vs forecast data.
+</svg><br />Wide-format chart at 800x300 comparing actual vs forecast data.
     </article>
   </main>
   <footer>

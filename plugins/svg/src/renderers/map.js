@@ -1,4 +1,4 @@
-import { circle, path } from '../utils/svg.js';
+import { circle, path, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
 import { createProjection } from '../utils/geo.js';
 
@@ -70,7 +70,7 @@ function embedBackgroundSvg(backgroundSvg) {
   return `  <g class="background">\n    ${parsed.content}\n  </g>\n`;
 }
 
-function renderPoint(feature, project, externallyStyled, index, iconList, chartId) {
+function renderPoint(feature, project, externallyStyled, index, iconList, chartId, linkId) {
   const coords = feature.geometry.coordinates;
   const [x, y] = project(coords);
   const data = buildDataAttrs(feature.properties || {}, feature.geometry, coords);
@@ -81,10 +81,10 @@ function renderPoint(feature, project, externallyStyled, index, iconList, chartI
     return embedIcon(iconList[featureType], x, y, data, className);
   }
   
-  return circle(x, y, 5, getPattern(index, chartId), 'black', 1, data, className, externallyStyled);
+  return circle(x, y, 5, getPattern(index, chartId), 'black', 1, data, className, externallyStyled, linkId);
 }
 
-function renderLineString(feature, project, externallyStyled, index) {
+function renderLineString(feature, project, externallyStyled, index, linkId) {
   const coords = feature.geometry.coordinates;
   const projected = coords.map(c => project(c));
   
@@ -97,10 +97,10 @@ function renderLineString(feature, project, externallyStyled, index) {
   
   const data = buildDataAttrs(feature.properties || {}, feature.geometry);
   const className = `data-element data-index-${index}`;
-  return path(d, 'none', 'black', 2, data, className, externallyStyled);
+  return path(d, 'none', 'black', 2, data, className, externallyStyled, linkId);
 }
 
-function renderPolygon(feature, project, externallyStyled, index, chartId) {
+function renderPolygon(feature, project, externallyStyled, index, chartId, linkId) {
   const coords = feature.geometry.coordinates;
   let d = '';
   
@@ -119,28 +119,29 @@ function renderPolygon(feature, project, externallyStyled, index, chartId) {
   
   const data = buildDataAttrs(feature.properties || {}, feature.geometry);
   const className = `data-element data-index-${index}`;
-  return path(d, getPattern(index, chartId), 'black', 1, data, className, externallyStyled);
+  return path(d, getPattern(index, chartId), 'black', 1, data, className, externallyStyled, linkId);
 }
 
-function renderMultiPoint(feature, project, externallyStyled, index, iconList, chartId) {
+function renderMultiPoint(feature, project, externallyStyled, index, iconList, chartId, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
   coords.forEach((coord, i) => {
     const [x, y] = project(coord);
     const data = buildDataAttrs(feature.properties || {}, feature.geometry, coord);
     const className = `data-element data-index-${index}-${i}`;
+    const linkId = linkIdBase ? `${linkIdBase}-${i}` : null;
     
     const featureType = feature.properties?.type;
     if (iconList && featureType && iconList[featureType]) {
       svg += embedIcon(iconList[featureType], x, y, data, className);
     } else {
-      svg += circle(x, y, 5, getPattern(index, chartId), 'black', 1, data, className, externallyStyled);
+      svg += circle(x, y, 5, getPattern(index, chartId), 'black', 1, data, className, externallyStyled, linkId);
     }
   });
   return svg;
 }
 
-function renderMultiLineString(feature, project, externallyStyled, index) {
+function renderMultiLineString(feature, project, externallyStyled, index, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
   coords.forEach((line, i) => {
@@ -154,12 +155,13 @@ function renderMultiLineString(feature, project, externallyStyled, index) {
     
     const data = buildDataAttrs(feature.properties || {}, feature.geometry);
     const className = `data-element data-index-${index}-${i}`;
-    svg += path(d, 'none', 'black', 2, data, className, externallyStyled);
+    const linkId = linkIdBase ? `${linkIdBase}-${i}` : null;
+    svg += path(d, 'none', 'black', 2, data, className, externallyStyled, linkId);
   });
   return svg;
 }
 
-function renderMultiPolygon(feature, project, externallyStyled, index, chartId) {
+function renderMultiPolygon(feature, project, externallyStyled, index, chartId, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
   coords.forEach((poly, i) => {
@@ -178,32 +180,34 @@ function renderMultiPolygon(feature, project, externallyStyled, index, chartId) 
     if (d) {
       const data = buildDataAttrs(feature.properties || {}, feature.geometry);
       const className = `data-element data-index-${index}-${i}`;
-      svg += path(d, getPattern(index + i, chartId), 'black', 1, data, className, externallyStyled);
+      const linkId = linkIdBase ? `${linkIdBase}-${i}` : null;
+      svg += path(d, getPattern(index + i, chartId), 'black', 1, data, className, externallyStyled, linkId);
     }
   });
   return svg;
 }
 
-function renderGeometryCollection(feature, project, externallyStyled, index, iconList, chartId) {
+function renderGeometryCollection(feature, project, externallyStyled, index, iconList, chartId, linkIdBase) {
   let svg = '';
   feature.geometry.geometries.forEach((geom, i) => {
     const subFeature = { geometry: geom, properties: feature.properties };
-    svg += renderGeometry(subFeature, project, externallyStyled, `${index}-${i}`, iconList, chartId);
+    const linkId = linkIdBase ? `${linkIdBase}-${i}` : null;
+    svg += renderGeometry(subFeature, project, externallyStyled, `${index}-${i}`, iconList, chartId, linkId);
   });
   return svg;
 }
 
-function renderGeometry(feature, project, externallyStyled, index, iconList, chartId) {
+function renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId) {
   const type = feature.geometry.type;
   
   switch (type) {
-    case 'Point': return renderPoint(feature, project, externallyStyled, index, iconList, chartId);
-    case 'LineString': return renderLineString(feature, project, externallyStyled, index);
-    case 'Polygon': return renderPolygon(feature, project, externallyStyled, index, chartId);
-    case 'MultiPoint': return renderMultiPoint(feature, project, externallyStyled, index, iconList, chartId);
-    case 'MultiLineString': return renderMultiLineString(feature, project, externallyStyled, index);
-    case 'MultiPolygon': return renderMultiPolygon(feature, project, externallyStyled, index, chartId);
-    case 'GeometryCollection': return renderGeometryCollection(feature, project, externallyStyled, index, iconList, chartId);
+    case 'Point': return renderPoint(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    case 'LineString': return renderLineString(feature, project, externallyStyled, index, linkId);
+    case 'Polygon': return renderPolygon(feature, project, externallyStyled, index, chartId, linkId);
+    case 'MultiPoint': return renderMultiPoint(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    case 'MultiLineString': return renderMultiLineString(feature, project, externallyStyled, index, linkId);
+    case 'MultiPolygon': return renderMultiPolygon(feature, project, externallyStyled, index, chartId, linkId);
+    case 'GeometryCollection': return renderGeometryCollection(feature, project, externallyStyled, index, iconList, chartId, linkId);
     default: return '';
   }
 }
@@ -246,15 +250,31 @@ export function render(data, width, height, options = {}) {
   });
   
   polygons.forEach(({ feature, index }) => {
-    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId);
+    const linkId = `map-${chartId}-${index}`;
+    svg += `  <g class="chart-item">\n`;
+    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    const data = buildDataAttrs(feature.properties || {}, feature.geometry);
+    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += `  </g>\n`;
   });
   
   lines.forEach(({ feature, index }) => {
-    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId);
+    const linkId = `map-${chartId}-${index}`;
+    svg += `  <g class="chart-item">\n`;
+    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    const data = buildDataAttrs(feature.properties || {}, feature.geometry);
+    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += `  </g>\n`;
   });
   
   points.forEach(({ feature, index }) => {
-    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId);
+    const linkId = `map-${chartId}-${index}`;
+    svg += `  <g class="chart-item">\n`;
+    svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    const coords = feature.geometry.coordinates;
+    const data = buildDataAttrs(feature.properties || {}, feature.geometry, coords);
+    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += `  </g>\n`;
   });
   
   return svg;

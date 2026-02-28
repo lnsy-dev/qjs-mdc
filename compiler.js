@@ -35,6 +35,7 @@ import { generateIndex } from './src/generators/index.js';
 import { generateTagPages } from './src/generators/tags.js';
 import { generateSearchPage } from './src/generators/search.js';
 import { processSVGCharts } from './src/plugins/svg-charts.js';
+import { extractCSSColors } from './src/utils/css-parser.js';
 
 /**
  * Main compilation function that orchestrates the entire build process.
@@ -57,6 +58,9 @@ function main() {
   // Collect CSS and JS assets
   const assets = collectAssets(config.source);
   
+  // Extract CSS colors for SVG rendering
+  const cssColors = extractCSSColors(assets.css);
+  
   // Find and process files
   let files = findPublishableFiles(config.source);
   console.log('Found', files.length, 'publishable files');
@@ -78,7 +82,7 @@ function main() {
       const contentHtml = parseMarkdown(contentProcessed);
       
       // Process SVG charts
-      const chartsHtml = processSVGCharts(contentHtml, config.source);
+      const chartsHtml = processSVGCharts(contentHtml, config.source, cssColors);
       
       // Highlight code
       const highlightedHtml = highlightCode(chartsHtml);
