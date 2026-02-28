@@ -357,6 +357,35 @@ footer {
   text-align: center;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 </style>
 <script>
 // Chart interactivity is now handled natively by SVG using :target selectors
@@ -380,6 +409,11 @@ footer {
     <h1>QJS-MD Test Notebook</h1>
     <p class="site-description">Debug blog for testing all SVG chart plugin features.</p>
     <ul class="post-list">
+  <li>
+    <h3><a href="getting-started.html">Getting Started</a></h3>
+    <p>Learn how to build your own static site with qjs-md</p>
+    <small>2026-02-28</small>
+  </li>
   <li>
     <h3><a href="svg-debug-scatter-plots.html">SVG Debug: Scatter Plots</a></h3>
     <p>Testing scatter plot rendering with categories, variable radius, and edge cases.</p>

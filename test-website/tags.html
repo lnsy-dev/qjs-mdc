@@ -357,6 +357,35 @@ footer {
   text-align: center;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 </style>
 <script>
 // Chart interactivity is now handled natively by SVG using :target selectors
@@ -384,12 +413,14 @@ footer {
   <li><a href="tag-csv.html">csv</a> (1)</li>
   <li><a href="tag-debug.html">debug</a> (7)</li>
   <li><a href="tag-donut.html">donut</a> (1)</li>
+  <li><a href="tag-guide.html">guide</a> (1)</li>
   <li><a href="tag-heikin-ashi.html">heikin-ashi</a> (1)</li>
   <li><a href="tag-line.html">line</a> (1)</li>
   <li><a href="tag-map.html">map</a> (2)</li>
   <li><a href="tag-scatter.html">scatter</a> (1)</li>
   <li><a href="tag-svg.html">svg</a> (7)</li>
   <li><a href="tag-test.html">test</a> (1)</li>
+  <li><a href="tag-tutorial.html">tutorial</a> (1)</li>
   <li><a href="tag-yaml.html">yaml</a> (1)</li>
 </ul>
 <script>

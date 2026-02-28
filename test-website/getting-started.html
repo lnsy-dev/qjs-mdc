@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag: yaml — QJS-MD Test Notebook</title>
+  <title>Getting Started — QJS-MD Test Notebook</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
@@ -406,15 +406,39 @@ footer {
 </header>
 
   <main>
-    <h2>Posts tagged: yaml</h2>
-<ul class="post-list">
-  <li>
-    <h3><a href="svg-debug-yaml-field-mapping-with-csv.html">SVG Debug: YAML Field Mapping with CSV</a></h3>
-    <p>Testing the YAML front matter format with CSV data and custom field mappings.</p>
-  </li>
-</ul>
+    <article>
+      <div class="post-meta">
+        <time>2026-02-28</time>
+      </div>
+      <h1>Getting Started</h1>qjs-md is a fast, zero-dependency static site generator that compiles markdown files into self-contained HTML. Here's how to build your own site.<h2>Project Structure</h2>Create a folder with this structure:<pre class="code" data-lang=""><code>my-blog/
+├── templates/
+│   └── default.html
+├── index.json
+├── style.css
+└── your-post.md</code></pre><h2>Step 1: Create Templates</h2>Create <code>templates/default.html</code>:<pre class="code language-html"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;{{title}}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;{{title}}&lt;/h1&gt;
+  {{content}}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><h2>Step 2: Add Global Config</h2>Create <code>index.json</code>:<pre class="code language-json"><code>{
+  &quot;siteName&quot;: &quot;My Blog&quot;,
+  &quot;author&quot;: &quot;Your Name&quot;
+}</code></pre><h2>Step 3: Write Content</h2>Create <code>your-post.md</code>:<pre class="code language-markdown"><code>---
+publish: true
+title: My First Post
+date: 2026-02-27
+tags: [hello, world]
+---
 
-    <p><a href="tags.html">&larr; All tags</a></p>
+# Hello World
+
+This is my first post!</code></pre><h2>Step 4: Build</h2>Run the compiler:<pre class="code language-bash"><code>./mdc my-blog --output my-blog/dist</code></pre><br />Your site is now in <code>my-blog/dist/</code>. Open <code>index.html</code> to view it.<h2>What Gets Generated</h2><ul><li><code>index.html</code> - Paginated list of posts</li><li><code>your-post.html</code> - Individual post pages</li><li><code>tags.html</code> - Tag index</li><li><code>search.html</code> - Search functionality</li></ul><br />All CSS, JavaScript, and images are automatically embedded into the HTML files.<h2>Next Steps</h2><ul><li>Add more posts with different tags</li><li>Customize your templates with includes</li><li>Add SVG charts with code blocks</li><li>Use <a href="wikilinks.html">wikilinks</a> to connect posts</li></ul>
+    </article>
   </main>
   <footer>
   <p>&copy; 2026 QJS-MD Test Notebook</p>
