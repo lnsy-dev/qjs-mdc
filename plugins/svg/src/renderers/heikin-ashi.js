@@ -60,6 +60,18 @@ export function render(data, width, height, options = {}) {
   svg += line(margin.left, margin.top, margin.left, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   svg += line(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   
+  // Axis labels
+  svg += text(margin.left + chartWidth / 2, height - 5, 'Date', 10, 'middle', 'axis-label', externallyStyled);
+  svg += text(10, margin.top + chartHeight / 2, 'Price', 10, 'middle', 'axis-label', externallyStyled, -90);
+  
+  // Legend
+  const legendX = margin.left + 10;
+  const legendY = margin.top + 10;
+  svg += rect(legendX, legendY, 12, 12, getPattern(0, chartId), 'black', 1, null, 'legend', externallyStyled);
+  svg += text(legendX + 18, legendY + 9, 'Bullish', 9, 'start', 'legend', externallyStyled);
+  svg += rect(legendX, legendY + 20, 12, 12, 'black', 'black', 1, null, 'legend', externallyStyled);
+  svg += text(legendX + 18, legendY + 29, 'Bearish', 9, 'start', 'legend', externallyStyled);
+  
   const maxLabelLen = data.reduce((max, d) => Math.max(max, (d.date || '').length), 4);
   const estLabelWidth = maxLabelLen * 5.5;
   const minLabelSpacing = estLabelWidth * 0.7 + 10;

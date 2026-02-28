@@ -2,6 +2,7 @@
  * @fileoverview SVG Chart Plugin - Converts code blocks to inline SVG charts
  */
 
+import * as std from 'std';
 import * as bar from '../../plugins/svg/src/renderers/bar.js';
 import * as scatter from '../../plugins/svg/src/renderers/scatter.js';
 import * as line from '../../plugins/svg/src/renderers/line.js';
@@ -148,7 +149,7 @@ function parseMapConfig(data) {
  * @param {string} html - HTML content with code blocks
  * @returns {string} HTML with charts rendered as SVG
  */
-export function processSVGCharts(html) {
+export function processSVGCharts(html, sourceDir = '.') {
   const regex = /<pre class="code" data-lang="([^"]*)">\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/g;
   let chartCount = 0;
   
@@ -177,6 +178,17 @@ export function processSVGCharts(html) {
       const height = config.height || 400;
       
       // Build options object
+      // Load backgroundSvg if it's a file path
+      let backgroundSvg = config.backgroundSvg;
+      if (backgroundSvg && (backgroundSvg.startsWith('./') || backgroundSvg.startsWith('../'))) {
+        const svgPath = `${sourceDir}/${backgroundSvg}`;
+        try {
+          backgroundSvg = std.loadFile(svgPath);
+        } catch (e) {
+          throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+        }
+      }
+
       const options = {
         width,
         height,
@@ -187,7 +199,7 @@ export function processSVGCharts(html) {
         seLat: config.seLat || config.southEastLat || null,
         seLon: config.seLon || config.southEastLon || null,
         iconList: config.iconList,
-        backgroundSvg: config.backgroundSvg,
+        backgroundSvg: backgroundSvg,
         name: config.name,
         description: config.description
       };
@@ -208,7 +220,20 @@ export function processSVGCharts(html) {
           options.seLon = mapConfig.southEastBounds[1];
         }
         if (mapConfig.iconList) options.iconList = mapConfig.iconList;
-        if (mapConfig.backgroundSvg) options.backgroundSvg = mapConfig.backgroundSvg;
+        if (mapConfig.backgroundSvg) {
+          // Load SVG file if it's a path
+          if (mapConfig.backgroundSvg.startsWith('./') || mapConfig.backgroundSvg.startsWith('../')) {
+            const svgPath = `${sourceDir}/${mapConfig.backgroundSvg}`;
+            try {
+              const svgContent = std.loadFile(svgPath);
+              options.backgroundSvg = svgContent;
+            } catch (e) {
+              throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+            }
+          } else {
+            options.backgroundSvg = mapConfig.backgroundSvg;
+          }
+        }
         if (mapConfig.name) options.name = mapConfig.name;
         if (mapConfig.description) options.description = mapConfig.description;
       }

@@ -78,7 +78,7 @@ function main() {
       const contentHtml = parseMarkdown(contentProcessed);
       
       // Process SVG charts
-      const chartsHtml = processSVGCharts(contentHtml);
+      const chartsHtml = processSVGCharts(contentHtml, config.source);
       
       // Highlight code
       const highlightedHtml = highlightCode(chartsHtml);

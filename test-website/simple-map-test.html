@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag: map — QJS-MD Test Notebook</title>
+  <title>Simple Map Test — QJS-MD Test Notebook</title>
 <style>
 :root {
   --bg-color: #ddd;
@@ -413,19 +413,35 @@ function formatData(data) {
 </header>
 
   <main>
-    <h2>Posts tagged: map</h2>
-<ul class="post-list">
-  <li>
-    <h3><a href="simple-map-test.html">Simple Map Test</a></h3>
-    <p>Testing map with a simple colored background instead of huge image.</p>
-  </li>
-  <li>
-    <h3><a href="svg-debug-map-with-background.html">SVG Debug: Map with Background</a></h3>
-    <p>Testing the map renderer with the socal-map.svg satellite image as background and GeoJSON feature overlays.</p>
-  </li>
-</ul>
-
-    <p><a href="tags.html">&larr; All tags</a></p>
+    <article>
+      <div class="post-meta">
+        <time>2026-02-27</time>
+      </div>
+      <h1>Simple Map Test</h1>Testing map with a simple colored background instead of huge image.<figure class="chart-figure"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 400" role="img">
+<defs>
+  <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-0-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <g class="background">
+    <rect width='640' height='640' fill='#e0e0e0'/>
+  </g>
+  <circle cx="258.4615384615401" cy="125.00000000000044" r="5" fill="url(#pattern-0-0)" class="data-element data-index-0" data-name="LA" data-type="city" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05" aria-label="name: LA, type: city, geometry-type: Point, lon: -118.24, lat: 34.05"/>
+</svg><figcaption class="chart-figcaption"></figcaption></figure>
+    </article>
   </main>
   <footer>
   <p>&copy; 2026 QJS-MD Test Notebook</p>

@@ -1,4 +1,4 @@
-import { circle, line } from '../utils/svg.js';
+import { circle, line, text } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
 import { createLinearScale, calculateMargins, sanitizeClassName, groupByCategory } from '../utils/chart.js';
 
@@ -37,6 +37,9 @@ export function render(data, width, height, options = {}) {
   
   svg += line(margin.left, margin.top, margin.left, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
   svg += line(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, 'black', 1, null, 'axis', externallyStyled);
+  
+  svg += text(margin.left + chartWidth / 2, height - 5, 'X', 10, 'middle', 'axis-label', externallyStyled);
+  svg += text(10, margin.top + chartHeight / 2, 'Y', 10, 'middle', 'axis-label', externallyStyled, -90);
   
   return svg;
 }
