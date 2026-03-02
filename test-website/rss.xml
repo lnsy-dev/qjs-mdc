@@ -5,11 +5,11 @@
     <link>https://example.com</link>
     <description>Debug blog for testing all SVG chart plugin features.</description>
     <atom:link href="https://example.com/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 02 Mar 2026 04:37:40 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2026 10:30:48 GMT</lastBuildDate>
     <item>
-      <title>Untitled</title>
-      <link>https://example.com/agricultural-report.html</link>
-      <guid>https://example.com/agricultural-report.html</guid>
+      <title>Farm Prices fall 3.3%</title>
+      <link>https://example.com/farm-prices-fall-3-3.html</link>
+      <guid>https://example.com/farm-prices-fall-3-3.html</guid>
       <description>U.S. farm prices slipped in January as lower prices for milk, cattle and major row crops pulled down a key government index, even as some specialty crops and poultry strengthened, the U.S. Department </description>
       <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
     </item>
@@ -113,11 +113,11 @@
       <category>csv</category>
     </item>
     <item>
-      <title>Untitled</title>
-      <link>https://example.com/trout-report.html</link>
-      <guid>https://example.com/trout-report.html</guid>
+      <title>Trout Sales Slip 6% in 2025</title>
+      <link>https://example.com/trout-sales-slip-6-in-2025.html</link>
+      <guid>https://example.com/trout-sales-slip-6-in-2025.html</guid>
       <description>Released February 27, 2026, by the U.S. Department of Agriculture’s National Agricultural Statistics Service, the annual Trout Production report shows the total value of fish sales to U.S. trout growe</description>
-      <pubDate>Mon, 02 Mar 2026 04:37:40 GMT</pubDate>
+      <pubDate>Mon, 02 Mar 2026 10:30:48 GMT</pubDate>
     </item>
   </channel>
 </rss>

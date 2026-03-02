@@ -29,11 +29,12 @@ find "$SOURCE_DIR" -type f | sort | while IFS= read -r filepath; do
   
   # Read and escape content - handle special chars
   escaped_content=$(cat "$filepath" | \
+    tr '\r' '\n' | \
     sed 's/\\/\\\\/g' | \
     sed 's/"/\\"/g' | \
     sed 's/	/\\t/g' | \
     awk '{printf "%s\\n", $0}' | \
-    sed '$ s/\\n$//')
+    sed 's/\\n$//')
   
   # Add to the template object
   echo "  \"$escaped_path\": \"$escaped_content\"," >> "$OUTPUT_FILE"

@@ -1,5 +1,6 @@
 ---
 publish: true
+title: Trout Sales Slip 6% in 2025
 ---
 
 

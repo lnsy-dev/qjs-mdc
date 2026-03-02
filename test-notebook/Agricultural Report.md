@@ -1,6 +1,7 @@
 ---
 publish: true
 date: 2026-03-01
+title: Farm Prices fall 3.3%
 ---
 U.S. farm prices slipped in January as lower prices for milk, cattle and major row crops pulled down a key government index, even as some specialty crops and poultry strengthened, the U.S. Department of Agriculture reported Friday. [release.nass.usda](https://release.nass.usda.gov/reports/agpr0226.pdf)
 

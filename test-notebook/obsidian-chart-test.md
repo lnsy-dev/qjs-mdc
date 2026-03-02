@@ -104,35 +104,201 @@ San Jose,1010000
 San Francisco,870000
 ```
 
-## Map Chart (Simple)
-
+## Map Chart 
 ```map
 {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-122.4194, 37.7749]
+  "northWestBounds": [
+    34.3,
+    -118.8
+  ],
+  "southEastBounds": [
+    33.5,
+    -117.5
+  ],
+  "name": "Southern California Points of Interest",
+  "backgroundSvg": "socal-map.svg",
+  "geojson": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.24,
+            34.05
+          ]
+        },
+        "properties": {
+          "name": "Downtown Los Angeles",
+          "type": "city"
+        }
       },
-      "properties": {
-        "name": "San Francisco"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-118.2437, 34.0522]
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.49,
+            34.01
+          ]
+        },
+        "properties": {
+          "name": "Santa Monica",
+          "type": "beach"
+        }
       },
-      "properties": {
-        "name": "Los Angeles"
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.41,
+            33.94
+          ]
+        },
+        "properties": {
+          "name": "LAX Airport",
+          "type": "airport"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.3,
+            34.13
+          ]
+        },
+        "properties": {
+          "name": "Griffith Park",
+          "type": "park"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.92,
+            33.81
+          ]
+        },
+        "properties": {
+          "name": "Anaheim",
+          "type": "city"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.83,
+            33.68
+          ]
+        },
+        "properties": {
+          "name": "Laguna Beach",
+          "type": "beach"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.52,
+            34.22
+          ]
+        },
+        "properties": {
+          "name": "Topanga State Park",
+          "type": "park"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.87,
+            33.94
+          ]
+        },
+        "properties": {
+          "name": "Fullerton",
+          "type": "city"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -118.49,
+              34.01
+            ],
+            [
+              -118.24,
+              34.05
+            ],
+            [
+              -117.92,
+              33.81
+            ],
+            [
+              -117.83,
+              33.68
+            ]
+          ]
+        },
+        "properties": {
+          "name": "Pacific Coast Route",
+          "type": "route"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -118.55,
+                34.1
+              ],
+              [
+                -118.35,
+                34.1
+              ],
+              [
+                -118.35,
+                33.95
+              ],
+              [
+                -118.55,
+                33.95
+              ],
+              [
+                -118.55,
+                34.1
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "name": "West LA Zone",
+          "type": "zone"
+        }
       }
-    }
-  ]
+    ]
+  }
 }
 ```
+
 
 ## Test Complete
 
