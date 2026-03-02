@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Donut Charts</h1>Testing donut chart rendering with various datasets.<h2>Regional Market Share</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Donut Charts</h1><p>Testing donut chart rendering with various datasets.</p><h2>Regional Market Share</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -471,7 +470,7 @@ footer {
   </g>
   </g>
   <text x="237.41882604360492" y="41.9379973989972" text-anchor="middle" class="label">Inland Empire</text>
-</svg><br />Four-segment donut chart. Each segment gets a distinct monochrome pattern for print-friendly differentiation.<h2>Binary Split</h2>Edge case with only two segments.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><p>Four-segment donut chart. Each segment gets a distinct monochrome pattern for print-friendly differentiation.</p><h2>Binary Split</h2><p>Edge case with only two segments.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -514,7 +513,7 @@ footer {
   </g>
   </g>
   <text x="148.5288908879774" y="122.82161504427714" text-anchor="middle" class="label">Rural</text>
-</svg><h2>Five Segments</h2>Testing pattern cycling with five data elements (wraps back to pattern 0 on the 5th).<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 580" role="img">
+</svg><h2>Five Segments</h2><p>Testing pattern cycling with five data elements (wraps back to pattern 0 on the 5th).</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 500 580" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -584,7 +583,7 @@ footer {
   </g>
   </g>
   <text x="169.01259840937107" y="45.44917310458462" text-anchor="middle" class="label">Retail</text>
-</svg><br />Employment distribution by sector. The fifth segment reuses the first pattern (diagonal stripes).<h2>Single Segment</h2>Edge case: a donut with just one category should render as a full circle.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><p>Employment distribution by sector. The fifth segment reuses the first pattern (diagonal stripes).</p><h2>Single Segment</h2><p>Edge case: a donut with just one category should render as a full circle.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }

@@ -27,7 +27,7 @@ Map with custom icons for different feature types (city, beach, park, airport), 
     -117.5
   ],
   "name": "Southern California Points of Interest",
-  "backgroundSvg": "./socal-map.svg",
+  "backgroundSvg": "socal-map.svg",
   "geojson": {
     "type": "FeatureCollection",
     "features": [
@@ -230,7 +230,7 @@ seLat: 33.8
 seLon: -117.8
 width: 600
 height: 600
-backgroundSvg: ./socal-map.svg
+backgroundSvg: socal-map.svg
 ---
 {
   "type": "FeatureCollection",

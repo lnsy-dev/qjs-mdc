@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,12 +409,12 @@ footer {
       <div class="post-meta">
         <time>2026-02-28</time>
       </div>
-      <h1>Getting Started</h1>qjs-md is a fast, zero-dependency static site generator that compiles markdown files into self-contained HTML. Here's how to build your own site.<h2>Project Structure</h2>Create a folder with this structure:<pre class="code" data-lang=""><code>my-blog/
+      <h1>Getting Started</h1><p>qjs-md is a fast, zero-dependency static site generator that compiles markdown files into self-contained HTML. Here's how to build your own site.</p><h2>Project Structure</h2><p>Create a folder with this structure:</p><pre class="code" data-lang=""><code>my-blog/
 ├── templates/
 │   └── default.html
 ├── index.json
 ├── style.css
-└── your-post.md</code></pre><h2>Step 1: Create Templates</h2>Create <code>templates/default.html</code>:<pre class="code language-html"><code>&lt;!DOCTYPE html&gt;
+└── your-post.md</code></pre><h2>Step 1: Create Templates</h2><p>Create <code>templates/default.html</code>:</p><pre class="code language-html"><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -425,10 +424,10 @@ footer {
   &lt;h1&gt;{{title}}&lt;/h1&gt;
   {{content}}
 &lt;/body&gt;
-&lt;/html&gt;</code></pre><h2>Step 2: Add Global Config</h2>Create <code>index.json</code>:<pre class="code language-json"><code>{
+&lt;/html&gt;</code></pre><h2>Step 2: Add Global Config</h2><p>Create <code>index.json</code>:</p><pre class="code language-json"><code>{
   &quot;siteName&quot;: &quot;My Blog&quot;,
   &quot;author&quot;: &quot;Your Name&quot;
-}</code></pre><h2>Step 3: Write Content</h2>Create <code>your-post.md</code>:<pre class="code language-markdown"><code>---
+}</code></pre><h2>Step 3: Write Content</h2><p>Create <code>your-post.md</code>:</p><pre class="code language-markdown"><code>---
 publish: true
 title: My First Post
 date: 2026-02-27
@@ -437,7 +436,7 @@ tags: [hello, world]
 
 # Hello World
 
-This is my first post!</code></pre><h2>Step 4: Build</h2>Run the compiler:<pre class="code language-bash"><code>./mdc my-blog --output my-blog/dist</code></pre><br />Your site is now in <code>my-blog/dist/</code>. Open <code>index.html</code> to view it.<h2>What Gets Generated</h2><ul><li><code>index.html</code> - Paginated list of posts</li><li><code>your-post.html</code> - Individual post pages</li><li><code>tags.html</code> - Tag index</li><li><code>search.html</code> - Search functionality</li></ul><br />All CSS, JavaScript, and images are automatically embedded into the HTML files.<h2>Next Steps</h2><ul><li>Add more posts with different tags</li><li>Customize your templates with includes</li><li>Add SVG charts with code blocks</li><li>Use <a href="wikilinks.html">wikilinks</a> to connect posts</li></ul>
+This is my first post!</code></pre><h2>Step 4: Build</h2><p>Run the compiler:</p><pre class="code language-bash"><code>./mdc my-blog --output my-blog/dist</code></pre><p>Your site is now in <code>my-blog/dist/</code>. Open <code>index.html</code> to view it.</p><h2>What Gets Generated</h2><ul><li><code>index.html</code> - Paginated list of posts</li><li><code>your-post.html</code> - Individual post pages</li><li><code>tags.html</code> - Tag index</li><li><code>search.html</code> - Search functionality</li></ul><p>All CSS, JavaScript, and images are automatically embedded into the HTML files.</p><h2>Next Steps</h2><ul><li>Add more posts with different tags</li><li>Customize your templates with includes</li><li>Add SVG charts with code blocks</li><li>Use <a href="wikilinks.html">wikilinks</a> to connect posts</li></ul>
     </article>
   </main>
   <footer>

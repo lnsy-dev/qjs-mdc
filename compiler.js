@@ -4,7 +4,7 @@
  * Compilation Pipeline:
  * 1. Parse CLI arguments and load configuration
  * 2. Discover publishable markdown files
- * 3. Collect CSS/JS assets from source directory
+ * 3. Collect CSS/JS assets from templates directory
  * 4. Process each markdown file:
  *    - Extract summary
  *    - Process abbreviations and wikilinks
@@ -37,6 +37,7 @@ import { generateSearchPage } from './src/generators/search.js';
 import { generateRSSFeed } from './src/generators/rss.js';
 import { processSVGCharts } from './src/plugins/svg-charts.js';
 import { extractCSSColors } from './src/utils/css-parser.js';
+import { createNewNotebook } from './src/commands/create-notebook.js';
 
 /**
  * Main compilation function that orchestrates the entire build process.
@@ -44,6 +45,13 @@ import { extractCSSColors } from './src/utils/css-parser.js';
 function main() {
   const config = parseArgs(scriptArgs);
   
+  // Handle create-new-notebook command
+  if (config.command === 'create-notebook') {
+    createNewNotebook(config.targetPath);
+    return;
+  }
+  
+  // Default: compile command
   console.log('Markdown Compiler');
   console.log('Source:', config.source);
   console.log('Output:', config.output);

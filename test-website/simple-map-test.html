@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Simple Map Test</h1>Testing map with a simple colored background instead of huge image.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Simple Map Test</h1><p>Testing map with a simple colored background instead of huge image.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -440,7 +439,7 @@ footer {
   </g>
   <g class="chart-item">
   <a class="chart-link" data-label="map-0-0" tabindex="0">
-    <circle cx="258.4615384615401" cy="125.00000000000044" r="5" fill="url(#pattern-0-0)" class="data-element data-index-0" data-name="LA" data-type="city" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05" aria-label="name: LA, type: city, geometry-type: Point, lon: -118.24, lat: 34.05"/>
+    <circle cx="258.4615384615401" cy="106.25000000000038" r="5" fill="url(#pattern-0-0)" class="data-element data-index-0" data-name="LA" data-type="city" data-geometry-type="Point" data-lon="-118.24" data-lat="34.05" aria-label="name: LA, type: city, geometry-type: Point, lon: -118.24, lat: 34.05"/>
   </a>
   <g class="label-group" data-for="map-0-0">
     <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">name: LA, type: city, geometry-type: Point, lon: -118.24, lat: 34.05</text>

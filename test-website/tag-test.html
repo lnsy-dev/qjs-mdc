@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -411,6 +410,10 @@ footer {
   <li>
     <h3><a href="simple-map-test.html">Simple Map Test</a></h3>
     <p>Testing map with a simple colored background instead of huge image.</p>
+  </li>
+  <li>
+    <h3><a href="obsidian-chart-plugin-test.html">Obsidian Chart Plugin Test</a></h3>
+    <p>This note tests all chart types in the Obsidian plugin.</p>
   </li>
 </ul>
 

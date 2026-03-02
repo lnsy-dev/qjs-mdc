@@ -9,7 +9,7 @@ export function escapeXML(text) {
 
 export function createSVGContainer(width, height, name, description, captionHeight = 80) {
   const totalHeight = height + captionHeight;
-  let attrs = `xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${totalHeight}" role="img"`;
+  let attrs = `xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${totalHeight}" role="img" style="overflow: hidden"`;
   
   if (name) {
     attrs += ` aria-labelledby="chart-title"`;

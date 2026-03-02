@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> — QJS-MD Test Notebook</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
+
+
+:root {
+  --bg-color: #FDF8E7;
+  --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
+  --highlight-color: #8C001A;
+  --neutral-color: #FEF6F3;
+  --color-border: var(--neutral-color);
+  --font-family: "Poly", serif;
+
+  /* SVG pattern fills */
+  --pattern-fill: var(--bg-color);
+  --pattern-stroke: var(--fg-color);
+
+  /* SVG data elements (bars, circles, paths, slices) */
+  --data-element-stroke: var(--fg-color);
+  --data-element-stroke-width: 1;
+
+  /* SVG axes */
+  --axis-stroke: #999;
+  --axis-stroke-width: 1;
+
+  /* SVG labels */
+  --label-fill: var(--fg-color);
+  --label-font-size: 10px;
+  --label-font-family:  "Poly", serif;
+;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--fg-color);
+  background: var(--bg-color);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+a {
+  color: var(--highlight-color);
+}
+
+header {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--fg-color);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav-links a {
+  color: var(--fg-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  color: var(--highlight-color);
+}
+
+main {
+  min-height: 60vh;
+  padding-bottom: 2rem;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  margin-bottom: 1em;
+}
+
+article {
+  padding-bottom: 2rem;
+}
+
+.post-meta {
+  color: var(--neutral);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-meta time {
+  font-style: italic;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  background: var(--bg-color);
+}
+
+.data-element {
+  stroke: var(--data-element-stroke);
+  stroke-width: var(--data-element-stroke-width);
+}
+
+.axis {
+  stroke: var(--axis-stroke);
+  stroke-width: var(--axis-stroke-width);
+}
+
+.label {
+  fill: var(--label-fill);
+  font-size: var(--label-font-size);
+  font-family: var(--label-font-family);
+  font-weight: 400;
+}
+
+.chart-error {
+  border: 2px solid #d00;
+  padding: 10px;
+  margin: 10px 0;
+  background: #fee;
+}
+
+pre.code {
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: monospace;
+  font-size: 0.85em;
+  background: var(--neutral-background-color);
+  padding: 0.15em 0.3em;
+  border-radius: 3px;
+}
+
+pre.code code {
+  background: none;
+  padding: 0;
+}
+
+.keyword { color: #7928a1; font-weight: 600; }
+.string  { color: #067d17; }
+.comment { color: #888; font-style: italic; }
+.literal { color: #0055aa; }
+
+ul, ol {
+  margin: 0.5em 0 1em 1.5em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+.post-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.post-list li {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.post-list li:last-child {
+  border-bottom: none;
+}
+
+.post-list h3 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.post-list p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.25em;
+}
+
+.post-list small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.tags-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags-list li a {
+  display: inline-block;
+  background: var(--neutral-color);
+  padding: 0.3rem 0.75rem;
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--highlight-color);
+  font-size: 0.9rem;
+}
+
+.tags-list li a:hover {
+  background: #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.pagination span {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.site-description {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+#search-input,
+#tag-search {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+#search-input:focus,
+#tag-search:focus {
+  outline: none;
+  border-color: #0055aa;
+  box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
+}
+
+.search-results {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.search-results li {
+  border-bottom: 1px solid #eee;
+  padding: 0.75rem 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+th {
+  background: var(--bg-color);
+  font-weight: 600;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  color: #555;
+}
+
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  border-top: none;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chart-figcaption td:first-child {
+  width: 30%;
+}
+
+footer {
+  border-top: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  color: var(--fg-color);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+</style>
+<script>
+// Chart interactivity is now handled natively by SVG using :target selectors
+// No external JavaScript needed for chart interactions
+
+</script>
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="index.html" class="site-title">QJS-MD Test Notebook</a>
+    <div class="nav-links">
+      <a href="index.html">Posts</a>
+      <a href="tags.html">Tags</a>
+      <a href="search.html">Search</a>
+    </div>
+  </nav>
+</header>
+
+  <main>
+    <article>
+      <div class="post-meta">
+        <time></time>
+      </div>
+      <h1>Trout sales slip 6% in 2025 even as larger fish volumes rise, USDA reports. </h1><p>Released February 27, 2026, by the U.S. Department of Agriculture’s National Agricultural Statistics Service, the annual Trout Production report shows the total value of fish sales to U.S. trout growers fell to 102 million dollars in 2025, a 6 percent decline from 2024.  The downturn came even as growers sold more large trout, with shifting prices, outlet demand, and heavy disease losses reshaping the industry’s bottom line. </p><h2>Trout sales, prices, and sizes</h2><p>Growers sold 25.3 million trout measuring 12 inches and longer in 2025, up 11 percent from the prior year, but the average price slipped to 2.40 dollars per pound, 4 percent below 2024.  The value of sales for this largest size category totaled 95.2 million dollars, down 4 percent from 2024 despite the higher volume, as lower prices offset gains in fish sold.  USDA reports that 69.0 percent of trout 12 inches or longer were sold to processors, underscoring the continued dependence of commercial food-size producers on processing plants as their primary market. </p><p>Mid-size trout between 6 and 12 inches saw sharper contractions in numbers and revenue.  Sales of 6"-12" trout fell to 2.64 million fish in 2025, a 25 percent drop from 2024, even as the average price per pound rose 16 percent to 6.27 dollars.  Total sales value for this group declined 23 percent to 5.79 million dollars, with recreational stocking remaining the dominant outlet and accounting for 55.8 percent of these sales.  For the smallest trout, those between 1 and 6 inches, the number sold fell 39 percent to 3.04 million fish, the average value per 1,000 fish climbed from 252 to 336 dollars, and total sales dropped 18 percent to 1.02 million dollars.</p><h3>Chart: Trout sales value by size category</h3><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 480" role="img" style="overflow: hidden">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
+<defs>
+  <pattern id="pattern-0-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-0-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-0-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-0" tabindex="0">
+    <rect x="122" y="25.333333333333336" width="658" height="42.66666666666667" fill="url(#pattern-0-0)" class="data-element data-index-0" data-label="12&quot;+ Value 2024" data-value="99200" aria-label="label: 12&quot;+ Value 2024, value: 99200"/>
+  </a>
+  <g class="label-group" data-for="bar-0-0">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 12&quot;+ Value 2024, value: 99200</text>
+  </g>
+  </g>
+  <text x="112" y="50.66666666666667" text-anchor="end" class="label">12&quot;+ Value 2024</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-1" tabindex="0">
+    <rect x="122" y="78.66666666666667" width="631.4677419354839" height="42.66666666666667" fill="url(#pattern-0-1)" class="data-element data-index-1" data-label="12&quot;+ Value 2025" data-value="95200" aria-label="label: 12&quot;+ Value 2025, value: 95200"/>
+  </a>
+  <g class="label-group" data-for="bar-0-1">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 12&quot;+ Value 2025, value: 95200</text>
+  </g>
+  </g>
+  <text x="112" y="104" text-anchor="end" class="label">12&quot;+ Value 2025</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-2" tabindex="0">
+    <rect x="122" y="132" width="49.880645161290325" height="42.66666666666667" fill="url(#pattern-0-2)" class="data-element data-index-2" data-label="6&quot;-12&quot; Value 2024" data-value="7520" aria-label="label: 6&quot;-12&quot; Value 2024, value: 7520"/>
+  </a>
+  <g class="label-group" data-for="bar-0-2">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 6&quot;-12&quot; Value 2024, value: 7520</text>
+  </g>
+  </g>
+  <text x="112" y="157.33333333333334" text-anchor="end" class="label">6&quot;-12&quot; Value 2024</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-3" tabindex="0">
+    <rect x="122" y="185.33333333333334" width="38.4054435483871" height="42.66666666666667" fill="url(#pattern-0-3)" class="data-element data-index-3" data-label="6&quot;-12&quot; Value 2025" data-value="5790" aria-label="label: 6&quot;-12&quot; Value 2025, value: 5790"/>
+  </a>
+  <g class="label-group" data-for="bar-0-3">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 6&quot;-12&quot; Value 2025, value: 5790</text>
+  </g>
+  </g>
+  <text x="112" y="210.66666666666669" text-anchor="end" class="label">6&quot;-12&quot; Value 2025</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-4" tabindex="0">
+    <rect x="122" y="238.66666666666669" width="8.225" height="42.66666666666667" fill="url(#pattern-0-0)" class="data-element data-index-4" data-label="1&quot;-6&quot; Value 2024" data-value="1240" aria-label="label: 1&quot;-6&quot; Value 2024, value: 1240"/>
+  </a>
+  <g class="label-group" data-for="bar-0-4">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 1&quot;-6&quot; Value 2024, value: 1240</text>
+  </g>
+  </g>
+  <text x="112" y="264" text-anchor="end" class="label">1&quot;-6&quot; Value 2024</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="bar-0-5" tabindex="0">
+    <rect x="122" y="292" width="6.765725806451613" height="42.66666666666667" fill="url(#pattern-0-1)" class="data-element data-index-5" data-label="1&quot;-6&quot; Value 2025" data-value="1020" aria-label="label: 1&quot;-6&quot; Value 2025, value: 1020"/>
+  </a>
+  <g class="label-group" data-for="bar-0-5">
+    <text x="400" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: 1&quot;-6&quot; Value 2025, value: 1020</text>
+  </g>
+  </g>
+  <text x="112" y="317.3333333333333" text-anchor="end" class="label">1&quot;-6&quot; Value 2025</text>
+  <line x1="122" y1="20" x2="122" y2="340" class="axis"/>
+  <line x1="122" y1="340" x2="780" y2="340" class="axis"/>
+</svg><h2>State totals and distributed fish</h2><p>Across all reporting states, the total value of fish sold, excluding eggs, declined from 108.4 million dollars in 2024 to 102.0 million dollars in 2025, while the value including eggs fell from 123.9 million to 118.2 million dollars.  Idaho remained the largest published producer by sales value, reporting 43.5 million dollars in fish sales in 2025, down slightly from 44.5 million dollars in 2024.  Pennsylvania, Washington, and the aggregated “Other States” category each contributed tens of millions of dollars in additional sales, while some individual state figures were withheld to protect the confidentiality of specific operations. </p><p>Separate from commercial sales, trout distributed for restoration, conservation, enhancement, or recreational purposes by federal and state hatcheries totaled 6.49 million fish 12 inches or longer, 60.7 million fish between 6 and 12 inches, and 46.6 million fish between 1 and 6 inches in 2025.  USDA estimates the value of these distributed fish at 154 million dollars, up 2 percent from 2024, reflecting the scale of public stocking and conservation programs relative to the commercial market. </p><h3>Chart: Total value sold vs. distributed</h3><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
+<defs>
+  <pattern id="pattern-1-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-1-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-1-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <g class="chart-item">
+  <a class="chart-link" data-label="donut-1-0" tabindex="0">
+    <path d="M 371.68892292537697 296.232522204291 A 120 120 0 0 0 300 80 L 300 128 A 72 72 0 0 1 343.01335375522615 257.7395133225746 Z" fill="url(#pattern-1-0)" class="data-element data-index-0" data-label="Value Sold 2025 (excl. eggs)" data-value="102012000" data-percentage="39.8" aria-label="label: Value Sold 2025 (excl. eggs), value: 102012000, percentage: 39.8"/>
+  </a>
+  <g class="label-group" data-for="donut-1-0">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Value Sold 2025 (excl. eggs), value: 102012000, percentage: 39.8%</text>
+  </g>
+  </g>
+  <text x="461.3629435427066" y="146.50233228230138" text-anchor="middle" class="label">Value Sold 2025 (excl. eggs)</text>
+  <g class="chart-item">
+  <a class="chart-link" data-label="donut-1-1" tabindex="0">
+    <path d="M 300 80 A 120 120 0 1 0 371.68892292537697 296.232522204291 L 343.01335375522615 257.7395133225746 A 72 72 0 1 1 300 128 Z" fill="url(#pattern-1-1)" class="data-element data-index-1" data-label="Estimated Value Distributed 2025" data-value="154236000" data-percentage="60.2" aria-label="label: Estimated Value Distributed 2025, value: 154236000, percentage: 60.2"/>
+  </a>
+  <g class="label-group" data-for="donut-1-1">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Estimated Value Distributed 2025, value: 154236000, percentage: 60.2%</text>
+  </g>
+  </g>
+  <text x="138.63705645729345" y="253.4976677176987" text-anchor="middle" class="label">Estimated Value Distributed 2025</text>
+</svg><h2>Market outlets and egg sales</h2><p>The report shows processors remained the predominant destination for food-size trout.  In 2025, 69.0 percent of trout 12 inches or longer went to processors, compared with single-digit market shares for live haulers and brokers, government agencies, and other outlets.  For 6"-12" fish, recreational stocking accounted for 55.8 percent of sales by point of first sale, followed by wholesale to other producers, direct-to-consumer sales, and government agencies.</p><p>Trout egg production and sales held steady year over year.  U.S. producers sold 492.9 million eggs in 2025, up slightly from 490.5 million in 2024, at an average price of 32.80 dollars per 1,000 eggs, compared with 31.70 dollars the previous year.  Total egg sales rose from 15.5 million dollars in 2024 to 16.2 million dollars in 2025.</p><h3>Chart: Trout egg sales and prices</h3><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+  <style>
+    .label-group { opacity: 0; pointer-events: none; }
+    .chart-item:focus-within .label-group { opacity: 1; }
+    text { font-family: inherit; fill: currentColor; }
+    a { cursor: pointer; outline: none; }
+  </style>
+<defs>
+  <pattern id="pattern-2-0" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-1" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <circle cx="4" cy="4" r="1" fill="var(--pattern-stroke, black)"/>
+  </pattern>
+  <pattern id="pattern-2-2" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="0" y1="4" x2="8" y2="4" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+  <pattern id="pattern-2-3" patternUnits="userSpaceOnUse" width="8" height="8">
+    <rect width="8" height="8" fill="var(--pattern-fill, white)"/>
+    <line x1="4" y1="0" x2="4" y2="8" stroke="var(--pattern-stroke, black)" stroke-width="1"/>
+  </pattern>
+</defs>
+  <path d="M40,21.607440081666596 L580,20" fill="none" class="data-element data-category-Eggs--1-000-" data-c="Eggs (1,000)" aria-label="c: Eggs (1,000)"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-0" tabindex="0">
+    <circle cx="40" cy="21.607440081666596" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Eggs--1-000-" data-x="2024" data-y="490535" data-c="Eggs (1,000)" data-r="4" aria-label="x: 2024, y: 490535, c: Eggs (1,000), r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-0">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2024, y: 490535, category: Eggs (1,000)</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-1" tabindex="0">
+    <circle cx="580" cy="20" r="4" fill="url(#pattern-2-0)" class="data-element data-category-Eggs--1-000-" data-x="2025" data-y="492865" data-c="Eggs (1,000)" data-r="4" aria-label="x: 2025, y: 492865, c: Eggs (1,000), r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-1">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2025, y: 492865, category: Eggs (1,000)</text>
+  </g>
+  </g>
+  <path d="M40,360 L580,359.9992411227082" fill="none" class="data-element data-category-Avg-Price-per-1-000----" data-c="Avg Price per 1,000 ($)" aria-label="c: Avg Price per 1,000 ($)"/>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-2" tabindex="0">
+    <circle cx="40" cy="360" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Avg-Price-per-1-000----" data-x="2024" data-y="31.7" data-c="Avg Price per 1,000 ($)" data-r="4" aria-label="x: 2024, y: 31.7, c: Avg Price per 1,000 ($), r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-2">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2024, y: 31.7, category: Avg Price per 1,000 ($)</text>
+  </g>
+  </g>
+  <g class="chart-item">
+  <a class="chart-link" data-label="line-2-3" tabindex="0">
+    <circle cx="580" cy="359.9992411227082" r="4" fill="url(#pattern-2-1)" class="data-element data-category-Avg-Price-per-1-000----" data-x="2025" data-y="32.8" data-c="Avg Price per 1,000 ($)" data-r="4" aria-label="x: 2025, y: 32.8, c: Avg Price per 1,000 ($), r: 4"/>
+  </a>
+  <g class="label-group" data-for="line-2-3">
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2025, y: 32.8, category: Avg Price per 1,000 ($)</text>
+  </g>
+  </g>
+  <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
+  <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
+</svg><h2>Disease losses and methodology</h2><p>Disease remained the leading cause of trout losses in 2025, accounting for 7.5 million of the 9.93 million fish lost that were intended for sale, or about 82 percent of total losses.  Other causes, including theft, chemicals, drought, flood, predators, and miscellaneous factors, together made up the remaining loss share.  Disease-related losses were accompanied by 7.5 million pounds lost, again dwarfing other causes in terms of live-weight impact. </p><p>NASS officials note that trout production estimates are based on a census of all known active producers in 12 published states and a sample of producers in remaining “Other States,” combining survey responses with historical and trend analysis.  The agency reviews individual operations’ data for consistency, estimates missing responses using similar operations, and may revise previous-year estimates when new or corrected information becomes available.  USDA underscores that equality and nondiscrimination policies apply to all its programs and directs producers and data users to its website and hotline for more information on surveys, reports, and the upcoming April 22, 2026, Spring Data Users’ Meeting in Kansas City.</p><p>Would you like this adapted into a shorter wire brief suitable for broadcast, or kept in this longer format for print clients?</p>
+    </article>
+  </main>
+  <footer>
+  <p>&copy; 2026 QJS-MD Test Notebook</p>
+</footer>
+
+</body>
+</html>

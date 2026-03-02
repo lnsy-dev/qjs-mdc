@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Scatter Plots</h1>Testing scatter plot rendering with categories, variable radius, and edge cases.<h2>Categorized Scatter with Variable Radius</h2>Housing price vs square footage across SoCal neighborhoods, with bubble size representing lot size.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Scatter Plots</h1><p>Testing scatter plot rendering with categories, variable radius, and edge cases.</p><h2>Categorized Scatter with Variable Radius</h2><p>Housing price vs square footage across SoCal neighborhoods, with bubble size representing lot size.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -535,7 +534,7 @@ footer {
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
   <text x="310" y="395" text-anchor="middle" class="axis-label">X</text>
   <text x="10" y="190" text-anchor="middle" class="axis-label" transform="rotate(-90, 10, 190)">Y</text>
-</svg><br />X-axis: square footage. Y-axis: price ($K). Bubble radius: relative lot size. Each category gets a distinct pattern fill.<h2>Minimal Scatter (No Categories, No Radius)</h2>Testing default circle size (r=5) and no category grouping.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><p>X-axis: square footage. Y-axis: price ($K). Bubble radius: relative lot size. Each category gets a distinct pattern fill.</p><h2>Minimal Scatter (No Categories, No Radius)</h2><p>Testing default circle size (r=5) and no category grouping.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -620,7 +619,7 @@ footer {
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
   <text x="310" y="395" text-anchor="middle" class="axis-label">X</text>
   <text x="10" y="190" text-anchor="middle" class="axis-label" transform="rotate(-90, 10, 190)">Y</text>
-</svg><h2>Large Custom Scatter</h2>Wide-format scatter with many points across four categories.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 580" role="img">
+</svg><h2>Large Custom Scatter</h2><p>Wide-format scatter with many points across four categories.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 580" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -777,7 +776,7 @@ footer {
   <line x1="40" y1="460" x2="780" y2="460" class="axis"/>
   <text x="410" y="495" text-anchor="middle" class="axis-label">X</text>
   <text x="10" y="240" text-anchor="middle" class="axis-label" transform="rotate(-90, 10, 240)">Y</text>
-</svg><br />Temperature (x, °C) vs humidity (y, %) by season. Four categories exercise the full pattern set.
+</svg><p>Temperature (x, °C) vs humidity (y, %) by season. Four categories exercise the full pattern set.</p>
     </article>
   </main>
   <footer>

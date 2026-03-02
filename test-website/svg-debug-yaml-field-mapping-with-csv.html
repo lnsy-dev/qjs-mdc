@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>YAML Front Matter + CSV Data</h1>Testing the YAML front matter format with CSV data and custom field mappings.<h2>Bar Chart with Custom Field Names</h2>CSV columns <code>city</code> and <code>population</code> are mapped to the expected <code>label</code> and <code>value</code> fields.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img">
+      <h1>YAML Front Matter + CSV Data</h1><p>Testing the YAML front matter format with CSV data and custom field mappings.</p><h2>Bar Chart with Custom Field Names</h2><p>CSV columns <code>city</code> and <code>population</code> are mapped to the expected <code>label</code> and <code>value</code> fields.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -491,7 +490,7 @@ footer {
   <text x="628.3333333333334" y="310" text-anchor="middle" class="label">Oakland</text>
   <line x1="60" y1="20" x2="60" y2="290" class="axis"/>
   <line x1="60" y1="290" x2="680" y2="290" class="axis"/>
-</svg><h2>Horizontal Bar via YAML Config</h2>Orientation and field mapping both specified in front matter.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 650 380" role="img">
+</svg><h2>Horizontal Bar via YAML Config</h2><p>Orientation and field mapping both specified in front matter.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 650 380" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -563,7 +562,7 @@ footer {
   <text x="76" y="222" text-anchor="end" class="label">Tamales</text>
   <line x1="86" y1="20" x2="86" y2="240" class="axis"/>
   <line x1="86" y1="240" x2="630" y2="240" class="axis"/>
-</svg><h2>Scatter Plot with Custom Fields</h2>CSV columns <code>temp</code> and <code>rainfall</code> mapped to <code>x</code> and <code>y</code>, with <code>region</code> as category.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><h2>Scatter Plot with Custom Fields</h2><p>CSV columns <code>temp</code> and <code>rainfall</code> mapped to <code>x</code> and <code>y</code>, with <code>region</code> as category.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -664,7 +663,7 @@ footer {
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
   <text x="310" y="395" text-anchor="middle" class="axis-label">X</text>
   <text x="10" y="190" text-anchor="middle" class="axis-label" transform="rotate(-90, 10, 190)">Y</text>
-</svg><h2>Line Chart with Custom Fields</h2>CSV with custom column names mapped via YAML.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img">
+</svg><h2>Line Chart with Custom Fields</h2><p>CSV with custom column names mapped via YAML.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -788,7 +787,7 @@ footer {
   </g>
   <line x1="40" y1="20" x2="40" y2="310" class="axis"/>
   <line x1="40" y1="310" x2="680" y2="310" class="axis"/>
-</svg><h2>Heikin-Ashi with Custom Fields</h2>OHLC data with non-standard column names remapped via YAML.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 480" role="img">
+</svg><h2>Heikin-Ashi with Custom Fields</h2><p>OHLC data with non-standard column names remapped via YAML.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -900,7 +899,7 @@ footer {
   <text x="555" y="355" text-anchor="end" class="label" transform="rotate(-45, 555, 355)">2026-02-23</text>
   <text x="645" y="355" text-anchor="end" class="label" transform="rotate(-45, 645, 355)">2026-02-24</text>
   <text x="735" y="355" text-anchor="end" class="label" transform="rotate(-45, 735, 355)">2026-02-25</text>
-</svg><h2>Donut with Custom Fields</h2>Donut chart using CSV with field remapping.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 450 530" role="img">
+</svg><h2>Donut with Custom Fields</h2><p>Donut chart using CSV with field remapping.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 450 530" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -961,7 +960,7 @@ footer {
   </g>
   </g>
   <text x="153.215712226488" y="43.69358525179089" text-anchor="middle" class="label">Agricultural</text>
-</svg><br />All six chart types are demonstrated with YAML front matter field mapping and CSV input data.
+</svg><p>All six chart types are demonstrated with YAML front matter field mapping and CSV input data.</p>
     </article>
   </main>
   <footer>

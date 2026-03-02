@@ -18,12 +18,12 @@ export function loadTemplate(templatesDir, name) {
 }
 
 /**
- * Loads the global configuration from index.json.
+ * Loads the global configuration from index.json in templates directory.
  * @param {string} sourceDir - Source directory path
  * @returns {Object} Parsed JSON configuration or empty object
  */
 export function loadIndexConfig(sourceDir) {
-  const path = `${sourceDir}/index.json`;
+  const path = `${sourceDir}/templates/index.json`;
   const content = std.loadFile(path);
   if (!content) return {};
   try {

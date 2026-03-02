@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Line Charts</h1>Testing line chart rendering with single and multiple series.<h2>Multi-Series Line Chart</h2>Three data series showing temperature trends across Southern California locations.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Line Charts</h1><p>Testing line chart rendering with single and multiple series.</p><h2>Multi-Series Line Chart</h2><p>Three data series showing temperature trends across Southern California locations.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -728,7 +727,7 @@ footer {
   </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><br />Monthly average high temperatures (°F) by month number (1-12). Each series gets a distinct line style through pattern differentiation.<h2>Single Series</h2>A line chart without the <code>c</code> category field renders as a single line.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><p>Monthly average high temperatures (°F) by month number (1-12). Each series gets a distinct line style through pattern differentiation.</p><h2>Single Series</h2><p>A line chart without the <code>c</code> category field renders as a single line.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -820,7 +819,7 @@ footer {
   </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><h2>Custom Dimensions</h2>Testing width/height override via YAML front matter in the code block.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 380" role="img">
+</svg><h2>Custom Dimensions</h2><p>Testing width/height override via YAML front matter in the code block.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 380" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -945,7 +944,7 @@ footer {
   </g>
   <line x1="40" y1="20" x2="40" y2="260" class="axis"/>
   <line x1="40" y1="260" x2="780" y2="260" class="axis"/>
-</svg><br />Wide-format chart at 800x300 comparing actual vs forecast data.
+</svg><p>Wide-format chart at 800x300 comparing actual vs forecast data.</p>
     </article>
   </main>
   <footer>

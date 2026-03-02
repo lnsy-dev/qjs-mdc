@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Bar Charts</h1>Testing bar chart rendering with vertical and horizontal orientations.<h2>Vertical Bar Chart (Default)</h2>Standard vertical bar chart with labeled categories and values.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Bar Charts</h1><p>Testing bar chart rendering with vertical and horizontal orientations.</p><h2>Vertical Bar Chart (Default)</h2><p>Standard vertical bar chart with labeled categories and values.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -491,7 +490,7 @@ footer {
   <text x="536.6666666666667" y="360" text-anchor="middle" class="label">Sacramento</text>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
   <line x1="60" y1="340" x2="580" y2="340" class="axis"/>
-</svg><br />Population figures for major California cities. The bar chart uses monochrome patterns (diagonal, dots, horizontal, vertical stripes) cycling through each data element.<h2>Horizontal Bar Chart</h2>Same data rendered with horizontal orientation via the <code>chart</code> alias and YAML front matter config.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img">
+</svg><p>Population figures for major California cities. The bar chart uses monochrome patterns (diagonal, dots, horizontal, vertical stripes) cycling through each data element.</p><h2>Horizontal Bar Chart</h2><p>Same data rendered with horizontal orientation via the <code>chart</code> alias and YAML front matter config.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 700 430" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -572,7 +571,7 @@ footer {
   <text x="88" y="271.5" text-anchor="end" class="label">Sacramento</text>
   <line x1="98" y1="20" x2="98" y2="290" class="axis"/>
   <line x1="98" y1="290" x2="680" y2="290" class="axis"/>
-</svg><br />The horizontal orientation can be more readable when category labels are long.<h2>Small Dataset</h2>Minimal two-item bar chart for edge-case testing.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><p>The horizontal orientation can be more readable when category labels are long.</p><h2>Small Dataset</h2><p>Minimal two-item bar chart for edge-case testing.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -617,7 +616,7 @@ footer {
   <text x="450" y="360" text-anchor="middle" class="label">No</text>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
   <line x1="60" y1="340" x2="580" y2="340" class="axis"/>
-</svg><h2>Large Dataset</h2>Testing with many categories to verify label rendering and spacing.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 480" role="img">
+</svg><h2>Large Dataset</h2><p>Testing with many categories to verify label rendering and spacing.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -752,7 +751,7 @@ footer {
   <text x="750" y="360" text-anchor="middle" class="label">Dec</text>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
   <line x1="60" y1="340" x2="780" y2="340" class="axis"/>
-</svg><br />Monthly average temperatures (°F) for Los Angeles demonstrating pattern cycling across 12 bars.
+</svg><p>Monthly average temperatures (°F) for Los Angeles demonstrating pattern cycling across 12 bars.</p>
     </article>
   </main>
   <footer>

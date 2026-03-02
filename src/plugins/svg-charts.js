@@ -11,6 +11,7 @@ import * as heikinAshi from '../../plugins/svg/src/renderers/heikin-ashi.js';
 import * as map from '../../plugins/svg/src/renderers/map.js';
 import { createSVGContainer, closeSVGContainer } from '../../plugins/svg/src/utils/svg.js';
 import { generatePatternDefs } from '../../plugins/svg/src/utils/patterns.js';
+import { findFileRecursive } from '../utils/file-ops.js';
 
 const RENDERERS = {
   'bar': bar,
@@ -182,12 +183,23 @@ export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
       // Build options object
       // Load backgroundSvg if it's a file path
       let backgroundSvg = config.backgroundSvg;
-      if (backgroundSvg && (backgroundSvg.startsWith('./') || backgroundSvg.startsWith('../'))) {
-        const svgPath = `${sourceDir}/${backgroundSvg}`;
-        try {
-          backgroundSvg = std.loadFile(svgPath);
-        } catch (e) {
-          throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+      if (backgroundSvg) {
+        let svgPath;
+        if (backgroundSvg.startsWith('./') || backgroundSvg.startsWith('../')) {
+          svgPath = `${sourceDir}/${backgroundSvg}`;
+        } else {
+          // Just a filename - search recursively
+          svgPath = findFileRecursive(sourceDir, backgroundSvg);
+        }
+        
+        if (svgPath) {
+          try {
+            backgroundSvg = std.loadFile(svgPath);
+          } catch (e) {
+            throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+          }
+        } else {
+          throw new Error(`Background SVG file not found: ${config.backgroundSvg}`);
         }
       }
 
@@ -223,17 +235,30 @@ export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
         }
         if (mapConfig.iconList) options.iconList = mapConfig.iconList;
         if (mapConfig.backgroundSvg) {
-          // Load SVG file if it's a path
-          if (mapConfig.backgroundSvg.startsWith('./') || mapConfig.backgroundSvg.startsWith('../')) {
-            const svgPath = `${sourceDir}/${mapConfig.backgroundSvg}`;
-            try {
-              const svgContent = std.loadFile(svgPath);
-              options.backgroundSvg = svgContent;
-            } catch (e) {
-              throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
-            }
-          } else {
+          // Check if it's inline SVG or a file path
+          if (mapConfig.backgroundSvg.trim().startsWith('<')) {
+            // Inline SVG - use directly
             options.backgroundSvg = mapConfig.backgroundSvg;
+          } else {
+            // File path - load it
+            let svgPath;
+            if (mapConfig.backgroundSvg.startsWith('./') || mapConfig.backgroundSvg.startsWith('../')) {
+              svgPath = `${sourceDir}/${mapConfig.backgroundSvg}`;
+            } else {
+              // Just a filename - search recursively
+              svgPath = findFileRecursive(sourceDir, mapConfig.backgroundSvg);
+            }
+            
+            if (svgPath) {
+              try {
+                const svgContent = std.loadFile(svgPath);
+                options.backgroundSvg = svgContent;
+              } catch (e) {
+                throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+              }
+            } else {
+              throw new Error(`Background SVG file not found: ${mapConfig.backgroundSvg}`);
+            }
           }
         }
         if (mapConfig.name) options.name = mapConfig.name;

@@ -1,13 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tag: charts — QJS-MD Test Notebook</title>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -144,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -154,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -166,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -378,3 +384,40 @@ footer {
     opacity: 0;
   }
 }
+
+</style>
+<script>
+// Chart interactivity is now handled natively by SVG using :target selectors
+// No external JavaScript needed for chart interactions
+
+</script>
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="index.html" class="site-title">QJS-MD Test Notebook</a>
+    <div class="nav-links">
+      <a href="index.html">Posts</a>
+      <a href="tags.html">Tags</a>
+      <a href="search.html">Search</a>
+    </div>
+  </nav>
+</header>
+
+  <main>
+    <h2>Posts tagged: charts</h2>
+<ul class="post-list">
+  <li>
+    <h3><a href="obsidian-chart-plugin-test.html">Obsidian Chart Plugin Test</a></h3>
+    <p>This note tests all chart types in the Obsidian plugin.</p>
+  </li>
+</ul>
+
+    <p><a href="tags.html">&larr; All tags</a></p>
+  </main>
+  <footer>
+  <p>&copy; 2026 QJS-MD Test Notebook</p>
+</footer>
+
+</body>
+</html>

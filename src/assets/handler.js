@@ -7,43 +7,22 @@ import * as std from 'std';
 import * as os from 'os';
 
 /**
- * Recursively collects all CSS and JS files from source directory.
+ * Collects CSS and JS files from templates directory.
  * @param {string} sourceDir - Source directory path
  * @returns {Object} Object with css and js arrays containing file contents
  */
 export function collectAssets(sourceDir) {
   const assets = { css: [], js: [] };
+  const templatesDir = `${sourceDir}/templates`;
   
-  function scan(dir) {
-    try {
-      const result = os.readdir(dir);
-      if (!result || result[1] !== 0) return;
-      
-      const entries = String(result[0]).split(',');
-      
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i];
-        if (entry === '.' || entry === '..' || !entry || entry === 'templates') continue;
-        
-        const fullPath = dir + '/' + entry;
-        const [st, err] = os.stat(fullPath);
-        
-        if (!err && (st.mode & os.S_IFDIR)) {
-          scan(fullPath);
-        } else if (fullPath.endsWith('.css')) {
-          const content = std.loadFile(fullPath);
-          if (content) assets.css.push(content);
-        } else if (fullPath.endsWith('.js') && !fullPath.includes('compiler.js')) {
-          const content = std.loadFile(fullPath);
-          if (content) assets.js.push(content);
-        }
-      }
-    } catch (e) {
-      // Ignore errors
-    }
-  }
+  // Load style.css
+  const cssContent = std.loadFile(`${templatesDir}/style.css`);
+  if (cssContent) assets.css.push(cssContent);
   
-  scan(sourceDir);
+  // Load index.js
+  const jsContent = std.loadFile(`${templatesDir}/index.js`);
+  if (jsContent) assets.js.push(jsContent);
+  
   return assets;
 }
 

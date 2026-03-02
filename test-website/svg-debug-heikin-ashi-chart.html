@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,7 +409,7 @@ footer {
       <div class="post-meta">
         <time>2026-02-27</time>
       </div>
-      <h1>Heikin-Ashi Charts</h1>Testing heikin-ashi candlestick rendering with OHLC data.<h2>20-Day Price Action</h2>Simulated stock data showing a downtrend, reversal, and uptrend.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+      <h1>Heikin-Ashi Charts</h1><p>Testing heikin-ashi candlestick rendering with OHLC data.</p><h2>20-Day Price Action</h2><p>Simulated stock data showing a downtrend, reversal, and uptrend.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -633,7 +632,7 @@ footer {
   <text x="489" y="355" text-anchor="end" class="label" transform="rotate(-45, 489, 355)">2026-01-28</text>
   <text x="541" y="355" text-anchor="end" class="label" transform="rotate(-45, 541, 355)">2026-01-30</text>
   <text x="567" y="355" text-anchor="end" class="label" transform="rotate(-45, 567, 355)">2026-02-02</text>
-</svg><br />The heikin-ashi chart smooths OHLC price action. Bullish candles (close > open) and bearish candles (close < open) are distinguished by pattern fill. Wicks show high/low range.<h2>Short Dataset with Custom Size</h2>Minimal 5-candle chart for edge-case testing.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 330" role="img">
+</svg><p>The heikin-ashi chart smooths OHLC price action. Bullish candles (close > open) and bearish candles (close < open) are distinguished by pattern fill. Wicks show high/low range.</p><h2>Short Dataset with Custom Size</h2><p>Minimal 5-candle chart for edge-case testing.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 330" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }
@@ -715,7 +714,7 @@ footer {
   <text x="220" y="205" text-anchor="end" class="label" transform="rotate(-45, 220, 205)">2026-02-25</text>
   <text x="284" y="205" text-anchor="end" class="label" transform="rotate(-45, 284, 205)">2026-02-26</text>
   <text x="348" y="205" text-anchor="end" class="label" transform="rotate(-45, 348, 205)">2026-02-27</text>
-</svg><h2>Without Date Labels</h2>Heikin-ashi data with no <code>date</code> field; x-axis uses indices.<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img">
+</svg><h2>Without Date Labels</h2><p>Heikin-ashi data with no <code>date</code> field; x-axis uses indices.</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
   <style>
     .label-group { opacity: 0; pointer-events: none; }
     .chart-item:focus-within .label-group { opacity: 1; }

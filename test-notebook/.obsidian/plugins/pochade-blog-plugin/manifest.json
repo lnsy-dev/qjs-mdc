@@ -1,0 +1,11 @@
+{
+	"id": "pochade-blog-plugin",
+	"name": "Pochade Blog Tools",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Blog tools with inline SVG chart rendering (bar, line, scatter, donut, heikin-ashi, map)",
+	"author": "LNSY",
+	"authorUrl": "https://obsidian.md",
+	"fundingUrl": "https://obsidian.md/pricing",
+	"isDesktopOnly": false
+}

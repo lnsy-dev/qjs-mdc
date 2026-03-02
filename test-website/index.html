@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,6 +409,16 @@ footer {
     <p class="site-description">Debug blog for testing all SVG chart plugin features.</p>
     <ul class="post-list">
   <li>
+    <h3><a href="agricultural-report.html">Untitled</a></h3>
+    <p>U.S. farm prices slipped in January as lower prices for milk, cattle and major row crops pulled down a key government index, even as some specialty crops and poultry strengthened, the U.S. Department </p>
+    <small>2026-03-01</small>
+  </li>
+  <li>
+    <h3><a href="obsidian-chart-plugin-test.html">Obsidian Chart Plugin Test</a></h3>
+    <p>This note tests all chart types in the Obsidian plugin.</p>
+    <small>2026-02-28</small>
+  </li>
+  <li>
     <h3><a href="getting-started.html">Getting Started</a></h3>
     <p>Learn how to build your own static site with qjs-md</p>
     <small>2026-02-28</small>
@@ -449,14 +458,10 @@ footer {
     <p>Testing the map renderer with the socal-map.svg satellite image as background and GeoJSON feature overlays.</p>
     <small>2026-02-27</small>
   </li>
-  <li>
-    <h3><a href="svg-debug-yaml-field-mapping-with-csv.html">SVG Debug: YAML Field Mapping with CSV</a></h3>
-    <p>Testing the YAML front matter format with CSV data and custom field mappings.</p>
-    <small>2026-02-27</small>
-  </li>
 </ul>
 <div class="pagination">
-  <span>Page 1 of 1</span>
+  <span>Page 1 of 2</span>
+  <a href="index-2.html">Next →</a>
 </div>
 
   </main>

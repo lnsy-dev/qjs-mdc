@@ -8,19 +8,24 @@ import * as std from 'std';
  * Prints the help message with usage instructions.
  */
 export function printHelp() {
-  console.log('Usage: mdc <source-directory> --output <output-directory>');
+  console.log('Usage: mdc <command> [options]');
   console.log('');
-  console.log('Compile markdown files with YAML front matter into static HTML.');
+  console.log('Commands:');
+  console.log('  <source-directory> --output <output-directory>');
+  console.log('    Compile markdown files with YAML front matter into static HTML');
+  console.log('');
+  console.log('  create-new-notebook <target-directory>');
+  console.log('    Create a new notebook from template with guided setup');
   console.log('');
   console.log('Options:');
-  console.log('  --output, -o    Output directory (required)');
+  console.log('  --output, -o    Output directory (required for compilation)');
   console.log('  --help, -h      Show this help message');
 }
 
 /**
  * Parses command-line arguments into a configuration object.
  * @param {string|Array<string>} args - Command-line arguments (scriptArgs)
- * @returns {Object} Configuration object with source and output paths
+ * @returns {Object} Configuration object with command type and parameters
  */
 export function parseArgs(args) {
   // scriptArgs is a string in QuickJS, need to split it
@@ -28,12 +33,36 @@ export function parseArgs(args) {
     args = args.split(',');
   }
   
-  if (!args || args.length < 3) {
+  if (!args || args.length < 2) {
     printHelp();
     std.exit(1);
   }
 
+  const firstArg = args[1];
+  
+  // Check for help flag
+  if (firstArg === '--help' || firstArg === '-h') {
+    printHelp();
+    std.exit(0);
+  }
+  
+  // Check for create-new-notebook command
+  if (firstArg === 'create-new-notebook') {
+    if (!args[2]) {
+      console.error('Error: Target directory is required for create-new-notebook');
+      console.log('Usage: mdc create-new-notebook <target-directory>');
+      std.exit(1);
+    }
+    
+    return {
+      command: 'create-notebook',
+      targetPath: args[2]
+    };
+  }
+  
+  // Default: compilation command
   const config = {
+    command: 'compile',
     source: null,
     output: null
   };

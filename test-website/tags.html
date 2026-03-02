@@ -11,10 +11,8 @@
 :root {
   --bg-color: #FDF8E7;
   --fg-color: #2d3a2d;
+  --neutral-background-color:#f0eee4;
   --highlight-color: #8C001A;
-
-  --color-text: #2d3a2d;
-  --color-bg: var(--bg-color);
   --neutral-color: #FEF6F3;
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
@@ -151,6 +149,7 @@ svg {
   fill: var(--label-fill);
   font-size: var(--label-font-size);
   font-family: var(--label-font-family);
+  font-weight: 400;
 }
 
 .chart-error {
@@ -161,8 +160,8 @@ svg {
 }
 
 pre.code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
+  background: var(--neutral-background-color);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -173,7 +172,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: #f0f0f0;
+  background: var(--neutral-background-color);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -410,6 +409,7 @@ footer {
 <input type="text" id="tag-search" placeholder="Search tags..." />
 <ul id="tags-list" class="tags-list">
   <li><a href="tag-bar.html">bar</a> (1)</li>
+  <li><a href="tag-charts.html">charts</a> (1)</li>
   <li><a href="tag-csv.html">csv</a> (1)</li>
   <li><a href="tag-debug.html">debug</a> (7)</li>
   <li><a href="tag-donut.html">donut</a> (1)</li>
@@ -417,9 +417,10 @@ footer {
   <li><a href="tag-heikin-ashi.html">heikin-ashi</a> (1)</li>
   <li><a href="tag-line.html">line</a> (1)</li>
   <li><a href="tag-map.html">map</a> (2)</li>
+  <li><a href="tag-obsidian.html">obsidian</a> (1)</li>
   <li><a href="tag-scatter.html">scatter</a> (1)</li>
   <li><a href="tag-svg.html">svg</a> (7)</li>
-  <li><a href="tag-test.html">test</a> (1)</li>
+  <li><a href="tag-test.html">test</a> (2)</li>
   <li><a href="tag-tutorial.html">tutorial</a> (1)</li>
   <li><a href="tag-yaml.html">yaml</a> (1)</li>
 </ul>

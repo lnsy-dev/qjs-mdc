@@ -226,7 +226,8 @@ export function render(data, width, height, options = {}) {
   if (options.seLat !== undefined) seBounds = [options.seLat, options.seLon];
   
   const features = data.features || [];
-  const project = createProjection(nwBounds, seBounds, width, height);
+  const mapHeight = height - 60;
+  const project = createProjection(nwBounds, seBounds, width, mapHeight);
   
   let svg = '';
   
