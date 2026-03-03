@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>qjs-mdc Notebook</title>
+    <link>https://lindseymysse.com/qjs-mdc</link>
+    <description>Public Documentation for qjs-mdc.</description>
+    <atom:link href="https://lindseymysse.com/qjs-mdc/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Mar 2026 22:43:07 GMT</lastBuildDate>
+    <item>
+      <title>The Case for Static, No Javascript Sites in 2026</title>
+      <link>https://lindseymysse.com/qjs-mdc/the-case-for-static-no-javascript-sites-in-2026.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/the-case-for-static-no-javascript-sites-in-2026.html</guid>
+      <description>The case for static, no javascript websites in 2026</description>
+      <pubDate>Tue, 03 Mar 2026 21:26:00 GMT</pubDate>
+      <category>js</category>
+      <category>static-websites</category>
+    </item>
+    <item>
+      <title>Setting Up a Markdown File</title>
+      <link>https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html</guid>
+      <description>A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.</description>
+      <pubDate>Tue, 03 Mar 2026 08:00:00 GMT</pubDate>
+      <category>memo</category>
+      <category>guide</category>
+    </item>
+    <item>
+      <title>Obsidian Chart Plugin Test</title>
+      <link>https://lindseymysse.com/qjs-mdc/obsidian-chart-plugin-test.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/obsidian-chart-plugin-test.html</guid>
+      <description>In addition to rendering code blocks, mdc will render svg charts with</description>
+      <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
+      <category>test</category>
+      <category>charts</category>
+      <category>obsidian</category>
+    </item>
+    <item>
+      <title>Getting Started</title>
+      <link>https://lindseymysse.com/qjs-mdc/getting-started.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/getting-started.html</guid>
+      <description>Learn how to build your own static site with qjs-md</description>
+      <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
+      <category>tutorial</category>
+      <category>guide</category>
+    </item>
+  </channel>
+</rss>

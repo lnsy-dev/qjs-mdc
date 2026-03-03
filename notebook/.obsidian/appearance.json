@@ -1,0 +1,8 @@
+{
+  "cssTheme": "Minimal",
+  "theme": "moonstone",
+  "accentColor": "#ff6600",
+  "enabledCssSnippets": [
+    "style"
+  ]
+}

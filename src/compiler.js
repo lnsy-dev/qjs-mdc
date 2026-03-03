@@ -37,6 +37,7 @@ import { generateSearchPage } from './generators/search.js';
 import { generateRSSFeed } from './generators/rss.js';
 import { generateAboutPage } from './generators/about.js';
 import { processSVGCharts } from './plugins/svg-charts.js';
+import { processTables } from '../plugins/tables.js';
 import { extractCSSColors } from './utils/css-parser.js';
 import { createNewNotebook } from './commands/create-notebook.js';
 import { formatPrettyDate } from './utils/date-format.js';
@@ -82,9 +83,12 @@ function compile(config) {
       
       // Parse markdown to HTML
       const contentHtml = parseMarkdown(contentProcessed);
-      
+
+      // Process markdown tables into <table> elements
+      const tablesHtml = processTables(contentHtml);
+
       // Process SVG charts
-      const chartsHtml = processSVGCharts(contentHtml, config.source, cssColors);
+      const chartsHtml = processSVGCharts(tablesHtml, config.source, cssColors);
       
       // Highlight code
       const highlightedHtml = highlightCode(chartsHtml);
