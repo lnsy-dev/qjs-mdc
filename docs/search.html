@@ -392,7 +392,7 @@ footer {
 <body>
   <header>
   <nav>
-    <a href="index.html" class="site-title"><b>QJS-MDC</b>: Quick JavaScript MarkDown Compiler</a>
+    <a href="index.html" class="site-title"><h2 style="margin-top: 0">qjs-mdc</h2><div><small>Quick JavaScript MarkDown Compiler</small></div></a>
     <div class="nav-links">
       <a href="index.html">Posts</a>
       <a href="tags.html">Tags</a>
@@ -471,7 +471,7 @@ document.getElementById('search-input').addEventListener('input', function(e) {
   let html = '<ul class="search-results">';
   for (const result of results.slice(0, 10)) {
     const post = result.item;
-    html += '<li><h3><a href="' + post.url + '">' + post.title + '</a></h3><p>' + post.summary + '</p></li>';
+    html += '<li><h3><a href="' + post.url + '">' + post.title + '</a></h3>' + (post.summary ? '<p>' + post.summary + '</p>' : '') + '</li>';
   }
   html += '</ul>';
   

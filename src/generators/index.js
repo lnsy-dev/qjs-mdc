@@ -4,7 +4,7 @@
  */
 
 import * as std from 'std';
-import { loadTemplate, compileTemplate } from '../templates/engine.js';
+import { loadTemplate, compileTemplate, substituteVariables } from '../templates/engine.js';
 import { embedAssets } from '../assets/handler.js';
 import { formatPrettyDate } from '../utils/date-format.js';
 
@@ -31,13 +31,15 @@ export function generateIndex(files, outputDir, templatesDir, globalVars, assets
     const end = start + postsPerPage;
     const pagePosts = sortedFiles.slice(start, end);
     
+    const stubTemplate = loadTemplate(templatesDir, 'stub.html');
     let postsList = '<ul class="post-list">\n';
     for (const post of pagePosts) {
-      postsList += `  <li>
-    <h3><a href="${post.outputName}">${post.data.title || 'Untitled'}</a></h3>
-    <p>${post.summary}</p>
-    <small>${formatPrettyDate(post.data.date)}</small>
-  </li>\n`;
+      postsList += substituteVariables(stubTemplate, {
+        url: post.outputName,
+        title: post.data.title || 'Untitled',
+        summary: post.summary || '',
+        date: formatPrettyDate(post.data.date)
+      });
     }
     postsList += '</ul>\n';
     

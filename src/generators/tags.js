@@ -4,9 +4,10 @@
  */
 
 import * as std from 'std';
-import { loadTemplate, compileTemplate } from '../templates/engine.js';
+import { loadTemplate, compileTemplate, substituteVariables } from '../templates/engine.js';
 import { embedAssets } from '../assets/handler.js';
 import { sanitizeFilename } from '../utils/filename.js';
+import { formatPrettyDate } from '../utils/date-format.js';
 
 /**
  * Generates tag pages and tags index with search functionality.
@@ -35,15 +36,18 @@ export function generateTagPages(files, outputDir, templatesDir, globalVars, ass
   }
   
   // Generate individual tag pages
+  const stubTemplate = loadTemplate(templatesDir, 'stub.html');
   for (const [tag, posts] of tagMap) {
     const sanitized = sanitizeFilename(tag);
     let postsList = `<h2>Posts tagged: ${tag}</h2>\n<ul class="post-list">\n`;
-    
+
     for (const post of posts) {
-      postsList += `  <li>
-    <h3><a href="${post.outputName}">${post.data.title || 'Untitled'}</a></h3>
-    <p>${post.summary}</p>
-  </li>\n`;
+      postsList += substituteVariables(stubTemplate, {
+        url: post.outputName,
+        title: post.data.title || 'Untitled',
+        summary: post.summary || '',
+        date: formatPrettyDate(post.data.date)
+      });
     }
     postsList += '</ul>\n';
     

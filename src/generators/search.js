@@ -19,7 +19,7 @@ export function generateSearchPage(files, outputDir, templatesDir, globalVars, a
   // Generate search data JSON
   const searchData = files.map(file => ({
     title: file.data.title || 'Untitled',
-    summary: file.summary,
+    summary: file.summary || '',
     url: file.outputName,
     tags: file.data.tags || []
   }));
@@ -67,7 +67,7 @@ document.getElementById('search-input').addEventListener('input', function(e) {
   let html = '<ul class="search-results">';
   for (const result of results.slice(0, 10)) {
     const post = result.item;
-    html += '<li><h3><a href="' + post.url + '">' + post.title + '</a></h3><p>' + post.summary + '</p></li>';
+    html += '<li><h3><a href="' + post.url + '">' + post.title + '</a></h3>' + (post.summary ? '<p>' + post.summary + '</p>' : '') + '</li>';
   }
   html += '</ul>';
   

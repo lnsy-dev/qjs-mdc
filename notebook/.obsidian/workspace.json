@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "the-case-for-static-no-javascript-websites-in-2026.md",
+                "file": "setting-up-a-markdown-file.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "the-case-for-static-no-javascript-websites-in-2026"
+              "title": "setting-up-a-markdown-file"
             }
           },
           {
@@ -199,10 +199,11 @@
   },
   "active": "0c67e38e5571397b",
   "lastOpenFiles": [
+    "templates/stub.html",
+    "the-case-for-static-no-javascript-websites-in-2026.md",
     "getting-started.md",
     "obsidian-chart-test.md",
     "setting-up-a-markdown-file.md",
-    "the-case-for-static-no-javascript-websites-in-2026.md",
     "templates/blog-post.md",
     "socal-map.svg",
     "test-heikin-ashi.md",

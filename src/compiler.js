@@ -73,9 +73,19 @@ function compile(config) {
   
   // Compile each file
   for (const file of files) {
+    // Always extract summary so generators have it even for unchanged files
+    file.summary = extractSummary(file);
+
     try {
-      // Extract summary
-      file.summary = extractSummary(file);
+      const outputPath = `${config.output}/${file.outputName}`;
+
+      // Skip if output is newer than source
+      const [srcStat] = os.stat(file.path);
+      const [outStat] = os.stat(outputPath);
+      if (srcStat && outStat && outStat.mtime >= srcStat.mtime) {
+        console.log('-', file.outputName, '(unchanged)');
+        continue;
+      }
       
       // Process abbreviations and wikilinks BEFORE markdown parsing
       let contentProcessed = processAbbreviations(file.content);
@@ -116,7 +126,6 @@ function compile(config) {
       finalHtml = embedAssets(finalHtml, assets);
       
       // Write output
-      const outputPath = `${config.output}/${file.outputName}`;
       const f = std.open(outputPath, 'w');
       f.puts(finalHtml);
       f.close();
