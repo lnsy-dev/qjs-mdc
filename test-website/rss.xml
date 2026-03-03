@@ -5,7 +5,7 @@
     <link>https://example.com</link>
     <description>Debug blog for testing all SVG chart plugin features.</description>
     <atom:link href="https://example.com/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 03 Mar 2026 03:29:59 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 03 Mar 2026 03:36:13 GMT</lastBuildDate>
     <item>
       <title>Farm Prices fall 3.3%</title>
       <link>https://example.com/farm-prices-fall-3-3.html</link>
@@ -117,7 +117,7 @@
       <link>https://example.com/trout-sales-slip-6-in-2025.html</link>
       <guid>https://example.com/trout-sales-slip-6-in-2025.html</guid>
       <description>Released February 27, 2026, by the U.S. Department of Agriculture’s National Agricultural Statistics Service, the annual Trout Production report shows the total value of fish sales to U.S. trout growe</description>
-      <pubDate>Tue, 03 Mar 2026 03:29:59 GMT</pubDate>
+      <pubDate>Tue, 03 Mar 2026 03:36:13 GMT</pubDate>
     </item>
   </channel>
 </rss>

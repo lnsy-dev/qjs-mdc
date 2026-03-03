@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search — QJS-MD Test Notebook</title>
+  <title>About — QJS-MD Test Notebook</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
@@ -406,82 +406,9 @@ footer {
 </header>
 
   <main>
-    <h2>Search</h2>
-<input type="text" id="search-input" placeholder="Search posts..." style="width: 100%; padding: 10px; font-size: 16px;" />
-<div id="search-results" style="margin-top: 20px;"></div>
-
-<script>
-// Minimal fuzzy search implementation
-class FuzzySearch {
-  constructor(items, options) {
-    this.items = items;
-    this.keys = options.keys || [];
-  }
-  
-  search(query) {
-    if (!query) return this.items.map((item, i) => ({ item, refIndex: i }));
-    
-    const lowerQuery = query.toLowerCase();
-    const results = [];
-    
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
-      let score = 0;
-      
-      for (const key of this.keys) {
-        const value = String(item[key] || '').toLowerCase();
-        if (value.includes(lowerQuery)) {
-          score += 10;
-          if (value.startsWith(lowerQuery)) score += 5;
-        }
-      }
-      
-      if (score > 0) {
-        results.push({ item, refIndex: i, score });
-      }
-    }
-    
-    return results.sort((a, b) => b.score - a.score);
-  }
-}
-
-
-let searchData = [];
-let fuse;
-
-fetch('search-data.json')
-  .then(r => r.json())
-  .then(data => {
-    searchData = data;
-    fuse = new FuzzySearch(data, { keys: ['title', 'summary'] });
-  });
-
-document.getElementById('search-input').addEventListener('input', function(e) {
-  const query = e.target.value;
-  const results = fuse ? fuse.search(query) : [];
-  
-  const resultsDiv = document.getElementById('search-results');
-  
-  if (!query) {
-    resultsDiv.innerHTML = '';
-    return;
-  }
-  
-  if (results.length === 0) {
-    resultsDiv.innerHTML = '<p>No results found.</p>';
-    return;
-  }
-  
-  let html = '<ul class="search-results">';
-  for (const result of results.slice(0, 10)) {
-    const post = result.item;
-    html += '<li><h3><a href="' + post.url + '">' + post.title + '</a></h3><p>' + post.summary + '</p></li>';
-  }
-  html += '</ul>';
-  
-  resultsDiv.innerHTML = html;
-});
-</script>
+    <h1>About</h1>
+    <p>Welcome to QJS-MD Test Notebook.</p>
+    <p>This site is built with qjs-md, a fast static site generator.</p>
   </main>
   <footer>
   <p>&copy; 2026 QJS-MD Test Notebook</p>
