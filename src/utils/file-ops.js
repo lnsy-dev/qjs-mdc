@@ -4,7 +4,7 @@
  */
 
 import * as os from 'os';
-import { parseMatterFromFile } from '../../md-yaml.js';
+import { parseMatterFromFile } from '../../lib/md-yaml.js';
 
 /**
  * Recursively walks a directory tree and collects all markdown file paths.

@@ -24,36 +24,27 @@
 
 import * as std from 'std';
 import * as os from 'os';
-import { parse as parseMarkdown } from './lib/markdown.js';
-import { parseArgs } from './src/utils/cli.js';
-import { findPublishableFiles } from './src/utils/file-ops.js';
-import { resolveFilenameConflicts } from './src/utils/filename.js';
-import { loadIndexConfig, selectTemplate, compileTemplate } from './src/templates/engine.js';
-import { processAbbreviations, processWikilinks, extractSummary, highlightCode, makeUrlsClickable } from './src/content/processor.js';
-import { collectAssets, embedAssets, embedImages } from './src/assets/handler.js';
-import { generateIndex } from './src/generators/index.js';
-import { generateTagPages } from './src/generators/tags.js';
-import { generateSearchPage } from './src/generators/search.js';
-import { generateRSSFeed } from './src/generators/rss.js';
-import { generateAboutPage } from './src/generators/about.js';
-import { processSVGCharts } from './src/plugins/svg-charts.js';
-import { extractCSSColors } from './src/utils/css-parser.js';
-import { createNewNotebook } from './src/commands/create-notebook.js';
-import { formatPrettyDate } from './src/utils/date-format.js';
+import { parse as parseMarkdown } from '../lib/markdown.js';
+import { parseArgs } from './utils/cli.js';
+import { findPublishableFiles } from './utils/file-ops.js';
+import { resolveFilenameConflicts } from './utils/filename.js';
+import { loadIndexConfig, selectTemplate, compileTemplate } from './templates/engine.js';
+import { processAbbreviations, processWikilinks, extractSummary, highlightCode, makeUrlsClickable } from './content/processor.js';
+import { collectAssets, embedAssets, embedImages } from './assets/handler.js';
+import { generateIndex } from './generators/index.js';
+import { generateTagPages } from './generators/tags.js';
+import { generateSearchPage } from './generators/search.js';
+import { generateRSSFeed } from './generators/rss.js';
+import { generateAboutPage } from './generators/about.js';
+import { processSVGCharts } from './plugins/svg-charts.js';
+import { extractCSSColors } from './utils/css-parser.js';
+import { createNewNotebook } from './commands/create-notebook.js';
+import { formatPrettyDate } from './utils/date-format.js';
 
 /**
  * Main compilation function that orchestrates the entire build process.
  */
-function main() {
-  const config = parseArgs(scriptArgs);
-  
-  // Handle create-new-notebook command
-  if (config.command === 'create-notebook') {
-    createNewNotebook(config.targetPath);
-    return;
-  }
-  
-  // Default: compile command
+function compile(config) {
   console.log('Markdown Compiler');
   console.log('Source:', config.source);
   console.log('Output:', config.output);
@@ -149,6 +140,97 @@ function main() {
   
   // Generate RSS feed
   generateRSSFeed(files, config.output, templatesDir, globalVars, assets);
+}
+
+function watch(config) {
+  const mtimes = {};
+  
+  function getModTime(path) {
+    const [stat, err] = os.stat(path);
+    return err ? 0 : stat.mtime;
+  }
+  
+  function scanDir(dir, files = []) {
+    const [entries] = os.readdir(dir);
+    if (!entries) return files;
+    
+    for (const entry of entries) {
+      if (entry === '.' || entry === '..') continue;
+      const path = `${dir}/${entry}`;
+      const [stat] = os.stat(path);
+      if (!stat) continue;
+      
+      if (stat.mode & os.S_IFDIR) {
+        scanDir(path, files);
+      } else {
+        files.push(path);
+      }
+    }
+    return files;
+  }
+  
+  console.log('Watching', config.source, 'for changes...');
+  console.log('Press Ctrl+C to stop');
+  console.log('');
+  
+  // Initial compile
+  compile(config);
+  
+  // Initialize mtimes
+  const files = scanDir(config.source);
+  for (const file of files) {
+    mtimes[file] = getModTime(file);
+  }
+  
+  // Watch loop
+  while (true) {
+    os.sleep(1000);
+    
+    const currentFiles = scanDir(config.source);
+    let changed = false;
+    let changedFiles = [];
+    
+    for (const file of currentFiles) {
+      const mtime = getModTime(file);
+      if (!mtimes[file]) {
+        changed = true;
+        changedFiles.push(file);
+        mtimes[file] = mtime;
+      } else if (mtimes[file] !== mtime) {
+        changed = true;
+        changedFiles.push(file);
+        mtimes[file] = mtime;
+      }
+    }
+    
+    if (changed) {
+      console.log('\n--- Changes detected in:', changedFiles.join(', '), '---\n');
+      try {
+        compile(config);
+      } catch (e) {
+        console.log('Error during compilation:', e.message);
+      }
+    }
+  }
+}
+
+function main() {
+  const config = parseArgs(scriptArgs);
+  
+  // Handle create-new-notebook command
+  if (config.command === 'create-notebook') {
+    createNewNotebook(config.targetPath);
+    return;
+  }
+  
+  // Handle watch mode
+  if (config.watch) {
+    watch(config);
+    return;
+  }
+  
+  // Default: single compilation
+  compile(config);
 }
 
 main();

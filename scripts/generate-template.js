@@ -6,6 +6,11 @@
 import * as std from 'std';
 import * as os from 'os';
 
+// Change to project root (parent of this script's directory) so relative paths work
+const scriptPath = scriptArgs[0];
+const scriptDir = scriptPath.includes('/') ? scriptPath.split('/').slice(0, -1).join('/') : '.';
+os.chdir(scriptDir + '/..');
+
 const SOURCE_DIR = 'test-notebook';
 const OUTPUT_FILE = 'src/templates/notebook-template.js';
 

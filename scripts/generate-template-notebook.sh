@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Change to project root (parent of this script's directory)
+cd "$(dirname "$0")/.."
+
 OUTPUT_FILE="src/templates/notebook-template.js"
 SOURCE_DIR="test-notebook"
 

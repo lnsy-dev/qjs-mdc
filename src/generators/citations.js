@@ -5,7 +5,7 @@
 
 import * as std from 'std';
 import { parse as parseMarkdown } from '../../lib/markdown.js';
-import { parseMatterFromFile } from '../../md-yaml.js';
+import { parseMatterFromFile } from '../../lib/md-yaml.js';
 import { loadTemplate, compileTemplate } from '../templates/engine.js';
 import { embedAssets } from '../assets/handler.js';
 import { sanitizeFilename } from '../utils/filename.js';

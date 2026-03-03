@@ -19,6 +19,7 @@ export function printHelp() {
   console.log('');
   console.log('Options:');
   console.log('  --output, -o    Output directory (required for compilation)');
+  console.log('  --watch, -w     Watch source directory and recompile on changes');
   console.log('  --help, -h      Show this help message');
 }
 
@@ -64,7 +65,8 @@ export function parseArgs(args) {
   const config = {
     command: 'compile',
     source: null,
-    output: null
+    output: null,
+    watch: false
   };
 
   for (let i = 1; i < args.length; i++) {
@@ -75,6 +77,8 @@ export function parseArgs(args) {
       std.exit(0);
     } else if (arg === '--output' || arg === '-o') {
       config.output = args[++i];
+    } else if (arg === '--watch' || arg === '-w') {
+      config.watch = true;
     } else if (!config.source) {
       config.source = arg;
     }
