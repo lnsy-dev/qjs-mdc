@@ -1,7 +1,7 @@
 ---
 publish: true
 title: "SVG Debug: Scatter Plots"
-date: 2026-02-27
+date: 2026-02-27T00:00:00
 tags:
   - debug
   - svg

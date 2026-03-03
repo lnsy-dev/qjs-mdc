@@ -6,6 +6,7 @@
 import * as std from 'std';
 import { loadTemplate, compileTemplate } from '../templates/engine.js';
 import { embedAssets } from '../assets/handler.js';
+import { formatPrettyDate } from '../utils/date-format.js';
 
 /**
  * Generates paginated index pages for all posts.
@@ -35,7 +36,7 @@ export function generateIndex(files, outputDir, templatesDir, globalVars, assets
       postsList += `  <li>
     <h3><a href="${post.outputName}">${post.data.title || 'Untitled'}</a></h3>
     <p>${post.summary}</p>
-    <small>${post.data.date || ''}</small>
+    <small>${formatPrettyDate(post.data.date)}</small>
   </li>\n`;
     }
     postsList += '</ul>\n';

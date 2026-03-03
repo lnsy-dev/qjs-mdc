@@ -1,7 +1,7 @@
 ---
 publish: true
 title: "Getting Started"
-date: 2026-02-28
+date: 2026-02-28T00:00:00
 tags:
   - tutorial
   - guide
@@ -62,7 +62,7 @@ Create `your-post.md`:
 ---
 publish: true
 title: My First Post
-date: 2026-02-27
+date: 2026-02-27T00:00:00
 tags: [hello, world]
 ---
 

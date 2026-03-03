@@ -38,6 +38,7 @@ import { generateRSSFeed } from './src/generators/rss.js';
 import { processSVGCharts } from './src/plugins/svg-charts.js';
 import { extractCSSColors } from './src/utils/css-parser.js';
 import { createNewNotebook } from './src/commands/create-notebook.js';
+import { formatPrettyDate } from './src/utils/date-format.js';
 
 /**
  * Main compilation function that orchestrates the entire build process.
@@ -108,7 +109,8 @@ function main() {
       // Prepare variables
       const vars = Object.assign({}, globalVars, file.data, {
         content: embeddedHtml,
-        summary: file.summary
+        summary: file.summary,
+        date: formatPrettyDate(file.data.date)
       });
       
       // Compile template
