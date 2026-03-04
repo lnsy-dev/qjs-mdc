@@ -77,7 +77,7 @@ This runs an interactive questionnaire (site name, description, author) and scaf
 ### Compile the site
 
 ```sh
-../mdc my-blog/content --output my-blog/site
+./mdc my-blog/content --output my-blog/site
 ```
 
 ### Watch for changes during development
