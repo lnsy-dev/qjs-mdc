@@ -1,4 +1,4 @@
-# pochade-blog
+# qjs-mdc
 
 A fast, self-contained static site generator built with [QuickJS](https://bellard.org/quickjs/). Compiles markdown files with YAML front matter into a fully-featured static website with search, RSS, tag pages, SVG charts, and more. Compiles to a single native binary with no runtime dependencies.
 
@@ -60,30 +60,6 @@ sudo apt install quickjs
 ```
 
 For windows you can use [Windows Prebuilt Binaries](https://github.com/mengmo/QuickJS-Windows-Build) Or use the included binaries.
-
----
-
-## Building
-
-Clone the repository and compile the binary:
-
-```sh
-git clone <repo-url> pochade-blog
-cd pochade-blog
-make
-```
-
-The compiled binary is written to `dist/mdc`.
-
-### Other build targets
-
-| Command | Description |
-|---------|-------------|
-| `make` | Compile `src/compiler.js` to `dist/mdc` |
-| `make install` | Install binary to `/usr/local/bin/mdc` |
-| `make clean` | Remove the `dist/` directory |
-
-The Makefile auto-detects your OS (macOS, Linux, Windows) and uses the appropriate commands and file extensions.
 
 ---
 
@@ -346,7 +322,7 @@ Embed interactive SVG charts directly in markdown using fenced code blocks with 
 
 ### Bar chart
 
-```
+````
 ```chart
 type: bar
 data:
@@ -355,7 +331,7 @@ data:
   - label: Oranges
     value: 17
 ```
-```
+````
 
 ### Supported chart types
 
@@ -413,3 +389,27 @@ npm run build
 ```
 
 Copy the built plugin into your Obsidian vault's `.obsidian/plugins/pochade-blog/` directory and enable it in Obsidian's Community Plugins settings.
+
+
+
+## Building
+
+Clone the repository and compile the binary:
+
+```sh
+git clone git@github.com:lnsy-dev/qjs-mdc.git
+cd qjs-mdc
+make
+```
+
+The compiled binary is written to `dist/mdc`.
+
+### Other build targets
+
+| Command | Description |
+|---------|-------------|
+| `make` | Compile `src/compiler.js` to `dist/mdc` |
+| `make install` | Install binary to `/usr/local/bin/mdc` |
+| `make clean` | Remove the `dist/` directory |
+
+The Makefile auto-detects your OS (macOS, Linux, Windows) and uses the appropriate commands and file extensions.
