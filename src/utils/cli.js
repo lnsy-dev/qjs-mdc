@@ -20,6 +20,7 @@ export function printHelp() {
   console.log('Options:');
   console.log('  --output, -o    Output directory (required for compilation)');
   console.log('  --watch, -w     Watch source directory and recompile on changes');
+  console.log('  --target, -t    Filter files by target value in YAML front matter');
   console.log('  --help, -h      Show this help message');
 }
 
@@ -66,12 +67,13 @@ export function parseArgs(args) {
     command: 'compile',
     source: null,
     output: null,
-    watch: false
+    watch: false,
+    target: null
   };
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
-    
+
     if (arg === '--help' || arg === '-h') {
       printHelp();
       std.exit(0);
@@ -79,6 +81,8 @@ export function parseArgs(args) {
       config.output = args[++i];
     } else if (arg === '--watch' || arg === '-w') {
       config.watch = true;
+    } else if (arg === '--target' || arg === '-t') {
+      config.target = args[++i];
     } else if (!config.source) {
       config.source = arg;
     }

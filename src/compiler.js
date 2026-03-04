@@ -49,6 +49,7 @@ function compile(config) {
   console.log('Markdown Compiler');
   console.log('Source:', config.source);
   console.log('Output:', config.output);
+  if (config.target) console.log('Target:', config.target);
   console.log('');
   
   // Create output directory
@@ -65,7 +66,7 @@ function compile(config) {
   const cssColors = extractCSSColors(assets.css);
   
   // Find and process files
-  let files = findPublishableFiles(config.source);
+  let files = findPublishableFiles(config.source, config.target || null);
   console.log('Found', files.length, 'publishable files');
   
   // Resolve filename conflicts

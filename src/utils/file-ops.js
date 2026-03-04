@@ -84,16 +84,20 @@ export function findFileRecursive(dir, filename) {
 /**
  * Finds all markdown files with publish: true in their front matter.
  * @param {string} sourceDir - Source directory to search
+ * @param {string|null} target - Optional target value to filter by (matches front matter `target` field)
  * @returns {Array<Object>} Array of file objects with path, data, and content
  */
-export function findPublishableFiles(sourceDir) {
+export function findPublishableFiles(sourceDir, target = null) {
   const allFiles = walkDirectory(sourceDir);
   const publishable = [];
-  
+
   for (const filepath of allFiles) {
     try {
       const parsed = parseMatterFromFile(filepath);
       if (parsed.data && parsed.data.publish === true) {
+        if (target !== null && parsed.data.target !== target) {
+          continue;
+        }
         publishable.push({
           path: filepath,
           data: parsed.data,
@@ -104,6 +108,6 @@ export function findPublishableFiles(sourceDir) {
       console.log('Error parsing', filepath, ':', e.message);
     }
   }
-  
+
   return publishable;
 }

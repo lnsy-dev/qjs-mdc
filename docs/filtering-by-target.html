@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag: guide — pochade-blog</title>
+  <title>Filtering by Target — qjs-mdc Notebook</title>
+  <meta name="description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
+<meta name="author" content="LNSY">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="qjs-mdc Notebook">
+<meta property="og:title" content="Filtering by Target">
+<meta property="og:description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc/filtering-by-target.html">
+<meta property="og:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@lindseymysse">
+<meta name="twitter:title" content="Filtering by Target">
+<meta name="twitter:description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
+<meta name="twitter:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://lindseymysse.com/qjs-mdc/filtering-by-target.html">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
@@ -402,26 +424,18 @@ footer {
   </nav>
 </header>
   <main>
-    <h2>Posts tagged: guide</h2>
-<ul class="post-list">
-<li class="post-stub">
-  <h3><a href="filtering-by-target.html">Filtering by Target</a></h3>
-  <p class="post-summary">Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.</p>
-  <small class="post-date">Wednesday, March 4th 2026 at 12:00 AM</small>
-</li>
-<li class="post-stub">
-  <h3><a href="getting-started.html">Getting Started</a></h3>
-  <p class="post-summary">Learn how to build your own static site with qjs-md</p>
-  <small class="post-date">Saturday, February 28th 2026 at 12:00 AM</small>
-</li>
-<li class="post-stub">
-  <h3><a href="setting-up-a-markdown-file.html">Setting Up a Markdown File</a></h3>
-  <p class="post-summary">A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.</p>
-  <small class="post-date">Tuesday, March 3rd 2026 at 12:00 AM</small>
-</li>
-</ul>
-
-    <p><a href="tags.html">&larr; All tags</a></p>
+    <article>
+      <div class="post-meta">
+        <h3>Filtering by Target</h3>
+        <time>Wednesday, March 4th 2026 at 12:00 AM</time>
+      </div>
+      <h1>Filtering by Target</h1><p>The <code>--target</code> flag lets you compile only the markdown files intended for a specific destination, using the <code>target</code> field in YAML front matter.</p><h2>Front Matter</h2><p>Add a <code>target</code> field to any markdown file:</p><pre class="code language-markdown"><code>---
+publish: true
+title: My Post
+date: 2026-03-04T00:00:00
+target: tiny-ag.blog
+---</code></pre><h2>Usage</h2><pre class="code language-bash"><code>./mdc notebook --output docs --target tiny-ag.blog</code></pre><p>Only files where <code>target: tiny-ag.blog</code> will be compiled. Files with a different <code>target</code> value or no <code>target</code> field are skipped.</p><h2>Without the Flag</h2><p>Running without <code>--target</code> compiles all publishable files regardless of their <code>target</code> field:</p><pre class="code language-bash"><code>./mdc notebook --output docs</code></pre><p>This is the default behavior and is backwards-compatible — existing files without a <code>target</code> field continue to work as before.</p>
+    </article>
   </main>
   <footer>
   <p>made with love by <a href="http://lindseymysse.com/">LNSY</a></p>

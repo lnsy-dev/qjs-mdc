@@ -14,6 +14,7 @@ A fast, self-contained static site generator built with [QuickJS](https://bellar
 - [Commands](#commands)
 - [Project Structure](#project-structure)
 - [Writing Content](#writing-content)
+  - [Target Filtering](#target-filtering)
 - [Configuration](#configuration)
 - [Templates](#templates)
 - [SVG Charts](#svg-charts)
@@ -92,18 +93,20 @@ Open `my-blog/site/index.html` in a browser to view your site.
 ## Commands
 
 ```
-./mdc <source> --output <output>          Compile markdown files to a static site
-./mdc <source> --output <output> --watch  Compile and watch for file changes
-./mdc create-new-notebook <target-dir>    Scaffold a new blog/notebook
-./mdc --help                              Show help text
+./mdc <source> --output <output>                        Compile markdown files to a static site
+./mdc <source> --output <output> --watch                Compile and watch for file changes
+./mdc <source> --output <output> --target <value>       Compile only files matching a target
+./mdc create-new-notebook <target-dir>                  Scaffold a new blog/notebook
+./mdc --help                                            Show help text
 ```
 
 ### Flags
 
 | Flag | Short | Description |
 |------|-------|-------------|
-| `--output <dir>` | | Output directory for compiled HTML |
+| `--output <dir>` | `-o` | Output directory for compiled HTML |
 | `--watch` | `-w` | Watch source files and recompile on change |
+| `--target <value>` | `-t` | Filter files by `target` field in front matter |
 | `--help` | `-h` | Print usage information |
 
 ---
@@ -161,6 +164,30 @@ Your markdown content begins here.
 | `type` | No | Template selector (e.g. `post`). Falls back to `post.html` then `default.html` |
 | `author` | No | Post author name |
 | `publish` | Yes | Must be `true` to include the file in output |
+| `target` | No | Destination identifier used with `--target` to filter output |
+
+### Target filtering
+
+If you maintain multiple output destinations from a single notebook, set a `target` field in your front matter:
+
+```yaml
+---
+publish: true
+title: My Post
+date: 2026-03-04
+target: tiny-ag.blog
+---
+```
+
+Then compile only files for that destination:
+
+```sh
+./mdc notebook --output site --target tiny-ag.blog
+```
+
+Files with a different `target` value, or no `target` field at all, are skipped. Omitting `--target` compiles all publishable files regardless of their `target` value.
+
+---
 
 ### Wikilinks
 
