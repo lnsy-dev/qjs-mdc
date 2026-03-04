@@ -68,7 +68,7 @@ For windows you can use [Windows Prebuilt Binaries](https://github.com/mengmo/Qu
 ### Create a new blog
 
 ```sh
-mdc create-new-notebook my-blog
+./mdc create-new-notebook my-blog
 ```
 
 This runs an interactive questionnaire (site name, description, author) and scaffolds a complete directory structure.
@@ -92,10 +92,10 @@ Open `my-blog/site/index.html` in a browser to view your site.
 ## Commands
 
 ```
-mdc <source> --output <output>          Compile markdown files to a static site
-mdc <source> --output <output> --watch  Compile and watch for file changes
-mdc create-new-notebook <target-dir>    Scaffold a new blog/notebook
-mdc --help                              Show help text
+./mdc <source> --output <output>          Compile markdown files to a static site
+./mdc <source> --output <output> --watch  Compile and watch for file changes
+./mdc create-new-notebook <target-dir>    Scaffold a new blog/notebook
+./mdc --help                              Show help text
 ```
 
 ### Flags
