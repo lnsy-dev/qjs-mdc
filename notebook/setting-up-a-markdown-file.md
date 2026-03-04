@@ -7,7 +7,6 @@ tags:
   - guide
 summary: A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.
 ---
-
 # Setting Up a Markdown File
 
 This memo covers how to name and configure a markdown file so it compiles correctly with qjs-mdc

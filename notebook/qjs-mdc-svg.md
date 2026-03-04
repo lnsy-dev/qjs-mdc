@@ -1,13 +1,13 @@
 ---
 publish: true
-title: "Obsidian Chart Plugin Test"
+title: QJS-MDC SVG without JS!
 date: 2026-02-28T00:00:00
 tags:
   - test
   - charts
   - obsidian
 ---
-# MDC Charts
+# Interactive SVG Charts (with no Javascript!)
 
 In addition to rendering code blocks, mdc will render svg charts with 
 

@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 OUTPUT_FILE="src/templates/notebook-template.js"
-SOURCE_DIR="test-notebook"
+SOURCE_DIR="notebook"
 
 echo "Generating notebook template from $SOURCE_DIR..."
 

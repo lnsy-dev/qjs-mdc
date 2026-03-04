@@ -5,7 +5,7 @@
     <link>https://lindseymysse.com/qjs-mdc</link>
     <description>Public Documentation for qjs-mdc.</description>
     <atom:link href="https://lindseymysse.com/qjs-mdc/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 03 Mar 2026 23:22:28 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 04 Mar 2026 00:06:39 GMT</lastBuildDate>
     <item>
       <title>The Case for Static, No Javascript Sites in 2026</title>
       <link>https://lindseymysse.com/qjs-mdc/the-case-for-static-no-javascript-sites-in-2026.html</link>
@@ -25,9 +25,9 @@
       <category>guide</category>
     </item>
     <item>
-      <title>Obsidian Chart Plugin Test</title>
-      <link>https://lindseymysse.com/qjs-mdc/obsidian-chart-plugin-test.html</link>
-      <guid>https://lindseymysse.com/qjs-mdc/obsidian-chart-plugin-test.html</guid>
+      <title>QJS-MDC SVG without JS!</title>
+      <link>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</guid>
       <description>In addition to rendering code blocks, mdc will render svg charts with</description>
       <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
       <category>test</category>
