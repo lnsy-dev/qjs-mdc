@@ -63,24 +63,6 @@ For windows you can use [Windows Prebuilt Binaries](https://github.com/mengmo/Qu
 
 ---
 
-## Installation
-
-After building, install the binary system-wide:
-
-```sh
-make install
-```
-
-This copies `dist/mdc` to `/usr/local/bin/mdc` so you can run `mdc` from anywhere.
-
-Alternatively, use the included shell wrapper during development without installing:
-
-```sh
-./mdc <source-directory> --output <output-directory>
-```
-
----
-
 ## Quick Start
 
 ### Create a new blog
@@ -94,13 +76,13 @@ This runs an interactive questionnaire (site name, description, author) and scaf
 ### Compile the site
 
 ```sh
-mdc my-blog/content --output my-blog/site
+../mdc my-blog/content --output my-blog/site
 ```
 
 ### Watch for changes during development
 
 ```sh
-mdc my-blog/content --output my-blog/site --watch
+./mdc my-blog/content --output my-blog/site --watch
 ```
 
 Open `my-blog/site/index.html` in a browser to view your site.
@@ -404,6 +386,17 @@ make
 ```
 
 The compiled binary is written to `dist/mdc`.
+
+## Installation
+
+After building, install the binary system-wide:
+
+```sh
+make install
+```
+
+This copies `dist/mdc` to `/usr/local/bin/mdc` so you can run `mdc` from anywhere.
+
 
 ### Other build targets
 
