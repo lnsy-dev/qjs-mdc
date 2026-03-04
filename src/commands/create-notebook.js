@@ -47,12 +47,12 @@ function replaceTemplateVars(content, vars) {
 
 function ensureDir(path) {
   const parts = path.split('/');
-  let current = '';
-  
+  let current = path.startsWith('/') ? '/' : '';
+
   for (const part of parts) {
     if (!part) continue;
-    current += (current ? '/' : '') + part;
-    
+    current = current === '/' ? `/${part}` : (current ? `${current}/${part}` : part);
+
     const [st] = os.stat(current);
     if (!st) {
       os.mkdir(current, 0o755);
@@ -84,7 +84,7 @@ function createNotebook(targetPath, answers) {
     // Write file
     const f = std.open(fullPath, 'w');
     if (!f) {
-      console.error(`Failed to create ${fullPath}`);
+      console.log(`Failed to create ${fullPath}`);
       continue;
     }
     f.puts(processedContent);
@@ -100,14 +100,14 @@ function createNotebook(targetPath, answers) {
 
 export function createNewNotebook(targetPath) {
   if (!targetPath) {
-    console.error('Error: Target path is required');
+    console.log('Error: Target path is required');
     std.exit(1);
   }
   
   // Check if target already exists
   const [st] = os.stat(targetPath);
   if (st) {
-    console.error(`Error: Directory ${targetPath} already exists`);
+    console.log(`Error: Directory ${targetPath} already exists`);
     std.exit(1);
   }
   

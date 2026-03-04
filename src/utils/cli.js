@@ -50,7 +50,7 @@ export function parseArgs(args) {
   // Check for create-new-notebook command
   if (firstArg === 'create-new-notebook') {
     if (!args[2]) {
-      console.error('Error: Target directory is required for create-new-notebook');
+      console.log('Error: Target directory is required for create-new-notebook');
       console.log('Usage: mdc create-new-notebook <target-directory>');
       std.exit(1);
     }
