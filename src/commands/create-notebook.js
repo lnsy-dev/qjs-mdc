@@ -16,15 +16,21 @@ function promptUser(question) {
 function runQuestionnaire() {
   console.log('Create New Notebook');
   console.log('==================\n');
-  
+
   const siteName = promptUser('Site name');
   const siteDescription = promptUser('Site description');
-  const author = promptUser('Author');
-  
+  const siteUrl = promptUser('Site URL (e.g. https://example.com/blog)');
+  const author = promptUser('Author name');
+  const twitterHandle = promptUser('Twitter/X handle (e.g. @username, optional)');
+  const ogImage = promptUser('Default social image URL (optional)');
+
   return {
     site_name: siteName || 'My Notebook',
     site_description: siteDescription || 'A notebook built with qjs-md',
-    author: author || 'Anonymous'
+    site_url: siteUrl || 'https://example.com',
+    author: author || 'Anonymous',
+    twitter_handle: twitterHandle || '',
+    og_image: ogImage || ''
   };
 }
 
@@ -32,7 +38,10 @@ function replaceTemplateVars(content, vars) {
   let result = content;
   result = result.replace(/\{\{site_name\}\}/g, vars.site_name);
   result = result.replace(/\{\{site_description\}\}/g, vars.site_description);
+  result = result.replace(/\{\{site_url\}\}/g, vars.site_url);
   result = result.replace(/\{\{author\}\}/g, vars.author);
+  result = result.replace(/\{\{twitter_handle\}\}/g, vars.twitter_handle);
+  result = result.replace(/\{\{og_image\}\}/g, vars.og_image);
   return result;
 }
 

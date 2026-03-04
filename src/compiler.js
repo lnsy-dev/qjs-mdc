@@ -116,7 +116,8 @@ function compile(config) {
       const vars = Object.assign({}, globalVars, file.data, {
         content: embeddedHtml,
         summary: file.summary,
-        date: formatPrettyDate(file.data.date)
+        date: formatPrettyDate(file.data.date),
+        page_slug: file.outputName
       });
       
       // Compile template

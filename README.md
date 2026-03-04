@@ -53,6 +53,14 @@ Install QuickJS on macOS via Homebrew:
 brew install quickjs
 ```
 
+On Linux use:
+
+```sh
+sudo apt install quickjs
+```
+
+For windows you can use [Windows Prebuilt Binaries](https://github.com/mengmo/QuickJS-Windows-Build) Or use the included binaries.
+
 ---
 
 ## Building

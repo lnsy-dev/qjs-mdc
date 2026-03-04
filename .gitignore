@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 .kiro/
+.claude
 test-notebook/
 test-website/
 dist/
