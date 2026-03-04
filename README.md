@@ -126,61 +126,6 @@ mdc --help                              Show help text
 
 ---
 
-## Project Structure
-
-```
-pochade-blog/
-├── src/                        # Core compiler source
-│   ├── compiler.js             # Main compilation pipeline
-│   ├── assets/
-│   │   └── handler.js          # CSS/JS asset collection and embedding
-│   ├── commands/
-│   │   └── create-notebook.js  # Notebook scaffolding command
-│   ├── content/
-│   │   └── processor.js        # Wikilinks, abbreviations, URL linking, highlighting
-│   ├── generators/
-│   │   ├── index.js            # Paginated index page generation
-│   │   ├── tags.js             # Tag pages and tag index
-│   │   ├── search.js           # Search page and search-data.json
-│   │   ├── rss.js              # RSS 2.0 feed generation
-│   │   └── about.js            # About page generation
-│   ├── plugins/
-│   │   └── svg-charts.js       # SVG chart code block processing
-│   ├── templates/
-│   │   └── engine.js           # Template loader and variable substitution
-│   └── utils/
-│       ├── cli.js              # Argument parsing and help text
-│       ├── date-format.js      # Human-readable date formatting
-│       ├── file-ops.js         # Directory walking and markdown discovery
-│       └── filename.js         # Filename sanitization and conflict resolution
-├── lib/                        # Bundled libraries
-│   ├── markdown.js             # Snarkdown-based markdown parser
-│   ├── md-yaml.js              # YAML front matter parser
-│   └── fuzzy-search.js         # Client-side fuzzy search
-├── plugins/                    # Syntax highlighter and SVG plugins
-│   ├── js.js                   # JavaScript/TypeScript highlighter
-│   ├── py.js                   # Python highlighter
-│   ├── rs.js                   # Rust highlighter
-│   ├── rb.js                   # Ruby highlighter
-│   ├── c.js                    # C highlighter
-│   ├── json.js                 # JSON highlighter
-│   ├── yaml.js                 # YAML highlighter
-│   ├── toml.js                 # TOML highlighter
-│   ├── css.js                  # CSS highlighter
-│   ├── html.js                 # HTML highlighter
-│   └── svg/                    # SVG chart rendering system
-│       ├── src/renderers/      # Bar, scatter, line, donut, heikin-ashi, map
-│       └── src/utils/          # SVG utilities (patterns, CSS, error handling)
-├── pochade-blog-obsidian-plugin/  # Obsidian.md integration plugin
-│   ├── main.js
-│   └── src/
-├── scripts/                    # Build helper scripts
-│   └── generate-template.js    # Bundles template for notebook scaffolding
-├── dist/                       # Compiled binary output (git-ignored)
-├── docs/                       # Additional documentation
-├── Makefile                    # Build configuration
-└── mdc                         # Shell wrapper for development
-```
 
 ### Output structure
 
@@ -391,6 +336,62 @@ npm run build
 Copy the built plugin into your Obsidian vault's `.obsidian/plugins/pochade-blog/` directory and enable it in Obsidian's Community Plugins settings.
 
 
+
+## Project Structure
+
+```
+pochade-blog/
+├── src/                        # Core compiler source
+│   ├── compiler.js             # Main compilation pipeline
+│   ├── assets/
+│   │   └── handler.js          # CSS/JS asset collection and embedding
+│   ├── commands/
+│   │   └── create-notebook.js  # Notebook scaffolding command
+│   ├── content/
+│   │   └── processor.js        # Wikilinks, abbreviations, URL linking, highlighting
+│   ├── generators/
+│   │   ├── index.js            # Paginated index page generation
+│   │   ├── tags.js             # Tag pages and tag index
+│   │   ├── search.js           # Search page and search-data.json
+│   │   ├── rss.js              # RSS 2.0 feed generation
+│   │   └── about.js            # About page generation
+│   ├── plugins/
+│   │   └── svg-charts.js       # SVG chart code block processing
+│   ├── templates/
+│   │   └── engine.js           # Template loader and variable substitution
+│   └── utils/
+│       ├── cli.js              # Argument parsing and help text
+│       ├── date-format.js      # Human-readable date formatting
+│       ├── file-ops.js         # Directory walking and markdown discovery
+│       └── filename.js         # Filename sanitization and conflict resolution
+├── lib/                        # Bundled libraries
+│   ├── markdown.js             # Snarkdown-based markdown parser
+│   ├── md-yaml.js              # YAML front matter parser
+│   └── fuzzy-search.js         # Client-side fuzzy search
+├── plugins/                    # Syntax highlighter and SVG plugins
+│   ├── js.js                   # JavaScript/TypeScript highlighter
+│   ├── py.js                   # Python highlighter
+│   ├── rs.js                   # Rust highlighter
+│   ├── rb.js                   # Ruby highlighter
+│   ├── c.js                    # C highlighter
+│   ├── json.js                 # JSON highlighter
+│   ├── yaml.js                 # YAML highlighter
+│   ├── toml.js                 # TOML highlighter
+│   ├── css.js                  # CSS highlighter
+│   ├── html.js                 # HTML highlighter
+│   └── svg/                    # SVG chart rendering system
+│       ├── src/renderers/      # Bar, scatter, line, donut, heikin-ashi, map
+│       └── src/utils/          # SVG utilities (patterns, CSS, error handling)
+├── pochade-blog-obsidian-plugin/  # Obsidian.md integration plugin
+│   ├── main.js
+│   └── src/
+├── scripts/                    # Build helper scripts
+│   └── generate-template.js    # Bundles template for notebook scaffolding
+├── dist/                       # Compiled binary output (git-ignored)
+├── docs/                       # Additional documentation
+├── Makefile                    # Build configuration
+└── mdc                         # Shell wrapper for development
+```
 
 ## Building
 
