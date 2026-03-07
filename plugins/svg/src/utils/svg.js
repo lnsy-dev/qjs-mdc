@@ -7,7 +7,7 @@ export function escapeXML(text) {
     .replace(/'/g, '&apos;');
 }
 
-export function createSVGContainer(width, height, name, description, captionHeight = 80) {
+export function createSVGContainer(width, height, name, description, captionHeight = 150) {
   const totalHeight = height + captionHeight;
   let attrs = `xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${totalHeight}" role="img" style="overflow: hidden"`;
   
@@ -20,8 +20,8 @@ export function createSVGContainer(width, height, name, description, captionHeig
   
   let svg = `<svg ${attrs}>\n`;
   svg += `  <style>\n`;
-  svg += `    .label-group { opacity: 0; pointer-events: none; }\n`;
-  svg += `    .chart-item:focus-within .label-group { opacity: 1; }\n`;
+  svg += `    .label-group { display: none; }\n`;
+  svg += `    .chart-item:focus-within .label-group { display: block; }\n`;
   svg += `    text { font-family: inherit; fill: currentColor; }\n`;
   svg += `    a { cursor: pointer; outline: none; }\n`;
   svg += `  </style>\n`;
@@ -40,18 +40,59 @@ export function closeSVGContainer() {
   return '</svg>';
 }
 
+function prettyKey(key) {
+  return key
+    .replace(/[-_]/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
 export function createDataLabelGroup(id, x, y, data, width = 400) {
   if (!data || Object.keys(data).length === 0) return '';
-  
-  let svg = `  <g class="label-group" data-for="${id}">\n`;
+
+  const lineHeight = 20;
   const parts = [];
   for (const key in data) {
     if (data[key] !== undefined && data[key] !== null) {
-      parts.push(`${key}: ${data[key]}`);
+      parts.push(`${prettyKey(key)}: ${data[key]}`);
     }
   }
-  const text = parts.join(', ');
-  svg += `    <text x="${x}" y="${y}" text-anchor="middle" font-size="14" font-weight="bold">${escapeXML(text)}</text>\n`;
+
+  let svg = `  <g class="label-group" data-for="${id}">\n`;
+  svg += `    <text x="${x}" y="${y}" text-anchor="middle" font-size="14" font-weight="bold">\n`;
+  parts.forEach((part, i) => {
+    const dy = i === 0 ? 0 : lineHeight;
+    svg += `      <tspan x="${x}" dy="${dy}">${escapeXML(part)}</tspan>\n`;
+  });
+  svg += `    </text>\n`;
+  svg += `  </g>\n`;
+  return svg;
+}
+
+export function createMapDataLabelGroup(id, data, mapHeight, width = 800, captionHeight = 150) {
+  if (!data || Object.keys(data).length === 0) return '';
+
+  const parts = [];
+  for (const key in data) {
+    if (data[key] !== undefined && data[key] !== null) {
+      parts.push({ key: prettyKey(key), value: String(data[key]) });
+    }
+  }
+
+  const lineHeight = 18;
+  const padding = 8;
+  const fontSize = 13;
+
+  // Native SVG elements — no foreignObject, fully Safari-compatible.
+  // Caption renders below the map at y=mapHeight.
+  let svg = `  <g class="label-group" data-for="${id}">\n`;
+  svg += `    <rect x="0" y="${mapHeight}" width="${width}" height="${captionHeight}" style="fill:var(--caption-bg,var(--background,var(--bg,white)));stroke:none"/>\n`;
+  svg += `    <text style="font-size:${fontSize}px;font-family:inherit;fill:var(--caption-color,var(--foreground,var(--fg,black)))">\n`;
+  parts.forEach(({ key, value }, i) => {
+    const y = mapHeight + padding + fontSize + i * lineHeight;
+    svg += `      <tspan x="${padding}" y="${y}">${escapeXML(key)}: ${escapeXML(value)}</tspan>\n`;
+  });
+  svg += `    </text>\n`;
   svg += `  </g>\n`;
   return svg;
 }

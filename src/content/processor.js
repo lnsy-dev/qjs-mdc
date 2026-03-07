@@ -3,6 +3,8 @@
  * Handles wikilinks, abbreviations, URL linking, code highlighting, and summary extraction.
  */
 
+import { parse as parseMarkdown } from '../../lib/markdown.js';
+
 /**
  * Processes wikilink syntax [[link text]] by converting to HTML links.
  * @param {string} content - Markdown content with wikilinks
@@ -137,17 +139,23 @@ export function highlightCode(html) {
  * @returns {string} Summary text (max 200 chars)
  */
 export function extractSummary(file) {
+  let raw = '';
+
   if (file.data.summary) {
-    return file.data.summary;
-  }
-  
-  const paragraphs = file.content.split(/\n\n+/);
-  for (const para of paragraphs) {
-    const trimmed = para.trim();
-    if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('```')) {
-      return trimmed.replace(/\n/g, ' ').substring(0, 200);
+    raw = file.data.summary;
+  } else {
+    const paragraphs = file.content.split(/\n\n+/);
+    for (const para of paragraphs) {
+      const trimmed = para.trim();
+      if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('```')) {
+        raw = trimmed.replace(/\n/g, ' ').substring(0, 200);
+        break;
+      }
     }
   }
-  
-  return '';
+
+  if (!raw) return '';
+
+  const html = parseMarkdown(raw);
+  return html.replace(/^<p>([\s\S]*?)<\/p>\s*$/, '$1');
 }

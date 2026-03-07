@@ -36,7 +36,8 @@ export function generateTagPages(files, outputDir, templatesDir, globalVars, ass
   }
   
   // Generate individual tag pages
-  const stubTemplate = loadTemplate(templatesDir, 'stub.html');
+  const stubTemplate = loadTemplate(templatesDir, 'stub.html') ||
+    '<li class="post-stub"><h3><a href="{{url}}">{{title}}</a></h3><p class="post-summary">{{summary}}</p><small class="post-date">{{date}}</small></li>\n';
   for (const [tag, posts] of tagMap) {
     const sanitized = sanitizeFilename(tag);
     let postsList = `<h2>Posts tagged: ${tag}</h2>\n<ul class="post-list">\n`;

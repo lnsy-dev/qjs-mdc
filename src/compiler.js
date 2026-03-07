@@ -50,21 +50,44 @@ function compile(config) {
   console.log('Source:', config.source);
   console.log('Output:', config.output);
   if (config.target) console.log('Target:', config.target);
+  if (config.force) console.log('Force: rebuilding all files');
   console.log('');
   
   // Create output directory
   os.mkdir(config.output, 0o755);
   
-  // Load global config
-  const globalVars = loadIndexConfig(config.source);
-  const templatesDir = `${config.source}/templates`;
-  
+  // Use output templates dir if it exists, otherwise fall back to source templates
+  const outputTemplatesDir = `${config.output}/templates`;
+  const [outputTemplatesStat] = os.stat(outputTemplatesDir);
+  const assetsSource = (outputTemplatesStat && (outputTemplatesStat.mode & os.S_IFDIR)) ? config.output : config.source;
+  const templatesDir = `${assetsSource}/templates`;
+
+  // Load global config (prefer output templates dir if it has index.json)
+  const globalVars = loadIndexConfig(assetsSource);
+
+  if (assetsSource !== config.source) {
+    console.log('Templates: using output templates dir');
+  }
+
   // Collect CSS and JS assets
-  const assets = collectAssets(config.source);
+  const assets = collectAssets(assetsSource);
   
   // Extract CSS colors for SVG rendering
   const cssColors = extractCSSColors(assets.css);
   
+  // Get the newest mtime among all template files (used for unchanged check)
+  const templatesMtime = (() => {
+    const [entries] = os.readdir(templatesDir);
+    if (!entries) return 0;
+    let newest = 0;
+    for (const entry of entries) {
+      if (entry === '.' || entry === '..') continue;
+      const [stat] = os.stat(`${templatesDir}/${entry}`);
+      if (stat && stat.mtime > newest) newest = stat.mtime;
+    }
+    return newest;
+  })();
+
   // Find and process files
   let files = findPublishableFiles(config.source, config.target || null);
   console.log('Found', files.length, 'publishable files');
@@ -80,12 +103,14 @@ function compile(config) {
     try {
       const outputPath = `${config.output}/${file.outputName}`;
 
-      // Skip if output is newer than source
-      const [srcStat] = os.stat(file.path);
-      const [outStat] = os.stat(outputPath);
-      if (srcStat && outStat && outStat.mtime >= srcStat.mtime) {
-        console.log('-', file.outputName, '(unchanged)');
-        continue;
+      // Skip if output is newer than source and templates (unless --force)
+      if (!config.force) {
+        const [srcStat] = os.stat(file.path);
+        const [outStat] = os.stat(outputPath);
+        if (srcStat && outStat && outStat.mtime >= srcStat.mtime && outStat.mtime >= templatesMtime) {
+          console.log('-', file.outputName, '(unchanged)');
+          continue;
+        }
       }
       
       // Process abbreviations and wikilinks BEFORE markdown parsing
@@ -113,12 +138,21 @@ function compile(config) {
       // Select template
       const template = selectTemplate(file, templatesDir);
       
+      // Build tags HTML
+      const rawTags = file.data.tags || [];
+      const tagArray = Array.isArray(rawTags) ? rawTags : [rawTags];
+      const tagsHtml = tagArray.filter(Boolean).map(tag => {
+        const sanitized = String(tag).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        return `<a href="tag-${sanitized}.html" class="tag">${tag}</a>`;
+      }).join(' ');
+
       // Prepare variables
       const vars = Object.assign({}, globalVars, file.data, {
         content: embeddedHtml,
         summary: file.summary,
         date: formatPrettyDate(file.data.date),
-        page_slug: file.outputName
+        page_slug: file.outputName,
+        tags: tagsHtml
       });
       
       // Compile template

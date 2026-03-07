@@ -241,6 +241,21 @@ li {
   background: #ddd;
 }
 
+a.tag {
+  display: inline-block;
+  background: var(--neutral-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--highlight-color);
+  font-size: 0.8rem;
+  margin-right: 0.25rem;
+}
+
+a.tag:hover {
+  background: #ddd;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

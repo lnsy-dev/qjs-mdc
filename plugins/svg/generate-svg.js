@@ -45,7 +45,8 @@ function main() {
   
   const renderer = getRenderer(chartType);
   
-  let svg = createSVGContainer(config.width, config.height, config.name, config.description);
+  const captionHeight = chartType === 'map' ? 150 : undefined;
+  let svg = createSVGContainer(config.width, config.height, config.name, config.description, captionHeight);
   svg += generatePatternDefs();
   svg += renderer.render(mappedData, config.width, config.height, config);
   svg += closeSVGContainer();

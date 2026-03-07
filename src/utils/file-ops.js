@@ -3,44 +3,26 @@
  * Handles recursive directory traversal and filtering publishable content.
  */
 
-import * as os from 'os';
+import * as std from 'std';
 import { parseMatterFromFile } from '../../lib/md-yaml.js';
+
+function runCommand(cmd) {
+  const pipe = std.popen(cmd, 'r');
+  if (!pipe) return '';
+  const output = pipe.readAsString();
+  pipe.close();
+  return output;
+}
 
 /**
  * Recursively walks a directory tree and collects all markdown file paths.
+ * Uses `find` to skip dot-folders and return only .md files.
  * @param {string} dir - Directory path to walk
- * @param {Array<string>} files - Accumulator array for file paths
  * @returns {Array<string>} Array of markdown file paths
  */
-export function walkDirectory(dir, files = []) {
-  try {
-    const result = os.readdir(dir);
-    
-    if (!result || result[1] !== 0) {
-      return files;
-    }
-    
-    const entriesStr = String(result[0]);
-    const entries = entriesStr.split(',');
-    
-    for (let i = 0; i < entries.length; i++) {
-      const entry = entries[i];
-      if (entry === '.' || entry === '..' || !entry) continue;
-      
-      const fullPath = dir + '/' + entry;
-      const [st, err] = os.stat(fullPath);
-      
-      if (!err && (st.mode & os.S_IFDIR)) {
-        walkDirectory(fullPath, files);
-      } else if (fullPath.endsWith('.md')) {
-        files.push(fullPath);
-      }
-    }
-  } catch (e) {
-    // Directory error
-  }
-  
-  return files;
+export function walkDirectory(dir) {
+  const output = runCommand(`find '${dir}' -not -path '*/.*' -name '*.md'`);
+  return output.trim().split('\n').filter(f => f.length > 0);
 }
 
 /**
@@ -50,48 +32,32 @@ export function walkDirectory(dir, files = []) {
  * @returns {string|null} Full path to first matching file, or null if not found
  */
 export function findFileRecursive(dir, filename) {
-  try {
-    const result = os.readdir(dir);
-    
-    if (!result || result[1] !== 0) {
-      return null;
-    }
-    
-    const entriesStr = String(result[0]);
-    const entries = entriesStr.split(',');
-    
-    for (let i = 0; i < entries.length; i++) {
-      const entry = entries[i];
-      if (entry === '.' || entry === '..' || !entry) continue;
-      
-      const fullPath = dir + '/' + entry;
-      const [st, err] = os.stat(fullPath);
-      
-      if (!err && (st.mode & os.S_IFDIR)) {
-        const found = findFileRecursive(fullPath, filename);
-        if (found) return found;
-      } else if (entry === filename) {
-        return fullPath;
-      }
-    }
-  } catch (e) {
-    // Directory error
-  }
-  
-  return null;
+  const output = runCommand(`find '${dir}' -not -path '*/.*' -name '${filename}' 2>/dev/null | head -1`);
+  return output.trim() || null;
 }
 
 /**
  * Finds all markdown files with publish: true in their front matter.
+ * Uses grep to pre-filter candidates before parsing, avoiding full directory traversal.
+ * Handles both space- and tab-indented YAML front matter.
  * @param {string} sourceDir - Source directory to search
  * @param {string|null} target - Optional target value to filter by (matches front matter `target` field)
  * @returns {Array<Object>} Array of file objects with path, data, and content
  */
 export function findPublishableFiles(sourceDir, target = null) {
-  const allFiles = walkDirectory(sourceDir);
+  // Use grep to find only .md files containing 'publish: true', excluding dot-folders.
+  // Pattern handles leading spaces or tabs (tab-indented YAML front matter).
+  let cmd = `grep -rlE --include='*.md' '^[[:space:]]*publish:[[:space:]]*true' '${sourceDir}' | grep -v '/\\.'`;
+
+  if (target !== null) {
+    cmd += ` | xargs grep -lE '^[[:space:]]*target:[[:space:]]*${target}[[:space:]]*$'`;
+  }
+
+  const output = runCommand(cmd);
+  const candidateFiles = output.trim().split('\n').filter(f => f.length > 0);
   const publishable = [];
 
-  for (const filepath of allFiles) {
+  for (const filepath of candidateFiles) {
     try {
       const parsed = parseMatterFromFile(filepath);
       if (parsed.data && parsed.data.publish === true) {

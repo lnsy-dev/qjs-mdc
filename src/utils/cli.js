@@ -21,6 +21,7 @@ export function printHelp() {
   console.log('  --output, -o    Output directory (required for compilation)');
   console.log('  --watch, -w     Watch source directory and recompile on changes');
   console.log('  --target, -t    Filter files by target value in YAML front matter');
+  console.log('  --force, -f     Force rebuild of all files, ignoring modification times');
   console.log('  --help, -h      Show this help message');
 }
 
@@ -68,7 +69,8 @@ export function parseArgs(args) {
     source: null,
     output: null,
     watch: false,
-    target: null
+    target: null,
+    force: false
   };
 
   for (let i = 1; i < args.length; i++) {
@@ -83,6 +85,8 @@ export function parseArgs(args) {
       config.watch = true;
     } else if (arg === '--target' || arg === '-t') {
       config.target = args[++i];
+    } else if (arg === '--force' || arg === '-f') {
+      config.force = true;
     } else if (!config.source) {
       config.source = arg;
     }

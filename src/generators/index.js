@@ -31,7 +31,8 @@ export function generateIndex(files, outputDir, templatesDir, globalVars, assets
     const end = start + postsPerPage;
     const pagePosts = sortedFiles.slice(start, end);
     
-    const stubTemplate = loadTemplate(templatesDir, 'stub.html');
+    const stubTemplate = loadTemplate(templatesDir, 'stub.html') ||
+      '<li class="post-stub"><h3><a href="{{url}}">{{title}}</a></h3><p class="post-summary">{{summary}}</p><small class="post-date">{{date}}</small></li>\n';
     let postsList = '<ul class="post-list">\n';
     for (const post of pagePosts) {
       postsList += substituteVariables(stubTemplate, {

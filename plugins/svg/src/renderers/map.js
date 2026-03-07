@@ -1,4 +1,4 @@
-import { circle, path, createDataLabelGroup } from '../utils/svg.js';
+import { circle, path, createMapDataLabelGroup, escapeXML } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
 import { createProjection } from '../utils/geo.js';
 
@@ -197,6 +197,63 @@ function renderGeometryCollection(feature, project, externallyStyled, index, ico
   return svg;
 }
 
+function computeLabelPoint(feature, project) {
+  const type = feature.geometry.type;
+  const coords = feature.geometry.coordinates;
+
+  switch (type) {
+    case 'Point': {
+      const [x, y] = project(coords);
+      return { x, y, offsetY: -10 };
+    }
+    case 'MultiPoint': {
+      const [x, y] = project(coords[0]);
+      return { x, y, offsetY: -10 };
+    }
+    case 'LineString': {
+      const [x, y] = project(coords[Math.floor(coords.length / 2)]);
+      return { x, y, offsetY: -6 };
+    }
+    case 'MultiLineString': {
+      const line = coords[0];
+      const [x, y] = project(line[Math.floor(line.length / 2)]);
+      return { x, y, offsetY: -6 };
+    }
+    case 'Polygon': {
+      const ring = coords[0];
+      let sx = 0, sy = 0;
+      ring.forEach(c => { const [px, py] = project(c); sx += px; sy += py; });
+      return { x: sx / ring.length, y: sy / ring.length, offsetY: 0 };
+    }
+    case 'MultiPolygon': {
+      const ring = coords[0][0];
+      let sx = 0, sy = 0;
+      ring.forEach(c => { const [px, py] = project(c); sx += px; sy += py; });
+      return { x: sx / ring.length, y: sy / ring.length, offsetY: 0 };
+    }
+    default: return null;
+  }
+}
+
+function renderFeatureLabel(feature, project) {
+  const label = feature.properties?.label;
+  if (!label) return '';
+  const pt = computeLabelPoint(feature, project);
+  if (!pt) return '';
+  const style = [
+    'font-family:inherit',
+    'font-size:12px',
+    'text-anchor:middle',
+    'dominant-baseline:auto',
+    'pointer-events:none',
+    'paint-order:stroke',
+    'stroke:white',
+    'stroke-width:3',
+    'stroke-linejoin:round',
+  ].join(';');
+  return `  <text x="${pt.x}" y="${pt.y + pt.offsetY}" style="${style}">${escapeXML(label)}</text>\n`;
+}
+
 function renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId) {
   const type = feature.geometry.type;
   
@@ -226,19 +283,18 @@ export function render(data, width, height, options = {}) {
   if (options.seLat !== undefined) seBounds = [options.seLat, options.seLon];
   
   const features = data.features || [];
-  const mapHeight = height - 60;
-  const project = createProjection(nwBounds, seBounds, width, mapHeight);
+  const project = createProjection(nwBounds, seBounds, width, height);
   
   let svg = '';
-  
+
   // Render background first
   if (backgroundSvg) {
     svg += embedBackgroundSvg(backgroundSvg);
   }
-  
+
   // Render by geometry type for proper layering
   const polygons = [], lines = [], points = [];
-  
+
   features.forEach((feature, i) => {
     const type = feature.geometry?.type;
     if (type === 'Polygon' || type === 'MultiPolygon') {
@@ -249,35 +305,38 @@ export function render(data, width, height, options = {}) {
       points.push({ feature, index: i });
     }
   });
-  
+
   polygons.forEach(({ feature, index }) => {
     const linkId = `map-${chartId}-${index}`;
     svg += `  <g class="chart-item">\n`;
     svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    svg += renderFeatureLabel(feature, project);
     const data = buildDataAttrs(feature.properties || {}, feature.geometry);
-    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += createMapDataLabelGroup(linkId, data, height, width);
     svg += `  </g>\n`;
   });
-  
+
   lines.forEach(({ feature, index }) => {
     const linkId = `map-${chartId}-${index}`;
     svg += `  <g class="chart-item">\n`;
     svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    svg += renderFeatureLabel(feature, project);
     const data = buildDataAttrs(feature.properties || {}, feature.geometry);
-    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += createMapDataLabelGroup(linkId, data, height, width);
     svg += `  </g>\n`;
   });
-  
+
   points.forEach(({ feature, index }) => {
     const linkId = `map-${chartId}-${index}`;
     svg += `  <g class="chart-item">\n`;
     svg += renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId);
+    svg += renderFeatureLabel(feature, project);
     const coords = feature.geometry.coordinates;
     const data = buildDataAttrs(feature.properties || {}, feature.geometry, coords);
-    svg += createDataLabelGroup(linkId, width / 2, height + 40, data, width);
+    svg += createMapDataLabelGroup(linkId, data, height, width);
     svg += `  </g>\n`;
   });
-  
+
   return svg;
 }
 
