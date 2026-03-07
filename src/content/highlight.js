@@ -24,15 +24,18 @@ HIGHLIGHT_RULES.python = HIGHLIGHT_RULES.py;
 HIGHLIGHT_RULES.rust = HIGHLIGHT_RULES.rs;
 
 function applyHighlighting(code, rules) {
-  return code
-    .replace(rules.keywords, '<kw>$1</kw>')
-    .replace(rules.literals, '<lit>$1</lit>')
-    .replace(rules.comments, '<cmt>$1</cmt>')
-    .replace(rules.strings, '<str>$1</str>')
-    .replace(/<kw>/g, '<span class="keyword">').replace(/<\/kw>/g, '</span>')
-    .replace(/<lit>/g, '<span class="literal">').replace(/<\/lit>/g, '</span>')
-    .replace(/<cmt>/g, '<span class="comment">').replace(/<\/cmt>/g, '</span>')
-    .replace(/<str>/g, '<span class="string">').replace(/<\/str>/g, '</span>');
+  const slots = [];
+  const slot = (i) => `\x00${i}\x00`;
+
+  let processed = code
+    .replace(rules.strings, (m) => { slots.push(`<span class="string">${m}</span>`); return slot(slots.length - 1); })
+    .replace(rules.comments, (m) => { slots.push(`<span class="comment">${m}</span>`); return slot(slots.length - 1); });
+
+  processed = processed
+    .replace(rules.keywords, '<span class="keyword">$1</span>')
+    .replace(rules.literals, '<span class="literal">$1</span>');
+
+  return processed.replace(/\x00(\d+)\x00/g, (_, i) => slots[+i]);
 }
 
 export function highlightCode(html) {

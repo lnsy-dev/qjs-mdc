@@ -5,6 +5,7 @@
 #   make           — build dist/mdc (or dist/mdc.exe on Windows)
 #   make install   — install the binary to INSTALL_DIR
 #   make clean     — remove dist/
+#   make test      — build and run the integration test suite
 
 # ── OS detection ─────────────────────────────────────────────────────────────
 # Check Windows_NT first (set by cmd.exe and PowerShell).
@@ -55,7 +56,7 @@ SOURCES := \
     $(wildcard src/utils/*.js)
 
 # ── Targets ───────────────────────────────────────────────────────────────────
-.PHONY: all install clean
+.PHONY: all install clean test
 
 all: $(BIN)
 	@echo "Built $(BIN) for $(DETECTED_OS)"
@@ -70,3 +71,6 @@ install: $(BIN)
 
 clean:
 	$(RM_DIST)
+
+test: $(BIN)
+	@bash scripts/test/test.sh

@@ -3,10 +3,10 @@ import { parse as parseMarkdown } from '../../lib/markdown.js';
 export function extractSummary(file) {
   let raw = '';
 
-  if (file.data.summary) {
+  if (file.data?.summary) {
     raw = file.data.summary;
   } else {
-    const paragraphs = file.content.split(/\n\n+/);
+    const paragraphs = (file.content ?? '').split(/\n\n+/);
     for (const para of paragraphs) {
       const trimmed = para.trim();
       if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('```')) {

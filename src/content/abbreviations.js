@@ -18,10 +18,20 @@ export function processAbbreviations(content) {
     const terms = Object.keys(abbrs).sort((a, b) => b.length - a.length);
 
     for (const term of terms) {
-      const title = abbrs[term];
+      const escapedTitle = abbrs[term]
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
       const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\b(${escapedTerm})\\b`, 'g');
-      result = result.replace(regex, `<abbr title="${title}">$1</abbr>`);
+      // Use lookahead/lookbehind instead of \b to handle non-word char boundaries
+      // \b only works at \w/\W transitions, so terms like C++ or *nix need explicit checks
+      const startsWithWord = /^\w/.test(term);
+      const endsWithWord = /\w$/.test(term);
+      const prefix = startsWithWord ? '(?<!\\w)' : '(?<!\\S)';
+      const suffix = endsWithWord ? '(?!\\w)' : '(?!\\S)';
+      const regex = new RegExp(`${prefix}(${escapedTerm})${suffix}`, 'g');
+      result = result.replace(regex, `<abbr title="${escapedTitle}">$1</abbr>`);
     }
   }
 

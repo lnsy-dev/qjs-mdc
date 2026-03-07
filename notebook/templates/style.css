@@ -60,12 +60,6 @@ body {
   padding: 0 1.5rem;
 }
 
-.logo {
-  width: 100em;
-  height: auto;
-  float: left;
-
-}
 
 a {
   color: var(--highlight);
