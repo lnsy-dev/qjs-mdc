@@ -152,6 +152,7 @@ function compile(config) {
       const vars = Object.assign({}, globalVars, file.data, {
         content: embeddedHtml,
         summary: file.summary,
+        summary_text: file.summary.replace(/<[^>]+>/g, ''),
         date: formatPrettyDate(file.data.date),
         page_slug: file.outputName,
         tags: tagsHtml,
