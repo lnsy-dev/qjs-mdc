@@ -1,10 +1,6 @@
 {
-  "site_name": "qjs-mdc Notebook",
-  "site_description": "Public Documentation for qjs-mdc.",
+  "site_name": "QJS-MDC Default Notebook",
+  "site_description": "Default notebook for QJS-MDC. Edit these values in index.json",
   "site_url": "https://lindseymysse.com/qjs-mdc",
-  "author": "LNSY",
-  "twitter_handle": "@lindseymysse",
-  "og_image": "https://lindseymysse.com/qjs-mdc/og-image.png",
-  "og_type": "article",
-  "locale": "en_US"
+  "author": "LNSY"
 }

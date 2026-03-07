@@ -1,4 +1,8 @@
 /**
+ * @fileoverview Date formatting utilities for human-readable date output.
+ */
+
+/**
  * Formats a date string into a pretty format: "Monday, July 1st 2026 at 12:35 AM"
  * @param {string} dateStr - ISO date string
  * @returns {string} Formatted date string

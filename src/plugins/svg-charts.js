@@ -12,7 +12,9 @@ import * as map from '../../plugins/svg/src/renderers/map.js';
 import { createSVGContainer, closeSVGContainer } from '../../plugins/svg/src/utils/svg.js';
 import { generatePatternDefs } from '../../plugins/svg/src/utils/patterns.js';
 import { findFileRecursive } from '../utils/file-ops.js';
+import { parseMatter } from '../../lib/md-yaml.js';
 
+/** @type {Object.<string, Object>} */
 const RENDERERS = {
   'bar': bar,
   'scatter': scatter,
@@ -23,6 +25,11 @@ const RENDERERS = {
   'chart': bar  // alias
 };
 
+/**
+ * Decodes HTML entities encoded by the markdown parser inside code blocks.
+ * @param {string} text - Text with HTML entities
+ * @returns {string} Decoded text
+ */
 function decodeHtmlEntities(text) {
   return text
     .replace(/&quot;/g, '"')
@@ -31,109 +38,115 @@ function decodeHtmlEntities(text) {
     .replace(/&amp;/g, '&');
 }
 
-// Local implementations to avoid std.exit() calls
-function parseYAMLFrontMatter(input) {
-  const trimmed = input.trim();
-  if (!trimmed.startsWith('---')) return null;
-  
-  const lines = trimmed.split('\n');
-  let endIndex = -1;
-  
-  for (let i = 1; i < lines.length; i++) {
-    if (lines[i].trim() === '---') {
-      endIndex = i;
-      break;
-    }
+/**
+ * Loads an SVG file from a path or bare filename, searching recursively if needed.
+ * Inline SVG strings (starting with `<`) are returned as-is.
+ * @param {string} pathOrName - Relative path, bare filename, or inline SVG string
+ * @param {string} sourceDir - Source directory for resolving paths
+ * @returns {string} SVG file content
+ * @throws {Error} If the file cannot be found or loaded
+ */
+function loadSVGFile(pathOrName, sourceDir) {
+  if (pathOrName.trim().startsWith('<')) {
+    return pathOrName;
   }
-  
-  if (endIndex === -1) return null;
-  
-  const config = {};
-  for (let i = 1; i < endIndex; i++) {
-    const line = lines[i].trim();
-    if (!line || line.startsWith('#')) continue;
-    
-    const colonIndex = line.indexOf(':');
-    if (colonIndex === -1) continue;
-    
-    const key = line.slice(0, colonIndex).trim();
-    const value = line.slice(colonIndex + 1).trim();
-    
-    if (!isNaN(value)) {
-      config[key] = parseFloat(value);
-    } else {
-      config[key] = value;
-    }
+
+  let svgPath;
+  if (pathOrName.startsWith('./') || pathOrName.startsWith('../')) {
+    svgPath = `${sourceDir}/${pathOrName}`;
+  } else {
+    svgPath = findFileRecursive(sourceDir, pathOrName);
   }
-  
-  const content = lines.slice(endIndex + 1).join('\n').trim();
-  return { config, content };
+
+  if (!svgPath) {
+    throw new Error(`Background SVG file not found: ${pathOrName}`);
+  }
+
+  try {
+    return std.loadFile(svgPath);
+  } catch (e) {
+    throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
+  }
 }
 
-function parseData(rawData) {
-  const trimmed = rawData.trim();
-  const isJSON = trimmed.startsWith('[') || trimmed.startsWith('{');
-  
-  if (isJSON) {
-    return JSON.parse(trimmed);
-  }
-  
-  // Parse CSV
-  const lines = trimmed.split('\n');
+/**
+ * Parses CSV data into an array of row objects.
+ * @param {string} rawData - CSV string with header row
+ * @returns {Array<Object>} Array of row objects keyed by header names
+ * @throws {Error} If CSV has fewer than two lines
+ */
+function parseCSV(rawData) {
+  const lines = rawData.trim().split('\n');
   if (lines.length < 2) {
     throw new Error('CSV must have header and at least one data row');
   }
 
   const headers = lines[0].split(',').map(h => h.trim());
-  const result = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].split(',').map(v => v.trim());
+  return lines.slice(1).map(line => {
+    const values = line.split(',').map(v => v.trim());
     const row = {};
-    
     for (let j = 0; j < headers.length; j++) {
       const value = values[j];
       row[headers[j]] = isNaN(value) ? value : parseFloat(value);
     }
-    
-    result.push(row);
-  }
-
-  return result;
+    return row;
+  });
 }
 
+/**
+ * Parses chart data from a JSON or CSV string.
+ * @param {string} rawData - JSON array/object string or CSV string
+ * @returns {Array<Object>|Object} Parsed data
+ */
+function parseData(rawData) {
+  const trimmed = rawData.trim();
+  if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+    return JSON.parse(trimmed);
+  }
+  return parseCSV(trimmed);
+}
+
+/**
+ * Remaps data field names based on config field mapping keys (e.g., dateField -> date).
+ * @param {Array<Object>} data - Array of data rows
+ * @param {Object} config - Chart config that may contain field mapping keys
+ * @returns {Array<Object>} Data with fields renamed according to mappings
+ */
 function applyFieldMappings(data, config) {
   if (!Array.isArray(data) || data.length === 0) return data;
-  
+
   const mappings = {};
-  const fieldKeys = ['dateField', 'openField', 'highField', 'lowField', 'closeField', 
+  const fieldKeys = ['dateField', 'openField', 'highField', 'lowField', 'closeField',
                      'xField', 'yField', 'labelField', 'valueField', 'categoryField', 'radiusField'];
-  
-  fieldKeys.forEach(key => {
+
+  for (const key of fieldKeys) {
     if (config[key]) {
-      const targetField = key.replace('Field', '');
-      mappings[config[key]] = targetField;
+      mappings[config[key]] = key.replace('Field', '');
     }
-  });
-  
+  }
+
   if (Object.keys(mappings).length === 0) return data;
-  
+
   return data.map(row => {
     const newRow = {};
     for (const [oldKey, value] of Object.entries(row)) {
-      const newKey = mappings[oldKey] || oldKey;
-      newRow[newKey] = value;
+      newRow[mappings[oldKey] || oldKey] = value;
     }
     return newRow;
   });
 }
 
+/**
+ * Detects if parsed data is a map config wrapper object and normalizes it.
+ * @param {*} data - Parsed chart data
+ * @returns {Object|null} Normalized map config or null if not a map config
+ */
 function parseMapConfig(data) {
-  if (!data || typeof data !== 'object' || 
+  if (!data || typeof data !== 'object' ||
       !(data.northWestBounds || data.southEastBounds || data.geojson || data.iconList)) {
     return null;
   }
-  
+
   return {
     northWestBounds: data.northWestBounds || data.nwBounds,
     southEastBounds: data.southEastBounds || data.seBounds,
@@ -146,62 +159,30 @@ function parseMapConfig(data) {
 }
 
 /**
- * Process HTML and replace chart code blocks with inline SVG
+ * Processes HTML and replaces chart code blocks with inline SVG.
  * @param {string} html - HTML content with code blocks
- * @param {string} sourceDir - Source directory for loading files
- * @param {Object|null} cssColors - CSS custom properties for colors
- * @returns {string} HTML with charts rendered as SVG
+ * @param {string} sourceDir - Source directory for loading external files
+ * @param {Object|null} cssColors - CSS custom properties for chart colors
+ * @returns {string} HTML with charts rendered as inline SVG
  */
 export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
   const regex = /<pre class="code" data-lang="([^"]*)">\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/g;
   let chartCount = 0;
-  
+
   return html.replace(regex, (match, lang, code) => {
     const renderer = RENDERERS[lang];
-    if (!renderer) {
-      return match; // Not a chart type, pass through
-    }
-    
+    if (!renderer) return match;
+
     try {
-      // Decode HTML entities
       const rawData = decodeHtmlEntities(code);
-      
-      // Parse YAML front matter if present
-      const yamlResult = parseYAMLFrontMatter(rawData);
-      let dataContent = rawData;
-      let config = {};
-      
-      if (yamlResult) {
-        config = yamlResult.config;
-        dataContent = yamlResult.content;
-      }
-      
-      // Set default dimensions
+
+      // Parse optional YAML front matter for chart config
+      const parsed = parseMatter(rawData);
+      const config = parsed.data;
+      const dataContent = parsed.content || rawData;
+
       const width = config.width || 600;
       const height = config.height || 400;
-      
-      // Build options object
-      // Load backgroundSvg if it's a file path
-      let backgroundSvg = config.backgroundSvg;
-      if (backgroundSvg) {
-        let svgPath;
-        if (backgroundSvg.startsWith('./') || backgroundSvg.startsWith('../')) {
-          svgPath = `${sourceDir}/${backgroundSvg}`;
-        } else {
-          // Just a filename - search recursively
-          svgPath = findFileRecursive(sourceDir, backgroundSvg);
-        }
-        
-        if (svgPath) {
-          try {
-            backgroundSvg = std.loadFile(svgPath);
-          } catch (e) {
-            throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
-          }
-        } else {
-          throw new Error(`Background SVG file not found: ${config.backgroundSvg}`);
-        }
-      }
 
       const options = {
         width,
@@ -213,15 +194,14 @@ export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
         seLat: config.seLat || config.southEastLat || null,
         seLon: config.seLon || config.southEastLon || null,
         iconList: config.iconList,
-        backgroundSvg: backgroundSvg,
+        backgroundSvg: config.backgroundSvg ? loadSVGFile(config.backgroundSvg, sourceDir) : undefined,
         name: config.name,
         description: config.description
       };
-      
-      // Parse data
+
       let data = parseData(dataContent);
-      
-      // Check for map config wrapper
+
+      // Merge map config wrapper if present
       const mapConfig = parseMapConfig(data);
       if (mapConfig) {
         data = mapConfig.geojson;
@@ -234,49 +214,22 @@ export function processSVGCharts(html, sourceDir = '.', cssColors = null) {
           options.seLon = mapConfig.southEastBounds[1];
         }
         if (mapConfig.iconList) options.iconList = mapConfig.iconList;
-        if (mapConfig.backgroundSvg) {
-          // Check if it's inline SVG or a file path
-          if (mapConfig.backgroundSvg.trim().startsWith('<')) {
-            // Inline SVG - use directly
-            options.backgroundSvg = mapConfig.backgroundSvg;
-          } else {
-            // File path - load it
-            let svgPath;
-            if (mapConfig.backgroundSvg.startsWith('./') || mapConfig.backgroundSvg.startsWith('../')) {
-              svgPath = `${sourceDir}/${mapConfig.backgroundSvg}`;
-            } else {
-              // Just a filename - search recursively
-              svgPath = findFileRecursive(sourceDir, mapConfig.backgroundSvg);
-            }
-            
-            if (svgPath) {
-              try {
-                const svgContent = std.loadFile(svgPath);
-                options.backgroundSvg = svgContent;
-              } catch (e) {
-                throw new Error(`Failed to load background SVG from ${svgPath}: ${e.message}`);
-              }
-            } else {
-              throw new Error(`Background SVG file not found: ${mapConfig.backgroundSvg}`);
-            }
-          }
-        }
+        if (mapConfig.backgroundSvg) options.backgroundSvg = loadSVGFile(mapConfig.backgroundSvg, sourceDir);
         if (mapConfig.name) options.name = mapConfig.name;
         if (mapConfig.description) options.description = mapConfig.description;
       }
-      
-      // Apply field mappings
+
       const mappedData = applyFieldMappings(data, config);
-      
-      // Generate SVG with unique pattern IDs per chart
+
       const chartId = chartCount++;
       options.chartId = chartId;
       options.cssColors = cssColors;
+
       let svg = createSVGContainer(width, height, options.name, options.description);
       svg += generatePatternDefs(chartId);
       svg += renderer.render(mappedData, width, height, options);
       svg += closeSVGContainer();
-      
+
       return svg;
     } catch (e) {
       return `<div class="chart-error" style="border: 2px solid #d00; padding: 10px; margin: 10px 0; background: #fee;">
