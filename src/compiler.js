@@ -141,10 +141,12 @@ function compile(config) {
       // Build tags HTML
       const rawTags = file.data.tags || [];
       const tagArray = Array.isArray(rawTags) ? rawTags : [rawTags];
-      const tagsHtml = tagArray.filter(Boolean).map(tag => {
+      const filteredTags = tagArray.filter(Boolean);
+      const tagsHtml = filteredTags.map(tag => {
         const sanitized = String(tag).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
         return `<a href="tag-${sanitized}.html" class="tag">${tag}</a>`;
       }).join(' ');
+      const tagList = filteredTags.join(', ');
 
       // Prepare variables
       const vars = Object.assign({}, globalVars, file.data, {
@@ -152,7 +154,8 @@ function compile(config) {
         summary: file.summary,
         date: formatPrettyDate(file.data.date),
         page_slug: file.outputName,
-        tags: tagsHtml
+        tags: tagsHtml,
+        tag_list: tagList
       });
       
       // Compile template
