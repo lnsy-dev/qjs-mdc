@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}} — {{site_name}}</title>
-  {{metadata.html}}
+  {{meta.html}}
 </head>
 <body>
   {{header.html}}
   <main>
     <article>
       <div class="post-meta">
-        <h3>{{title}}</h3>
         <time>{{date}}</time>
-        {{tags}}
       </div>
       {{content}}
     </article>
+
+    <article class="tags-list">{{tags}}</article>
   </main>
   {{footer.html}}
 </body>
