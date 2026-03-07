@@ -27,14 +27,18 @@ function runCommand(cmd) {
  */
 export function writeFile(path, content) {
   const f = std.open(path, 'w');
-  f.puts(content);
-  f.close();
+  if (!f) throw new Error(`writeFile: could not open '${path}' for writing`);
+  try {
+    f.puts(content);
+  } finally {
+    f.close();
+  }
 }
 
 /**
  * Returns the newest modification time among files in a directory (non-recursive).
  * @param {string} dir - Directory path to scan
- * @returns {number} Newest mtime in milliseconds, or 0 if directory is empty/missing
+ * @returns {number} Newest mtime in seconds (as returned by os.stat), or 0 if directory is empty/missing
  */
 export function getNewestMtime(dir) {
   const [entries] = os.readdir(dir);

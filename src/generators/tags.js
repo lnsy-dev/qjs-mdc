@@ -14,6 +14,21 @@ import { formatPrettyDate } from '../utils/date-format.js';
  * Filters the visible list items by matching their text against the search input.
  * @type {string}
  */
+/**
+ * Escapes special HTML characters to prevent XSS injection.
+ * @param {string} str - Raw string to escape
+ * @returns {string} HTML-safe string
+ */
+function htmlEscape(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\//g, '&#x2F;');
+}
+
 const TAG_FILTER_SCRIPT = `
 <script>
 document.getElementById('tag-search').addEventListener('input', function(e) {
@@ -59,7 +74,7 @@ export function generateTagPages(files, outputDir, templatesDir, globalVars, ass
   // Generate individual tag pages
   for (const [tag, posts] of tagMap) {
     const sanitized = sanitizeFilename(tag);
-    let postsList = `<h2>Posts tagged: ${tag}</h2>\n<ul class="post-list">\n`;
+    let postsList = `<h2>Posts tagged: ${htmlEscape(tag)}</h2>\n<ul class="post-list">\n`;
 
     for (const post of posts) {
       postsList += substituteVariables(stubTemplate, {
@@ -91,7 +106,7 @@ export function generateTagPages(files, outputDir, templatesDir, globalVars, ass
   for (const tag of Array.from(tagMap.keys()).sort()) {
     const sanitized = sanitizeFilename(tag);
     const count = tagMap.get(tag).length;
-    tagsList += `  <li><a href="tag-${sanitized}.html">${tag}</a> (${count})</li>\n`;
+    tagsList += `  <li><a href="tag-${sanitized}.html">${htmlEscape(tag)}</a> (${count})</li>\n`;
   }
   tagsList += '</ul>\n';
   tagsList += TAG_FILTER_SCRIPT;
