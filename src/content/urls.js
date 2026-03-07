@@ -7,6 +7,7 @@ export function makeUrlsClickable(html) {
     if (/=["'][^"']*$/.test(before)) {
       return match;
     }
-    return `<a href="${match}">${match}</a>`;
+    const safe = match.replace(/&/g, '&amp;').replace(/>/g, '&gt;');
+    return `<a href="${safe}">${safe}</a>`;
   });
 }
