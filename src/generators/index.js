@@ -3,10 +3,12 @@
  * Creates paginated listing of all posts sorted by date.
  */
 
-import * as std from 'std';
-import { loadTemplate, compileTemplate, substituteVariables } from '../templates/engine.js';
+import { loadTemplate, compileTemplate, substituteVariables, DEFAULT_STUB_TEMPLATE } from '../templates/engine.js';
 import { embedAssets } from '../assets/handler.js';
+import { writeFile } from '../utils/file-ops.js';
 import { formatPrettyDate } from '../utils/date-format.js';
+
+const POSTS_PER_PAGE = 10;
 
 /**
  * Generates paginated index pages for all posts.
@@ -17,22 +19,20 @@ import { formatPrettyDate } from '../utils/date-format.js';
  * @param {Object} assets - Assets object with css and js arrays
  */
 export function generateIndex(files, outputDir, templatesDir, globalVars, assets) {
-  const postsPerPage = 10;
   const sortedFiles = files.slice().sort((a, b) => {
     const dateA = a.data.date ? new Date(a.data.date) : new Date(0);
     const dateB = b.data.date ? new Date(b.data.date) : new Date(0);
     return dateB - dateA;
   });
-  
-  const totalPages = Math.ceil(sortedFiles.length / postsPerPage);
-  
+
+  const totalPages = Math.ceil(sortedFiles.length / POSTS_PER_PAGE);
+  const stubTemplate = loadTemplate(templatesDir, 'stub.html') || DEFAULT_STUB_TEMPLATE;
+  const pageTemplate = loadTemplate(templatesDir, 'index.html') || loadTemplate(templatesDir, 'default.html');
+
   for (let page = 1; page <= totalPages; page++) {
-    const start = (page - 1) * postsPerPage;
-    const end = start + postsPerPage;
-    const pagePosts = sortedFiles.slice(start, end);
-    
-    const stubTemplate = loadTemplate(templatesDir, 'stub.html') ||
-      '<li class="post-stub"><h3><a href="{{url}}">{{title}}</a></h3><p class="post-summary">{{summary}}</p><small class="post-date">{{date}}</small></li>\n';
+    const start = (page - 1) * POSTS_PER_PAGE;
+    const pagePosts = sortedFiles.slice(start, start + POSTS_PER_PAGE);
+
     let postsList = '<ul class="post-list">\n';
     for (const post of pagePosts) {
       postsList += substituteVariables(stubTemplate, {
@@ -43,7 +43,7 @@ export function generateIndex(files, outputDir, templatesDir, globalVars, assets
       });
     }
     postsList += '</ul>\n';
-    
+
     let pagination = '<div class="pagination">\n';
     if (page > 1) {
       const prevPage = page === 2 ? 'index.html' : `index-${page - 1}.html`;
@@ -54,21 +54,17 @@ export function generateIndex(files, outputDir, templatesDir, globalVars, assets
       pagination += `  <a href="index-${page + 1}.html">Next →</a>\n`;
     }
     pagination += '</div>\n';
-    
-    const template = loadTemplate(templatesDir, 'index.html') || loadTemplate(templatesDir, 'default.html');
+
     const vars = Object.assign({}, globalVars, {
-      title: 'Blog Posts',
+      title: globalVars.index_title || 'Blog Posts',
       content: postsList + pagination
     });
-    
-    let html = compileTemplate(template, vars, templatesDir);
+
+    let html = compileTemplate(pageTemplate, vars, templatesDir);
     html = embedAssets(html, assets);
-    
+
     const filename = page === 1 ? 'index.html' : `index-${page}.html`;
-    const f = std.open(`${outputDir}/${filename}`, 'w');
-    f.puts(html);
-    f.close();
-    
+    writeFile(`${outputDir}/${filename}`, html);
     console.log('✓', filename);
   }
 }

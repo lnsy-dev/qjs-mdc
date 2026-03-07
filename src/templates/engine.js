@@ -6,6 +6,14 @@
 import * as std from 'std';
 
 /**
+ * Default stub template used when no stub.html template file is found.
+ * Renders a single post entry with title, summary, and date.
+ * @type {string}
+ */
+export const DEFAULT_STUB_TEMPLATE =
+  '<li class="post-stub"><h3><a href="{{url}}">{{title}}</a></h3><p class="post-summary">{{summary}}</p><small class="post-date">{{date}}</small></li>\n';
+
+/**
  * Loads a template file from the templates directory.
  * @param {string} templatesDir - Path to templates directory
  * @param {string} name - Template filename
