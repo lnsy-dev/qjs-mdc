@@ -28,7 +28,7 @@ import { parseArgs } from './utils/cli.js';
 import { findPublishableFiles, writeFile, getNewestMtime } from './utils/file-ops.js';
 import { resolveFilenameConflicts, sanitizeFilename, normalizeTagArray } from './utils/filename.js';
 import { loadIndexConfig, selectTemplate, compileTemplate } from './templates/engine.js';
-import { processAbbreviations, processWikilinks, extractSummary, highlightCode, makeUrlsClickable } from './content/processor.js';
+import { processAbbreviations, processWikilinks, processFootnotes, extractSummary, highlightCode, makeUrlsClickable } from './content/processor.js';
 import { collectAssets, embedAssets, embedImages } from './assets/handler.js';
 import { generateIndex } from './generators/index.js';
 import { generateTagPages } from './generators/tags.js';
@@ -93,10 +93,11 @@ function compile(config) {
         }
       }
 
-      let contentProcessed = processAbbreviations(file.content);
+      const { content: footnoteContent, footnotesHtml } = processFootnotes(file.content);
+      let contentProcessed = processAbbreviations(footnoteContent);
       contentProcessed = processWikilinks(contentProcessed);
 
-      const contentHtml = parseMarkdown(contentProcessed);
+      const contentHtml = parseMarkdown(contentProcessed) + footnotesHtml;
       const tablesHtml = processTables(contentHtml);
       const chartsHtml = processSVGCharts(tablesHtml, config.source, cssColors);
       const highlightedHtml = highlightCode(chartsHtml);

@@ -11,7 +11,9 @@ summary: Use the --target flag to filter which markdown files get compiled based
 
 # Filtering by Target
 
-The `--target` flag lets you compile only the markdown files intended for a specific destination, using the `target` field in YAML front matter.
+The `--target` flag lets you compile only the markdown files intended for a specific destination, using the `target` field in YAML front matter.[^multi-site] See [[Setting Up a Markdown File]] for a full list of supported front matter fields.
+
+*[YAML]: YAML Ain't Markup Language
 
 ## Front Matter
 
@@ -32,7 +34,7 @@ target: tiny-ag.blog
 ./mdc notebook --output docs --target tiny-ag.blog
 ```
 
-Only files where `target: tiny-ag.blog` will be compiled. Files with a different `target` value or no `target` field are skipped.
+Only files where `target: tiny-ag.blog` will be compiled. Files with a different `target` value or no `target` field are skipped.[^no-target-skipped]
 
 ## Without the Flag
 
@@ -43,3 +45,6 @@ Running without `--target` compiles all publishable files regardless of their `t
 ```
 
 This is the default behavior and is backwards-compatible — existing files without a `target` field continue to work as before.
+
+[^multi-site]: This is useful when a single notebook directory contains content for multiple sites or audiences. Each `./mdc` invocation can produce a different output set from the same source.
+[^no-target-skipped]: A file with no `target` field is also skipped when `--target` is active. Only an exact string match on the `target` field value causes a file to be included.

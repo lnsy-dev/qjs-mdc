@@ -2,39 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Filtering by Target — qjs-mdc Notebook</title>
-  <meta name="description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
-<meta name="author" content="LNSY">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Open Graph -->
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="qjs-mdc Notebook">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Filtering by Target">
-<meta property="og:description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
-<meta property="og:url" content="https://lindseymysse.com/qjs-mdc/filtering-by-target.html">
-<meta property="og:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
-<meta property="og:locale" content="en_US">
+<meta property="og:description" content="Default notebook for QJS-MDC. Edit these values in index.json">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc">
+<meta property="og:site_name" content="QJS-MDC Default Notebook">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@lindseymysse">
-<meta name="twitter:title" content="Filtering by Target">
+<meta name="twitter:title" content="Filtering by Target -- QJS-MDC Default Notebook">
 <meta name="twitter:description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
-<meta name="twitter:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
 
-<!-- Canonical -->
-<link rel="canonical" href="https://lindseymysse.com/qjs-mdc/filtering-by-target.html">
+<!-- Standard Meta -->
+<meta name="description" content="Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.">
+<meta name="keywords" content="guide, tutorial">
+<meta name="author" content="LNSY">
+<title>Filtering by Target — QJS-MDC Default Notebook</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 :root {
-  --bg-color: #FDF8E7;
-  --fg-color: #2d3a2d;
-  --neutral-background-color:#f0eee4;
-  --highlight-color: #8C001A;
-  --neutral-color: #efe9d9;
+  /* Colors */
+
+
+  --foreground: #282828;
+  --background: #FFFDF7;
+  --highlight: darkred;
+  --secondary: #262626;
+  --trinary: #252525;
+  --neutral-1: #808080;
+  --neutral-2: #cdcdcd;
+  --neutral-3: #f5f5f5;
+
+  --bg-color: var(--background);
+  --fg-color: var(--foreground);
+  --neutral-background-color: #efefef;
+  --highlight-color: var(--highlight);
+  --neutral-color: var(--neutral-2);
+
+
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
 
@@ -75,8 +84,9 @@ body {
   padding: 0 1.5rem;
 }
 
+
 a {
-  color: var(--highlight-color);
+  color: var(--highlight);
 }
 
 header {
@@ -100,13 +110,18 @@ header nav {
   text-decoration: none;
 }
 
+.logo {
+  width: 4em;
+  height: 4em;
+}
+
 .nav-links {
   display: flex;
   gap: 1.25rem;
 }
 
 .nav-links a {
-  color: var(--fg-color);
+  color: var(--highlight-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -131,6 +146,7 @@ h2 { font-size: 1.5rem; }
 h3 { font-size: 1.2rem; }
 
 p {
+  color: var(--fg-color);
   margin-bottom: 1em;
 }
 
@@ -203,10 +219,10 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: #7928a1; font-weight: 600; }
-.string  { color: #067d17; }
-.comment { color: #888; font-style: italic; }
-.literal { color: #0055aa; }
+.keyword { color: var(--highlight); font-weight: 600; }
+.string  { color: var(--secondary); }
+.comment { color: var(--neutral-1); font-style: italic; }
+.literal { color: var(--trinary); }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
@@ -237,14 +253,20 @@ li {
 }
 
 .post-list p {
-  color: #555;
   font-size: 0.9rem;
   margin-bottom: 0.25em;
 }
 
 .post-list small {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.8rem;
+}
+
+a.tag {
+  padding: 0.5em;
+  background-color: var(--neutral-background-color);
+  color: var(--highlight);
+  text-decoration: none;
 }
 
 .tags-list {
@@ -254,11 +276,12 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  line-height: 3;
 }
 
 .tags-list li a {
   display: inline-block;
-  background: var(--neutral-color);
+  background: var(--neutral-background-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
@@ -281,12 +304,11 @@ li {
 }
 
 .pagination span {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.9rem;
 }
 
 .site-description {
-  color: #666;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -304,7 +326,7 @@ li {
 #search-input:focus,
 #tag-search:focus {
   outline: none;
-  border-color: #0055aa;
+  border-color: var(--neutral-1);
   box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
 }
 
@@ -340,7 +362,7 @@ blockquote {
   border-left: 3px solid #ccc;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  color: #555;
+  color: var(--neutral-1);
 }
 
 abbr {
@@ -407,14 +429,13 @@ footer {
 }
 </style>
 <script>
-// Chart interactivity is now handled natively by SVG using :target selectors
-// No external JavaScript needed for chart interactions
+// place javascript here
 </script>
 </head>
 <body>
   <header>
   <nav>
-    <a href="index.html" class="site-title"><h2 style="margin-top: 0">qjs-mdc</h2><div><small>Quick JavaScript MarkDown Compiler</small></div></a>
+    <a href="index.html" class="site-title"></a>
     <div class="nav-links">
       <a href="index.html">Posts</a>
       <a href="tags.html">Tags</a>
@@ -426,19 +447,23 @@ footer {
   <main>
     <article>
       <div class="post-meta">
-        <h3>Filtering by Target</h3>
         <time>Wednesday, March 4th 2026 at 12:00 AM</time>
       </div>
-      <h1>Filtering by Target</h1><p>The <code>--target</code> flag lets you compile only the markdown files intended for a specific destination, using the <code>target</code> field in YAML front matter.</p><h2>Front Matter</h2><p>Add a <code>target</code> field to any markdown file:</p><pre class="code language-markdown"><code>---
+      <h1>Filtering by Target</h1><p>The <code>--target</code> flag lets you compile only the markdown files intended for a specific destination, using the <code>target</code> field in <abbr title="YAML Ain't Markup Language">YAML</abbr> front matter.<sup><a href="#fn-multi-site" id="fnref-multi-site" class="footnote-ref">1</a></sup> See <a href="setting-up-a-markdown-file.html">Setting Up a Markdown File</a> for a full list of supported front matter fields.</p><h2>Front Matter</h2><p>Add a <code>target</code> field to any markdown file:</p><pre class="code" data-lang="markdown"><code>---
 publish: true
 title: My Post
 date: 2026-03-04T00:00:00
 target: tiny-ag.blog
----</code></pre><h2>Usage</h2><pre class="code language-bash"><code>./mdc notebook --output docs --target tiny-ag.blog</code></pre><p>Only files where <code>target: tiny-ag.blog</code> will be compiled. Files with a different <code>target</code> value or no <code>target</code> field are skipped.</p><h2>Without the Flag</h2><p>Running without <code>--target</code> compiles all publishable files regardless of their <code>target</code> field:</p><pre class="code language-bash"><code>./mdc notebook --output docs</code></pre><p>This is the default behavior and is backwards-compatible — existing files without a <code>target</code> field continue to work as before.</p>
+---</code></pre><h2>Usage</h2><pre class="code" data-lang="bash"><code>./mdc notebook --output docs --target tiny-ag.blog</code></pre><p>Only files where <code>target: tiny-ag.blog</code> will be compiled. Files with a different <code>target</code> value or no <code>target</code> field are skipped.<sup><a href="#fn-no-target-skipped" id="fnref-no-target-skipped" class="footnote-ref">2</a></sup><h2>Without the Flag</h2><p>Running without <code>--target</code> compiles all publishable files regardless of their <code>target</code> field:</p><pre class="code" data-lang="bash"><code>./mdc notebook --output docs</code></pre><p>This is the default behavior and is backwards-compatible — existing files without a <code>target</code> field continue to work as before.</p><section class="footnotes" aria-label="Footnotes"><hr><ol>
+<li id="fn-multi-site">This is useful when a single notebook directory contains content for multiple sites or audiences. Each `./mdc` invocation can produce a different output set from the same source. <a href="#fnref-multi-site" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+<li id="fn-no-target-skipped">A file with no `target` field is also skipped when `--target` is active. Only an exact string match on the `target` field value causes a file to be included. <a href="#fnref-no-target-skipped" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+</ol></section>
     </article>
+
+    <article class="tags-list"><a href="tag-guide.html" class="tag">guide</a> <a href="tag-tutorial.html" class="tag">tutorial</a></article>
   </main>
   <footer>
-  <p>made with love by <a href="http://lindseymysse.com/">LNSY</a></p>
+  <p>&copy; 2026 QJS-MDC Default Notebook</p>
 </footer>
 </body>
 </html>

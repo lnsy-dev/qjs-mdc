@@ -2,39 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QJS-MDC SVG without JS! — qjs-mdc Notebook</title>
-  <meta name="description" content="In addition to rendering code blocks, mdc will render svg charts with">
-<meta name="author" content="LNSY">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Open Graph -->
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="qjs-mdc Notebook">
+<meta property="og:type" content="website">
 <meta property="og:title" content="QJS-MDC SVG without JS!">
-<meta property="og:description" content="In addition to rendering code blocks, mdc will render svg charts with">
-<meta property="og:url" content="https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html">
-<meta property="og:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
-<meta property="og:locale" content="en_US">
+<meta property="og:description" content="Default notebook for QJS-MDC. Edit these values in index.json">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc">
+<meta property="og:site_name" content="QJS-MDC Default Notebook">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@lindseymysse">
-<meta name="twitter:title" content="QJS-MDC SVG without JS!">
-<meta name="twitter:description" content="In addition to rendering code blocks, mdc will render svg charts with">
-<meta name="twitter:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
+<meta name="twitter:title" content="QJS-MDC SVG without JS! -- QJS-MDC Default Notebook">
+<meta name="twitter:description" content="In addition to rendering code blocks, mdc will render SVG charts from JSON or CSV data inside fenced code blocks.^svg-inline See Getting Started for the basic project setup before working with c">
 
-<!-- Canonical -->
-<link rel="canonical" href="https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html">
+<!-- Standard Meta -->
+<meta name="description" content="In addition to rendering code blocks, mdc will render SVG charts from JSON or CSV data inside fenced code blocks.^svg-inline See Getting Started for the basic project setup before working with c">
+<meta name="keywords" content="test, charts, obsidian">
+<meta name="author" content="LNSY">
+<title>QJS-MDC SVG without JS! — QJS-MDC Default Notebook</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 :root {
-  --bg-color: #FDF8E7;
-  --fg-color: #2d3a2d;
-  --neutral-background-color:#f0eee4;
-  --highlight-color: #8C001A;
-  --neutral-color: #efe9d9;
+  /* Colors */
+
+
+  --foreground: #282828;
+  --background: #FFFDF7;
+  --highlight: darkred;
+  --secondary: #262626;
+  --trinary: #252525;
+  --neutral-1: #808080;
+  --neutral-2: #cdcdcd;
+  --neutral-3: #f5f5f5;
+
+  --bg-color: var(--background);
+  --fg-color: var(--foreground);
+  --neutral-background-color: #efefef;
+  --highlight-color: var(--highlight);
+  --neutral-color: var(--neutral-2);
+
+
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
 
@@ -75,8 +84,9 @@ body {
   padding: 0 1.5rem;
 }
 
+
 a {
-  color: var(--highlight-color);
+  color: var(--highlight);
 }
 
 header {
@@ -100,13 +110,18 @@ header nav {
   text-decoration: none;
 }
 
+.logo {
+  width: 4em;
+  height: 4em;
+}
+
 .nav-links {
   display: flex;
   gap: 1.25rem;
 }
 
 .nav-links a {
-  color: var(--fg-color);
+  color: var(--highlight-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -131,6 +146,7 @@ h2 { font-size: 1.5rem; }
 h3 { font-size: 1.2rem; }
 
 p {
+  color: var(--fg-color);
   margin-bottom: 1em;
 }
 
@@ -203,10 +219,10 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: #7928a1; font-weight: 600; }
-.string  { color: #067d17; }
-.comment { color: #888; font-style: italic; }
-.literal { color: #0055aa; }
+.keyword { color: var(--highlight); font-weight: 600; }
+.string  { color: var(--secondary); }
+.comment { color: var(--neutral-1); font-style: italic; }
+.literal { color: var(--trinary); }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
@@ -237,14 +253,20 @@ li {
 }
 
 .post-list p {
-  color: #555;
   font-size: 0.9rem;
   margin-bottom: 0.25em;
 }
 
 .post-list small {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.8rem;
+}
+
+a.tag {
+  padding: 0.5em;
+  background-color: var(--neutral-background-color);
+  color: var(--highlight);
+  text-decoration: none;
 }
 
 .tags-list {
@@ -254,11 +276,12 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  line-height: 3;
 }
 
 .tags-list li a {
   display: inline-block;
-  background: var(--neutral-color);
+  background: var(--neutral-background-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
@@ -281,12 +304,11 @@ li {
 }
 
 .pagination span {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.9rem;
 }
 
 .site-description {
-  color: #666;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -304,7 +326,7 @@ li {
 #search-input:focus,
 #tag-search:focus {
   outline: none;
-  border-color: #0055aa;
+  border-color: var(--neutral-1);
   box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
 }
 
@@ -340,7 +362,7 @@ blockquote {
   border-left: 3px solid #ccc;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  color: #555;
+  color: var(--neutral-1);
 }
 
 abbr {
@@ -407,14 +429,13 @@ footer {
 }
 </style>
 <script>
-// Chart interactivity is now handled natively by SVG using :target selectors
-// No external JavaScript needed for chart interactions
+// place javascript here
 </script>
 </head>
 <body>
   <header>
   <nav>
-    <a href="index.html" class="site-title"><h2 style="margin-top: 0">qjs-mdc</h2><div><small>Quick JavaScript MarkDown Compiler</small></div></a>
+    <a href="index.html" class="site-title"></a>
     <div class="nav-links">
       <a href="index.html">Posts</a>
       <a href="tags.html">Tags</a>
@@ -426,13 +447,12 @@ footer {
   <main>
     <article>
       <div class="post-meta">
-        <h3>QJS-MDC SVG without JS!</h3>
         <time>Saturday, February 28th 2026 at 12:00 AM</time>
       </div>
-      <h1>Interactive SVG Charts (with no Javascript!)</h1><p>In addition to rendering code blocks, mdc will render svg charts with </p><h2>Bar Chart (Vertical)</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+      <h1>Interactive <abbr title="Scalable Vector Graphics">SVG</abbr> Charts (with no Javascript!)</h1><p>In addition to rendering code blocks, mdc will render <abbr title="Scalable Vector Graphics">SVG</abbr> charts from <abbr title="JavaScript Object Notation">JSON</abbr> or <abbr title="Comma-Separated Values">CSV</abbr> data inside fenced code blocks.<sup><a href="#fn-svg-inline" id="fnref-svg-inline" class="footnote-ref">1</a></sup> See <a href="getting-started.html">Getting Started</a> for the basic project setup before working with charts.</p><h2>Bar Chart (Vertical)</h2><p>Vertical bar charts accept a <abbr title="JavaScript Object Notation">JSON</abbr> array with <code>label</code> and <code>value</code> fields.<sup><a href="#fn-bar-defaults" id="fnref-bar-defaults" class="footnote-ref">2</a></sup><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -459,7 +479,10 @@ footer {
     <rect x="73" y="178.20224719101122" width="104" height="161.79775280898878" fill="url(#pattern-0-0)" class="data-element data-index-0" data-label="Product A" data-value="45" aria-label="label: Product A, value: 45"/>
   </a>
   <g class="label-group" data-for="bar-0-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Product A, value: 45</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Product A</tspan>
+      <tspan x="300" dy="20">Value: 45</tspan>
+    </text>
   </g>
   </g>
   <text x="125" y="360" text-anchor="middle" class="label">Product A</text>
@@ -468,7 +491,10 @@ footer {
     <rect x="203" y="99.10112359550564" width="104" height="240.89887640449436" fill="url(#pattern-0-1)" class="data-element data-index-1" data-label="Product B" data-value="67" aria-label="label: Product B, value: 67"/>
   </a>
   <g class="label-group" data-for="bar-0-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Product B, value: 67</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Product B</tspan>
+      <tspan x="300" dy="20">Value: 67</tspan>
+    </text>
   </g>
   </g>
   <text x="255" y="360" text-anchor="middle" class="label">Product B</text>
@@ -477,7 +503,10 @@ footer {
     <rect x="333" y="224.9438202247191" width="104" height="115.0561797752809" fill="url(#pattern-0-2)" class="data-element data-index-2" data-label="Product C" data-value="32" aria-label="label: Product C, value: 32"/>
   </a>
   <g class="label-group" data-for="bar-0-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Product C, value: 32</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Product C</tspan>
+      <tspan x="300" dy="20">Value: 32</tspan>
+    </text>
   </g>
   </g>
   <text x="385" y="360" text-anchor="middle" class="label">Product C</text>
@@ -486,16 +515,19 @@ footer {
     <rect x="463" y="20" width="104" height="320" fill="url(#pattern-0-3)" class="data-element data-index-3" data-label="Product D" data-value="89" aria-label="label: Product D, value: 89"/>
   </a>
   <g class="label-group" data-for="bar-0-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Product D, value: 89</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Product D</tspan>
+      <tspan x="300" dy="20">Value: 89</tspan>
+    </text>
   </g>
   </g>
   <text x="515" y="360" text-anchor="middle" class="label">Product D</text>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
   <line x1="60" y1="340" x2="580" y2="340" class="axis"/>
-</svg><h2>Bar Chart (Horizontal)</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 650 380" role="img" style="overflow: hidden">
+</svg><h2>Bar Chart (Horizontal)</h2><p>Pass a YAML front matter block inside the code fence to configure chart dimensions and orientation:</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 650 450" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -522,7 +554,10 @@ footer {
     <rect x="62" y="25.5" width="420.7407407407407" height="44" fill="url(#pattern-1-0)" class="data-element data-index-0" data-label="Q1 2026" data-value="1200" aria-label="label: Q1 2026, value: 1200"/>
   </a>
   <g class="label-group" data-for="bar-1-0">
-    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">label: Q1 2026, value: 1200</text>
+    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="325" dy="0">Label: Q1 2026</tspan>
+      <tspan x="325" dy="20">Value: 1200</tspan>
+    </text>
   </g>
   </g>
   <text x="52" y="51.5" text-anchor="end" class="label">Q1 2026</text>
@@ -531,7 +566,10 @@ footer {
     <rect x="62" y="80.5" width="508.39506172839504" height="44" fill="url(#pattern-1-1)" class="data-element data-index-1" data-label="Q2 2026" data-value="1450" aria-label="label: Q2 2026, value: 1450"/>
   </a>
   <g class="label-group" data-for="bar-1-1">
-    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">label: Q2 2026, value: 1450</text>
+    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="325" dy="0">Label: Q2 2026</tspan>
+      <tspan x="325" dy="20">Value: 1450</tspan>
+    </text>
   </g>
   </g>
   <text x="52" y="106.5" text-anchor="end" class="label">Q2 2026</text>
@@ -540,7 +578,10 @@ footer {
     <rect x="62" y="135.5" width="483.85185185185185" height="44" fill="url(#pattern-1-2)" class="data-element data-index-2" data-label="Q3 2026" data-value="1380" aria-label="label: Q3 2026, value: 1380"/>
   </a>
   <g class="label-group" data-for="bar-1-2">
-    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">label: Q3 2026, value: 1380</text>
+    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="325" dy="0">Label: Q3 2026</tspan>
+      <tspan x="325" dy="20">Value: 1380</tspan>
+    </text>
   </g>
   </g>
   <text x="52" y="161.5" text-anchor="end" class="label">Q3 2026</text>
@@ -549,16 +590,19 @@ footer {
     <rect x="62" y="190.5" width="568" height="44" fill="url(#pattern-1-3)" class="data-element data-index-3" data-label="Q4 2026" data-value="1620" aria-label="label: Q4 2026, value: 1620"/>
   </a>
   <g class="label-group" data-for="bar-1-3">
-    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">label: Q4 2026, value: 1620</text>
+    <text x="325" y="340" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="325" dy="0">Label: Q4 2026</tspan>
+      <tspan x="325" dy="20">Value: 1620</tspan>
+    </text>
   </g>
   </g>
   <text x="52" y="216.5" text-anchor="end" class="label">Q4 2026</text>
   <line x1="62" y1="20" x2="62" y2="240" class="axis"/>
   <line x1="62" y1="240" x2="630" y2="240" class="axis"/>
-</svg><h2>Line Chart</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+</svg><h2>Line Chart</h2><p>Line charts support multiple series via the <code>category</code> field:</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -586,7 +630,11 @@ footer {
     <circle cx="40" cy="292" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="1" data-y="10" data-c="default" data-r="4" aria-label="x: 1, y: 10, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 10, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 1</tspan>
+      <tspan x="300" dy="20">Y: 10</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -594,7 +642,11 @@ footer {
     <circle cx="40" cy="360" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="1" data-y="8" data-c="default" data-r="4" aria-label="x: 1, y: 8, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 1, y: 8, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 1</tspan>
+      <tspan x="300" dy="20">Y: 8</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -602,7 +654,11 @@ footer {
     <circle cx="220" cy="122" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="2" data-y="15" data-c="default" data-r="4" aria-label="x: 2, y: 15, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 15, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 2</tspan>
+      <tspan x="300" dy="20">Y: 15</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -610,7 +666,11 @@ footer {
     <circle cx="220" cy="224" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="2" data-y="12" data-c="default" data-r="4" aria-label="x: 2, y: 12, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 2, y: 12, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 2</tspan>
+      <tspan x="300" dy="20">Y: 12</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -618,7 +678,11 @@ footer {
     <circle cx="400" cy="190" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="3" data-y="13" data-c="default" data-r="4" aria-label="x: 3, y: 13, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-4">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 13, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 3</tspan>
+      <tspan x="300" dy="20">Y: 13</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -626,7 +690,11 @@ footer {
     <circle cx="400" cy="156" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="3" data-y="14" data-c="default" data-r="4" aria-label="x: 3, y: 14, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-5">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 3, y: 14, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 3</tspan>
+      <tspan x="300" dy="20">Y: 14</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -634,7 +702,11 @@ footer {
     <circle cx="580" cy="20" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="4" data-y="18" data-c="default" data-r="4" aria-label="x: 4, y: 18, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-6">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 18, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 4</tspan>
+      <tspan x="300" dy="20">Y: 18</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -642,15 +714,19 @@ footer {
     <circle cx="580" cy="258" r="4" fill="url(#pattern-2-0)" class="data-element data-category-default" data-x="4" data-y="11" data-c="default" data-r="4" aria-label="x: 4, y: 11, c: default, r: 4"/>
   </a>
   <g class="label-group" data-for="line-2-7">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 4, y: 11, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 4</tspan>
+      <tspan x="300" dy="20">Y: 11</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
-</svg><h2>Scatter Plot</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+</svg><h2>Scatter Plot</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -677,7 +753,11 @@ footer {
     <circle cx="40" cy="303.3333333333333" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="10" data-y="20" data-c="default" data-r="5" aria-label="x: 10, y: 20, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 10, y: 20, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 10</tspan>
+      <tspan x="300" dy="20">Y: 20</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -685,7 +765,11 @@ footer {
     <circle cx="220" cy="161.66666666666669" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="15" data-y="25" data-c="default" data-r="5" aria-label="x: 15, y: 25, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 15, y: 25, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 15</tspan>
+      <tspan x="300" dy="20">Y: 25</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -693,7 +777,11 @@ footer {
     <circle cx="400" cy="360" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="20" data-y="18" data-c="default" data-r="5" aria-label="x: 20, y: 18, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 20, y: 18, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 20</tspan>
+      <tspan x="300" dy="20">Y: 18</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -701,7 +789,11 @@ footer {
     <circle cx="112" cy="20" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="12" data-y="30" data-c="default" data-r="5" aria-label="x: 12, y: 30, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 12, y: 30, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 12</tspan>
+      <tspan x="300" dy="20">Y: 30</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -709,7 +801,11 @@ footer {
     <circle cx="328" cy="246.66666666666669" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="18" data-y="22" data-c="default" data-r="5" aria-label="x: 18, y: 22, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-4">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 18, y: 22, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 18</tspan>
+      <tspan x="300" dy="20">Y: 22</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -717,17 +813,21 @@ footer {
     <circle cx="580" cy="76.66666666666669" r="5" fill="url(#pattern-3-0)" class="data-element data-category-default" data-x="25" data-y="28" data-c="default" data-r="5" aria-label="x: 25, y: 28, c: default, r: 5"/>
   </a>
   <g class="label-group" data-for="scatter-3-5">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">x: 25, y: 28, category: default</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">X: 25</tspan>
+      <tspan x="300" dy="20">Y: 28</tspan>
+      <tspan x="300" dy="20">Category: default</tspan>
+    </text>
   </g>
   </g>
   <line x1="40" y1="20" x2="40" y2="360" class="axis"/>
   <line x1="40" y1="360" x2="580" y2="360" class="axis"/>
   <text x="310" y="395" text-anchor="middle" class="axis-label">X</text>
   <text x="10" y="190" text-anchor="middle" class="axis-label" transform="rotate(-90, 10, 190)">Y</text>
-</svg><h2>Donut Chart</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+</svg><h2>Donut Chart</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -754,7 +854,11 @@ footer {
     <path d="M 419.7202523028647 208.1890896037605 A 120 120 0 0 0 300 80 L 300 128 A 72 72 0 0 1 371.83215138171886 204.9134537622563 Z" fill="url(#pattern-4-0)" class="data-element data-index-0" data-label="Category A" data-value="30" data-percentage="26.1" aria-label="label: Category A, value: 30, percentage: 26.1"/>
   </a>
   <g class="label-group" data-for="donut-4-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Category A, value: 30, percentage: 26.1%</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Category A</tspan>
+      <tspan x="300" dy="20">Value: 30</tspan>
+      <tspan x="300" dy="20">Percentage: 26.1%</tspan>
+    </text>
   </g>
   </g>
   <text x="424.24211392728114" y="83.9659656528288" text-anchor="middle" class="label">Category A</text>
@@ -763,7 +867,11 @@ footer {
     <path d="M 201.96361283874697 269.2016386537841 A 120 120 0 0 0 419.7202523028647 208.1890896037605 L 371.83215138171886 204.9134537622563 A 72 72 0 0 1 241.17816770324816 241.52098319227042 Z" fill="url(#pattern-4-1)" class="data-element data-index-1" data-label="Category B" data-value="45" data-percentage="39.1" aria-label="label: Category B, value: 45, percentage: 39.1"/>
   </a>
   <g class="label-group" data-for="donut-4-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Category B, value: 45, percentage: 39.1%</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Category B</tspan>
+      <tspan x="300" dy="20">Value: 45</tspan>
+      <tspan x="300" dy="20">Percentage: 39.1%</tspan>
+    </text>
   </g>
   </g>
   <text x="345.8654510966942" y="363.69593884912587" text-anchor="middle" class="label">Category B</text>
@@ -772,7 +880,11 @@ footer {
     <path d="M 212.29968428662514 118.0936228137615 A 120 120 0 0 0 201.96361283874697 269.2016386537841 L 241.17816770324816 241.52098319227042 A 72 72 0 0 1 247.37981057197507 150.8561736882569 Z" fill="url(#pattern-4-2)" class="data-element data-index-2" data-label="Category C" data-value="25" data-percentage="21.7" aria-label="label: Category C, value: 25, percentage: 21.7"/>
   </a>
   <g class="label-group" data-for="donut-4-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Category C, value: 25, percentage: 21.7%</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Category C</tspan>
+      <tspan x="300" dy="20">Value: 25</tspan>
+      <tspan x="300" dy="20">Percentage: 21.7%</tspan>
+    </text>
   </g>
   </g>
   <text x="130.39630923760834" y="188.3987897280059" text-anchor="middle" class="label">Category C</text>
@@ -781,14 +893,18 @@ footer {
     <path d="M 300 80 A 120 120 0 0 0 212.29968428662514 118.0936228137615 L 247.37981057197507 150.8561736882569 A 72 72 0 0 1 300 128 Z" fill="url(#pattern-4-3)" class="data-element data-index-3" data-label="Category D" data-value="15" data-percentage="13.0" aria-label="label: Category D, value: 15, percentage: 13.0"/>
   </a>
   <g class="label-group" data-for="donut-4-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Category D, value: 15, percentage: 13.0%</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Category D</tspan>
+      <tspan x="300" dy="20">Value: 15</tspan>
+      <tspan x="300" dy="20">Percentage: 13.0%</tspan>
+    </text>
   </g>
   </g>
   <text x="232.27181472613887" y="44.074078744073006" text-anchor="middle" class="label">Category D</text>
-</svg><h2>Heikin-Ashi Chart</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+</svg><h2>Heikin-Ashi Chart</h2><p>The Heikin-Ashi chart type uses modified OHLC candlestick calculations to smooth out price noise.<sup><a href="#fn-heikin-ashi" id="fnref-heikin-ashi" class="footnote-ref">3</a></sup><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -816,7 +932,13 @@ footer {
     <rect x="107" y="233.33333333333334" width="10" height="53.33333333333334" fill="url(#pattern-5-0)" class="data-element data-index-0" data-open="100" data-high="110" data-low="95" data-close="105" data-date="2026-01-01" aria-label="open: 100, high: 110, low: 95, close: 105, date: 2026-01-01"/>
   </a>
   <g class="label-group" data-for="heikin-5-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">date: 2026-01-01, open: 100, high: 110, low: 95, close: 105</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Date: 2026-01-01</tspan>
+      <tspan x="300" dy="20">Open: 100</tspan>
+      <tspan x="300" dy="20">High: 110</tspan>
+      <tspan x="300" dy="20">Low: 95</tspan>
+      <tspan x="300" dy="20">Close: 105</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -825,7 +947,13 @@ footer {
     <rect x="211" y="158.66666666666669" width="10" height="74.66666666666666" fill="url(#pattern-5-0)" class="data-element data-index-1" data-open="105" data-high="115" data-low="100" data-close="112" data-date="2026-01-02" aria-label="open: 105, high: 115, low: 100, close: 112, date: 2026-01-02"/>
   </a>
   <g class="label-group" data-for="heikin-5-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">date: 2026-01-02, open: 105, high: 115, low: 100, close: 112</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Date: 2026-01-02</tspan>
+      <tspan x="300" dy="20">Open: 105</tspan>
+      <tspan x="300" dy="20">High: 115</tspan>
+      <tspan x="300" dy="20">Low: 100</tspan>
+      <tspan x="300" dy="20">Close: 112</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -834,7 +962,13 @@ footer {
     <rect x="315" y="94.66666666666669" width="10" height="64" fill="url(#pattern-5-0)" class="data-element data-index-2" data-open="112" data-high="120" data-low="108" data-close="118" data-date="2026-01-03" aria-label="open: 112, high: 120, low: 108, close: 118, date: 2026-01-03"/>
   </a>
   <g class="label-group" data-for="heikin-5-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">date: 2026-01-03, open: 112, high: 120, low: 108, close: 118</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Date: 2026-01-03</tspan>
+      <tspan x="300" dy="20">Open: 112</tspan>
+      <tspan x="300" dy="20">High: 120</tspan>
+      <tspan x="300" dy="20">Low: 108</tspan>
+      <tspan x="300" dy="20">Close: 118</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -843,7 +977,13 @@ footer {
     <rect x="419" y="73.33333333333337" width="10" height="21.333333333333314" fill="url(#pattern-5-0)" class="data-element data-index-3" data-open="118" data-high="125" data-low="115" data-close="120" data-date="2026-01-04" aria-label="open: 118, high: 125, low: 115, close: 120, date: 2026-01-04"/>
   </a>
   <g class="label-group" data-for="heikin-5-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">date: 2026-01-04, open: 118, high: 125, low: 115, close: 120</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Date: 2026-01-04</tspan>
+      <tspan x="300" dy="20">Open: 118</tspan>
+      <tspan x="300" dy="20">High: 125</tspan>
+      <tspan x="300" dy="20">Low: 115</tspan>
+      <tspan x="300" dy="20">Close: 120</tspan>
+    </text>
   </g>
   </g>
   <g class="chart-item">
@@ -852,7 +992,13 @@ footer {
     <rect x="523" y="73.33333333333337" width="10" height="53.333333333333314" fill="black" class="data-element data-index-4" data-open="120" data-high="122" data-low="110" data-close="115" data-date="2026-01-05" aria-label="open: 120, high: 122, low: 110, close: 115, date: 2026-01-05"/>
   </a>
   <g class="label-group" data-for="heikin-5-4">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">date: 2026-01-05, open: 120, high: 122, low: 110, close: 115</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Date: 2026-01-05</tspan>
+      <tspan x="300" dy="20">Open: 120</tspan>
+      <tspan x="300" dy="20">High: 122</tspan>
+      <tspan x="300" dy="20">Low: 110</tspan>
+      <tspan x="300" dy="20">Close: 115</tspan>
+    </text>
   </g>
   </g>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
@@ -867,10 +1013,10 @@ footer {
   <text x="320" y="355" text-anchor="end" class="label" transform="rotate(-45, 320, 355)">2026-01-03</text>
   <text x="424" y="355" text-anchor="end" class="label" transform="rotate(-45, 424, 355)">2026-01-04</text>
   <text x="528" y="355" text-anchor="end" class="label" transform="rotate(-45, 528, 355)">2026-01-05</text>
-</svg><h2>CSV Data with Field Mapping</h2><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 480" role="img" style="overflow: hidden">
+</svg><h2><abbr title="Comma-Separated Values">CSV</abbr> Data with Field Mapping</h2><p>For <abbr title="Comma-Separated Values">CSV</abbr> data, use <code>labelField</code> and <code>valueField</code> to map columns:</p><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 550" role="img" style="overflow: hidden">
   <style>
-    .label-group { opacity: 0; pointer-events: none; }
-    .chart-item:focus-within .label-group { opacity: 1; }
+    .label-group { display: none; }
+    .chart-item:focus-within .label-group { display: block; }
     text { font-family: inherit; fill: currentColor; }
     a { cursor: pointer; outline: none; }
   </style>
@@ -897,7 +1043,10 @@ footer {
     <rect x="73" y="20" width="104" height="320" fill="url(#pattern-6-0)" class="data-element data-index-0" data-label="Los Angeles" data-value="3900000" aria-label="label: Los Angeles, value: 3900000"/>
   </a>
   <g class="label-group" data-for="bar-6-0">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: Los Angeles, value: 3900000</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: Los Angeles</tspan>
+      <tspan x="300" dy="20">Value: 3900000</tspan>
+    </text>
   </g>
   </g>
   <text x="125" y="360" text-anchor="middle" class="label">Los Angeles</text>
@@ -906,7 +1055,10 @@ footer {
     <rect x="203" y="223.4871794871795" width="104" height="116.51282051282051" fill="url(#pattern-6-1)" class="data-element data-index-1" data-label="San Diego" data-value="1420000" aria-label="label: San Diego, value: 1420000"/>
   </a>
   <g class="label-group" data-for="bar-6-1">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: San Diego, value: 1420000</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: San Diego</tspan>
+      <tspan x="300" dy="20">Value: 1420000</tspan>
+    </text>
   </g>
   </g>
   <text x="255" y="360" text-anchor="middle" class="label">San Diego</text>
@@ -915,7 +1067,10 @@ footer {
     <rect x="333" y="257.12820512820514" width="104" height="82.87179487179488" fill="url(#pattern-6-2)" class="data-element data-index-2" data-label="San Jose" data-value="1010000" aria-label="label: San Jose, value: 1010000"/>
   </a>
   <g class="label-group" data-for="bar-6-2">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: San Jose, value: 1010000</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: San Jose</tspan>
+      <tspan x="300" dy="20">Value: 1010000</tspan>
+    </text>
   </g>
   </g>
   <text x="385" y="360" text-anchor="middle" class="label">San Jose</text>
@@ -924,17 +1079,26 @@ footer {
     <rect x="463" y="268.61538461538464" width="104" height="71.38461538461539" fill="url(#pattern-6-3)" class="data-element data-index-3" data-label="San Francisco" data-value="870000" aria-label="label: San Francisco, value: 870000"/>
   </a>
   <g class="label-group" data-for="bar-6-3">
-    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">label: San Francisco, value: 870000</text>
+    <text x="300" y="440" text-anchor="middle" font-size="14" font-weight="bold">
+      <tspan x="300" dy="0">Label: San Francisco</tspan>
+      <tspan x="300" dy="20">Value: 870000</tspan>
+    </text>
   </g>
   </g>
   <text x="515" y="360" text-anchor="middle" class="label">San Francisco</text>
   <line x1="60" y1="20" x2="60" y2="340" class="axis"/>
   <line x1="60" y1="340" x2="580" y2="340" class="axis"/>
-</svg><h2>Test Complete</h2><p>All chart types should render above. Check for:</p><ul><li>✅ Bar charts (vertical and horizontal)</li><li>✅ Line chart with multiple series</li><li>✅ Scatter plot with categories</li><li>✅ Donut chart with percentages</li><li>✅ Heikin-Ashi candlestick chart</li><li>✅ CSV data with field mapping</li><li>✅ Map with GeoJSON points</li></ul>
+</svg><h2>Test Complete</h2><p>All chart types should render above. Check for:</p><ul><li>✅ Bar charts (vertical and horizontal)</li><li>✅ Line chart with multiple series</li><li>✅ Scatter plot with categories</li><li>✅ Donut chart with percentages</li><li>✅ Heikin-Ashi candlestick chart</li><li>✅ <abbr title="Comma-Separated Values">CSV</abbr> data with field mapping</li><li>✅ Map with GeoJSON points</li></ul><section class="footnotes" aria-label="Footnotes"><hr><ol>
+<li id="fn-svg-inline">All SVG is rendered at compile time and embedded directly in the output HTML. No JavaScript is required for display — the charts are fully static. <a href="#fnref-svg-inline" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+<li id="fn-bar-defaults">Default chart dimensions are 600×400 px for vertical bar charts. Override with `width` and `height` in the in-fence front matter block. <a href="#fnref-bar-defaults" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+<li id="fn-heikin-ashi">Heikin-Ashi (平均足) is a Japanese candlestick technique. Each candle's open is the average of the previous candle's open and close; the close is the average of the current candle's OHLC values. <a href="#fnref-heikin-ashi" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+</ol></section>
     </article>
+
+    <article class="tags-list"><a href="tag-test.html" class="tag">test</a> <a href="tag-charts.html" class="tag">charts</a> <a href="tag-obsidian.html" class="tag">obsidian</a></article>
   </main>
   <footer>
-  <p>made with love by <a href="http://lindseymysse.com/">LNSY</a></p>
+  <p>&copy; 2026 QJS-MDC Default Notebook</p>
 </footer>
 </body>
 </html>

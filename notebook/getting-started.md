@@ -10,7 +10,11 @@ summary: Learn how to build your own static site with qjs-md
 
 # Getting Started
 
-qjs-mdc (which stands for Quick JavaScript MarkDown Compiler) is a fast, zero-dependency static site generator that compiles markdown files into self-contained HTML. Here's how to build your own site.
+qjs-mdc (which stands for Quick JavaScript MarkDown Compiler) is a fast, zero-dependency SSG that compiles markdown files into self-contained HTML.[^zero-dep] Here's how to build your own site.
+
+*[SSG]: Static Site Generator
+*[HTML]: HyperText Markup Language
+*[YAML]: YAML Ain't Markup Language
 
 ## Project Structure
 
@@ -83,16 +87,18 @@ Your site is now in `my-blog/dist/`. Open `index.html` to view it.
 
 ## What Gets Generated
 
-- `index.html` - Paginated list of posts
-- `your-post.html` - Individual post pages
-- `tags.html` - Tag index
-- `search.html` - Search functionality
+- `index.html` — Paginated list of posts
+- `your-post.html` — Individual post pages
+- `tags.html` — Tag index
+- `search.html` — Search functionality[^search-note]
 
 All CSS, JavaScript, and images are automatically embedded into the HTML files.
 
 ## Next Steps
 
-- Add more posts with different tags
-- Customize your templates with includes
-- Add SVG charts with code blocks
-- Use [[wikilinks]] to connect posts
+- Review [[Setting Up a Markdown File]] for YAML front matter details
+- See [[QJS-MDC SVG without JS!]] for SVG charts with no JavaScript
+- Use [[Filtering by Target]] to publish to multiple sites from one notebook
+
+[^zero-dep]: Zero-dependency means the compiled binary has no runtime requirements beyond a POSIX-compatible OS. No Node.js, no Python, no package manager needed.
+[^search-note]: Search uses a pre-built JSON index and fuzzy matching implemented in pure CSS and inline JavaScript embedded directly in the output HTML.

@@ -2,39 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Getting Started — qjs-mdc Notebook</title>
-  <meta name="description" content="Learn how to build your own static site with qjs-md">
-<meta name="author" content="LNSY">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Open Graph -->
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="qjs-mdc Notebook">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Getting Started">
-<meta property="og:description" content="Learn how to build your own static site with qjs-md">
-<meta property="og:url" content="https://lindseymysse.com/qjs-mdc/getting-started.html">
-<meta property="og:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
-<meta property="og:locale" content="en_US">
+<meta property="og:description" content="Default notebook for QJS-MDC. Edit these values in index.json">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc">
+<meta property="og:site_name" content="QJS-MDC Default Notebook">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@lindseymysse">
-<meta name="twitter:title" content="Getting Started">
+<meta name="twitter:title" content="Getting Started -- QJS-MDC Default Notebook">
 <meta name="twitter:description" content="Learn how to build your own static site with qjs-md">
-<meta name="twitter:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
 
-<!-- Canonical -->
-<link rel="canonical" href="https://lindseymysse.com/qjs-mdc/getting-started.html">
+<!-- Standard Meta -->
+<meta name="description" content="Learn how to build your own static site with qjs-md">
+<meta name="keywords" content="tutorial, guide">
+<meta name="author" content="LNSY">
+<title>Getting Started — QJS-MDC Default Notebook</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 :root {
-  --bg-color: #FDF8E7;
-  --fg-color: #2d3a2d;
-  --neutral-background-color:#f0eee4;
-  --highlight-color: #8C001A;
-  --neutral-color: #efe9d9;
+  /* Colors */
+
+
+  --foreground: #282828;
+  --background: #FFFDF7;
+  --highlight: darkred;
+  --secondary: #262626;
+  --trinary: #252525;
+  --neutral-1: #808080;
+  --neutral-2: #cdcdcd;
+  --neutral-3: #f5f5f5;
+
+  --bg-color: var(--background);
+  --fg-color: var(--foreground);
+  --neutral-background-color: #efefef;
+  --highlight-color: var(--highlight);
+  --neutral-color: var(--neutral-2);
+
+
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
 
@@ -75,8 +84,9 @@ body {
   padding: 0 1.5rem;
 }
 
+
 a {
-  color: var(--highlight-color);
+  color: var(--highlight);
 }
 
 header {
@@ -100,13 +110,18 @@ header nav {
   text-decoration: none;
 }
 
+.logo {
+  width: 4em;
+  height: 4em;
+}
+
 .nav-links {
   display: flex;
   gap: 1.25rem;
 }
 
 .nav-links a {
-  color: var(--fg-color);
+  color: var(--highlight-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -131,6 +146,7 @@ h2 { font-size: 1.5rem; }
 h3 { font-size: 1.2rem; }
 
 p {
+  color: var(--fg-color);
   margin-bottom: 1em;
 }
 
@@ -203,10 +219,10 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: #7928a1; font-weight: 600; }
-.string  { color: #067d17; }
-.comment { color: #888; font-style: italic; }
-.literal { color: #0055aa; }
+.keyword { color: var(--highlight); font-weight: 600; }
+.string  { color: var(--secondary); }
+.comment { color: var(--neutral-1); font-style: italic; }
+.literal { color: var(--trinary); }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
@@ -237,14 +253,20 @@ li {
 }
 
 .post-list p {
-  color: #555;
   font-size: 0.9rem;
   margin-bottom: 0.25em;
 }
 
 .post-list small {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.8rem;
+}
+
+a.tag {
+  padding: 0.5em;
+  background-color: var(--neutral-background-color);
+  color: var(--highlight);
+  text-decoration: none;
 }
 
 .tags-list {
@@ -254,11 +276,12 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  line-height: 3;
 }
 
 .tags-list li a {
   display: inline-block;
-  background: var(--neutral-color);
+  background: var(--neutral-background-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
@@ -281,12 +304,11 @@ li {
 }
 
 .pagination span {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.9rem;
 }
 
 .site-description {
-  color: #666;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -304,7 +326,7 @@ li {
 #search-input:focus,
 #tag-search:focus {
   outline: none;
-  border-color: #0055aa;
+  border-color: var(--neutral-1);
   box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
 }
 
@@ -340,7 +362,7 @@ blockquote {
   border-left: 3px solid #ccc;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  color: #555;
+  color: var(--neutral-1);
 }
 
 abbr {
@@ -407,14 +429,13 @@ footer {
 }
 </style>
 <script>
-// Chart interactivity is now handled natively by SVG using :target selectors
-// No external JavaScript needed for chart interactions
+// place javascript here
 </script>
 </head>
 <body>
   <header>
   <nav>
-    <a href="index.html" class="site-title"><h2 style="margin-top: 0">qjs-mdc</h2><div><small>Quick JavaScript MarkDown Compiler</small></div></a>
+    <a href="index.html" class="site-title"></a>
     <div class="nav-links">
       <a href="index.html">Posts</a>
       <a href="tags.html">Tags</a>
@@ -426,15 +447,14 @@ footer {
   <main>
     <article>
       <div class="post-meta">
-        <h3>Getting Started</h3>
         <time>Saturday, February 28th 2026 at 12:00 AM</time>
       </div>
-      <h1>Getting Started</h1><p>qjs-mdc (which stands for Quick JavaScript MarkDown Compiler) is a fast, zero-dependency static site generator that compiles markdown files into self-contained HTML. Here's how to build your own site.</p><h2>Project Structure</h2><p>Create a folder with this structure:</p><pre class="code" data-lang=""><code>my-blog/
+      <h1>Getting Started</h1><p>qjs-mdc (which stands for Quick JavaScript MarkDown Compiler) is a fast, zero-dependency <abbr title="Static Site Generator">SSG</abbr> that compiles markdown files into self-contained <abbr title="HyperText Markup Language">HTML</abbr>.<sup><a href="#fn-zero-dep" id="fnref-zero-dep" class="footnote-ref">1</a></sup> Here's how to build your own site.</p><h2>Project Structure</h2><p>Create a folder with this structure:</p><pre class="code" data-lang=""><code>my-blog/
 ├── templates/
 │   └── default.html
 ├── index.json
 ├── style.css
-└── your-post.md</code></pre><h2>Step 1: Create Templates</h2><p>Create <code>templates/default.html</code>:</p><pre class="code language-html"><code>&lt;!DOCTYPE html&gt;
+└── your-post.md</code></pre><h2>Step 1: Create Templates</h2><p>Create <code>templates/default.html</code>:</p><pre class="code" data-lang="html"><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -444,10 +464,10 @@ footer {
   &lt;h1&gt;{{title}}&lt;/h1&gt;
   {{content}}
 &lt;/body&gt;
-&lt;/html&gt;</code></pre><h2>Step 2: Add Global Config</h2><p>Create <code>index.json</code>:</p><pre class="code language-json"><code>{
+&lt;/html&gt;</code></pre><h2>Step 2: Add Global Config</h2><p>Create <code>index.json</code>:</p><pre class="code" data-lang="json"><code>{
   &quot;siteName&quot;: &quot;My Blog&quot;,
   &quot;author&quot;: &quot;Your Name&quot;
-}</code></pre><h2>Step 3: Write Content</h2><p>Create <code>your-post.md</code>:</p><pre class="code language-markdown"><code>---
+}</code></pre><h2>Step 3: Write Content</h2><p>Create <code>your-post.md</code>:</p><pre class="code" data-lang="markdown"><code>---
 publish: true
 title: My First Post
 date: 2026-02-27T00:00:00
@@ -456,11 +476,16 @@ tags: [hello, world]
 
 # Hello World
 
-This is my first post!</code></pre><h2>Step 4: Build</h2><p>Run the compiler:</p><pre class="code language-bash"><code>./mdc my-blog --output my-blog/dist</code></pre><p>Your site is now in <code>my-blog/dist/</code>. Open <code>index.html</code> to view it.</p><h2>What Gets Generated</h2><ul><li><code>index.html</code> - Paginated list of posts</li><li><code>your-post.html</code> - Individual post pages</li><li><code>tags.html</code> - Tag index</li><li><code>search.html</code> - Search functionality</li></ul><p>All CSS, JavaScript, and images are automatically embedded into the HTML files.</p><h2>Next Steps</h2><ul><li>Add more posts with different tags</li><li>Customize your templates with includes</li><li>Add SVG charts with code blocks</li><li>Use <a href="wikilinks.html">wikilinks</a> to connect posts</li></ul>
+This is my first post!</code></pre><h2>Step 4: Build</h2><p>Run the compiler:</p><pre class="code" data-lang="bash"><code>./mdc my-blog --output my-blog/dist</code></pre><p>Your site is now in <code>my-blog/dist/</code>. Open <code>index.html</code> to view it.</p><h2>What Gets Generated</h2><ul><li><code>index.html</code> — Paginated list of posts</li><li><code>your-post.html</code> — Individual post pages</li><li><code>tags.html</code> — Tag index</li><li><code>search.html</code> — Search functionality<sup><a href="#fn-search-note" id="fnref-search-note" class="footnote-ref">2</a></sup></li></ul><p>All CSS, JavaScript, and images are automatically embedded into the <abbr title="HyperText Markup Language">HTML</abbr> files.</p><h2>Next Steps</h2><ul><li>Review <a href="setting-up-a-markdown-file.html">Setting Up a Markdown File</a> for <abbr title="YAML Ain't Markup Language">YAML</abbr> front matter details</li><li>See <a href="qjs-mdc-svg-without-js!.html">QJS-MDC SVG without JS!</a> for SVG charts with no JavaScript</li><li>Use <a href="filtering-by-target.html">Filtering by Target</a> to publish to multiple sites from one notebook</li></ul><section class="footnotes" aria-label="Footnotes"><hr><ol>
+<li id="fn-zero-dep">Zero-dependency means the compiled binary has no runtime requirements beyond a POSIX-compatible OS. No Node.js, no Python, no package manager needed. <a href="#fnref-zero-dep" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+<li id="fn-search-note">Search uses a pre-built JSON index and fuzzy matching implemented in pure CSS and inline JavaScript embedded directly in the output HTML. <a href="#fnref-search-note" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+</ol></section>
     </article>
+
+    <article class="tags-list"><a href="tag-tutorial.html" class="tag">tutorial</a> <a href="tag-guide.html" class="tag">guide</a></article>
   </main>
   <footer>
-  <p>made with love by <a href="http://lindseymysse.com/">LNSY</a></p>
+  <p>&copy; 2026 QJS-MDC Default Notebook</p>
 </footer>
 </body>
 </html>

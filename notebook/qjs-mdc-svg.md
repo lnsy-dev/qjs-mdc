@@ -9,9 +9,15 @@ tags:
 ---
 # Interactive SVG Charts (with no Javascript!)
 
-In addition to rendering code blocks, mdc will render svg charts with 
+In addition to rendering code blocks, mdc will render SVG charts from JSON or CSV data inside fenced code blocks.[^svg-inline] See [[Getting Started]] for the basic project setup before working with charts.
+
+*[SVG]: Scalable Vector Graphics
+*[JSON]: JavaScript Object Notation
+*[CSV]: Comma-Separated Values
 
 ## Bar Chart (Vertical)
+
+Vertical bar charts accept a JSON array with `label` and `value` fields.[^bar-defaults]
 
 ```bar
 [
@@ -23,6 +29,8 @@ In addition to rendering code blocks, mdc will render svg charts with
 ```
 
 ## Bar Chart (Horizontal)
+
+Pass a YAML front matter block inside the code fence to configure chart dimensions and orientation:
 
 ```bar
 ---
@@ -39,6 +47,8 @@ height: 300
 ```
 
 ## Line Chart
+
+Line charts support multiple series via the `category` field:
 
 ```line
 [
@@ -79,6 +89,8 @@ height: 300
 
 ## Heikin-Ashi Chart
 
+The Heikin-Ashi chart type uses modified OHLC candlestick calculations to smooth out price noise.[^heikin-ashi]
+
 ```heikin-ashi
 [
   {"date": "2026-01-01", "open": 100, "high": 110, "low": 95, "close": 105},
@@ -90,6 +102,8 @@ height: 300
 ```
 
 ## CSV Data with Field Mapping
+
+For CSV data, use `labelField` and `valueField` to map columns:
 
 ```bar
 ---
@@ -114,3 +128,7 @@ All chart types should render above. Check for:
 - ✅ Heikin-Ashi candlestick chart
 - ✅ CSV data with field mapping
 - ✅ Map with GeoJSON points
+
+[^svg-inline]: All SVG is rendered at compile time and embedded directly in the output HTML. No JavaScript is required for display — the charts are fully static.
+[^bar-defaults]: Default chart dimensions are 600×400 px for vertical bar charts. Override with `width` and `height` in the in-fence front matter block.
+[^heikin-ashi]: Heikin-Ashi (平均足) is a Japanese candlestick technique. Each candle's open is the average of the previous candle's open and close; the close is the average of the current candle's OHLC values.

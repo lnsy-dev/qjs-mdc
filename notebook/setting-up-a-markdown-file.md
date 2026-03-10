@@ -9,7 +9,14 @@ summary: A reference memo covering filename conventions and all front matter fie
 ---
 # Setting Up a Markdown File
 
-This memo covers how to name and configure a markdown file so it compiles correctly with qjs-mdc
+This memo covers how to name and configure a markdown file so it compiles correctly with qjs-mdc.[^qjs-origin] See also [[Getting Started]] for the full project setup walkthrough.
+
+*[qjs-mdc]: Quick JavaScript MarkDown Compiler
+*[YAML]: YAML Ain't Markup Language
+*[ISO]: International Organization for Standardization
+*[HTML]: HyperText Markup Language
+*[RSS]: Really Simple Syndication
+*[URL]: Uniform Resource Locator
 
 ## Filename Convention
 
@@ -37,7 +44,7 @@ The filename becomes the output HTML filename. `my-first-post.md` compiles to `m
 
 ## Front Matter
 
-Every markdown file must begin with a YAML front matter block delimited by `---`. This is where you configure how the compiler processes and presents the file.
+Every markdown file must begin with a YAML front matter block delimited by `---`. This is where you configure how the compiler processes and presents the file.[^fm-required]
 
 ```yaml
 ---
@@ -106,3 +113,6 @@ Your content here.
 - Tags are normalized to lowercase when generating filenames. `My Tag` becomes `tag-my-tag.html`.
 - A file with `publish: false` or no `publish` field is silently skipped — useful for drafts.
 - The `type` field is free-form. You can create custom templates (e.g. `note.html`, `recipe.html`) and target them by setting `type` accordingly.
+
+[^qjs-origin]: qjs-mdc is built on QuickJS, a small embeddable JavaScript engine by Fabrice Bellard. The compiled binary is fully self-contained.
+[^fm-required]: The front matter block must appear at the very top of the file — the first line must be `---` with no preceding whitespace or blank lines.

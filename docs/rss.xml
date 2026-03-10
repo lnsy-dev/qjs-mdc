@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>qjs-mdc Notebook</title>
+    <title>QJS-MDC Default Notebook</title>
     <link>https://lindseymysse.com/qjs-mdc</link>
-    <description>Public Documentation for qjs-mdc.</description>
+    <description>Default notebook for QJS-MDC. Edit these values in index.json</description>
     <atom:link href="https://lindseymysse.com/qjs-mdc/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Wed, 04 Mar 2026 12:09:31 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 10 Mar 2026 03:39:25 GMT</lastBuildDate>
     <item>
       <title>Filtering by Target</title>
       <link>https://lindseymysse.com/qjs-mdc/filtering-by-target.html</link>
@@ -28,7 +28,7 @@
       <title>QJS-MDC SVG without JS!</title>
       <link>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</link>
       <guid>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</guid>
-      <description>In addition to rendering code blocks, mdc will render svg charts with</description>
+      <description>In addition to rendering code blocks, mdc will render SVG charts from JSON or CSV data inside fenced code blocks.&lt;a href=&quot;undefined&quot;&gt;^svg-inline&lt;/a&gt; See &lt;a href=&quot;undefined&quot;&gt;&lt;a href=&quot;undefined&quot;&gt;Getting Started&lt;/a&gt;&lt;/a&gt; for the basic project setup before working with c</description>
       <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
       <category>test</category>
       <category>charts</category>

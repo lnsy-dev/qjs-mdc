@@ -2,39 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Setting Up a Markdown File — qjs-mdc Notebook</title>
-  <meta name="description" content="A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.">
-<meta name="author" content="LNSY">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Open Graph -->
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="qjs-mdc Notebook">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Setting Up a Markdown File">
-<meta property="og:description" content="A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.">
-<meta property="og:url" content="https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html">
-<meta property="og:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
-<meta property="og:locale" content="en_US">
+<meta property="og:description" content="Default notebook for QJS-MDC. Edit these values in index.json">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc">
+<meta property="og:site_name" content="QJS-MDC Default Notebook">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@lindseymysse">
-<meta name="twitter:title" content="Setting Up a Markdown File">
+<meta name="twitter:title" content="Setting Up a Markdown File -- QJS-MDC Default Notebook">
 <meta name="twitter:description" content="A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.">
-<meta name="twitter:image" content="https://lindseymysse.com/qjs-mdc/og-image.png">
 
-<!-- Canonical -->
-<link rel="canonical" href="https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html">
+<!-- Standard Meta -->
+<meta name="description" content="A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.">
+<meta name="keywords" content="memo, guide">
+<meta name="author" content="LNSY">
+<title>Setting Up a Markdown File — QJS-MDC Default Notebook</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
 
 :root {
-  --bg-color: #FDF8E7;
-  --fg-color: #2d3a2d;
-  --neutral-background-color:#f0eee4;
-  --highlight-color: #8C001A;
-  --neutral-color: #efe9d9;
+  /* Colors */
+
+
+  --foreground: #282828;
+  --background: #FFFDF7;
+  --highlight: darkred;
+  --secondary: #262626;
+  --trinary: #252525;
+  --neutral-1: #808080;
+  --neutral-2: #cdcdcd;
+  --neutral-3: #f5f5f5;
+
+  --bg-color: var(--background);
+  --fg-color: var(--foreground);
+  --neutral-background-color: #efefef;
+  --highlight-color: var(--highlight);
+  --neutral-color: var(--neutral-2);
+
+
   --color-border: var(--neutral-color);
   --font-family: "Poly", serif;
 
@@ -75,8 +84,9 @@ body {
   padding: 0 1.5rem;
 }
 
+
 a {
-  color: var(--highlight-color);
+  color: var(--highlight);
 }
 
 header {
@@ -100,13 +110,18 @@ header nav {
   text-decoration: none;
 }
 
+.logo {
+  width: 4em;
+  height: 4em;
+}
+
 .nav-links {
   display: flex;
   gap: 1.25rem;
 }
 
 .nav-links a {
-  color: var(--fg-color);
+  color: var(--highlight-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -131,6 +146,7 @@ h2 { font-size: 1.5rem; }
 h3 { font-size: 1.2rem; }
 
 p {
+  color: var(--fg-color);
   margin-bottom: 1em;
 }
 
@@ -203,10 +219,10 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: #7928a1; font-weight: 600; }
-.string  { color: #067d17; }
-.comment { color: #888; font-style: italic; }
-.literal { color: #0055aa; }
+.keyword { color: var(--highlight); font-weight: 600; }
+.string  { color: var(--secondary); }
+.comment { color: var(--neutral-1); font-style: italic; }
+.literal { color: var(--trinary); }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
@@ -237,14 +253,20 @@ li {
 }
 
 .post-list p {
-  color: #555;
   font-size: 0.9rem;
   margin-bottom: 0.25em;
 }
 
 .post-list small {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.8rem;
+}
+
+a.tag {
+  padding: 0.5em;
+  background-color: var(--neutral-background-color);
+  color: var(--highlight);
+  text-decoration: none;
 }
 
 .tags-list {
@@ -254,11 +276,12 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  line-height: 3;
 }
 
 .tags-list li a {
   display: inline-block;
-  background: var(--neutral-color);
+  background: var(--neutral-background-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
@@ -281,12 +304,11 @@ li {
 }
 
 .pagination span {
-  color: #999;
+  color: var(--neutral-1);
   font-size: 0.9rem;
 }
 
 .site-description {
-  color: #666;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -304,7 +326,7 @@ li {
 #search-input:focus,
 #tag-search:focus {
   outline: none;
-  border-color: #0055aa;
+  border-color: var(--neutral-1);
   box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
 }
 
@@ -340,7 +362,7 @@ blockquote {
   border-left: 3px solid #ccc;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  color: #555;
+  color: var(--neutral-1);
 }
 
 abbr {
@@ -407,14 +429,13 @@ footer {
 }
 </style>
 <script>
-// Chart interactivity is now handled natively by SVG using :target selectors
-// No external JavaScript needed for chart interactions
+// place javascript here
 </script>
 </head>
 <body>
   <header>
   <nav>
-    <a href="index.html" class="site-title"><h2 style="margin-top: 0">qjs-mdc</h2><div><small>Quick JavaScript MarkDown Compiler</small></div></a>
+    <a href="index.html" class="site-title"></a>
     <div class="nav-links">
       <a href="index.html">Posts</a>
       <a href="tags.html">Tags</a>
@@ -426,14 +447,13 @@ footer {
   <main>
     <article>
       <div class="post-meta">
-        <h3>Setting Up a Markdown File</h3>
         <time>Tuesday, March 3rd 2026 at 12:00 AM</time>
       </div>
-      <h1>Setting Up a Markdown File</h1><p>This memo covers how to name and configure a markdown file so it compiles correctly with qjs-mdc</p><h2>Filename Convention</h2><p>File names must be <strong>lowercase and dash-separated</strong> (kebab-case). Use only letters, numbers, and hyphens. Do not use spaces, underscores, capital letters, or special characters.</p><p><strong>Good:</strong><pre class="code" data-lang=""><code>my-first-post.md
+      <h1>Setting Up a Markdown File</h1><p>This memo covers how to name and configure a markdown file so it compiles correctly with <abbr title="Quick JavaScript MarkDown Compiler">qjs-mdc</abbr>.<sup><a href="#fn-qjs-origin" id="fnref-qjs-origin" class="footnote-ref">1</a></sup> See also <a href="getting-started.html">Getting Started</a> for the full project setup walkthrough.</p><h2>Filename Convention</h2><p>File names must be <strong>lowercase and dash-separated</strong> (kebab-case). Use only letters, numbers, and hyphens. Do not use spaces, underscores, capital letters, or special characters.</p><p><strong>Good:</strong><pre class="code" data-lang=""><code>my-first-post.md
 notes-on-rust-lifetimes.md
 2026-march-reading-list.md</code></pre><p><strong>Avoid:</strong><pre class="code" data-lang=""><code>My First Post.md
 notes_on_rust.md
-NotesOnRust.md</code></pre><p>The filename becomes the output HTML filename. <code>my-first-post.md</code> compiles to <code>my-first-post.html</code> and forms the URL slug for the post.</p><hr /><h2>Front Matter</h2><p>Every markdown file must begin with a YAML front matter block delimited by <code>---</code>. This is where you configure how the compiler processes and presents the file.</p><pre class="code language-yaml"><code>---
+NotesOnRust.md</code></pre><p>The filename becomes the output <abbr title="HyperText Markup Language">HTML</abbr> filename. <code>my-first-post.md</code> compiles to <code>my-first-post.html</code> and forms the <abbr title="Uniform Resource Locator">URL</abbr> slug for the post.</p><hr /><h2>Front Matter</h2><p>Every markdown file must begin with a <abbr title="YAML Ain't Markup Language">YAML</abbr> front matter block delimited by <code>---</code>. This is where you configure how the compiler processes and presents the file.<sup><a href="#fn-fm-required" id="fnref-fm-required" class="footnote-ref">2</a></sup><pre class="code" data-lang="yaml"><code>---
 publish: true
 title: &quot;My Post Title&quot;
 date: 2026-03-03T00:00:00
@@ -449,14 +469,14 @@ summary: A short description shown in post listings.
 </thead>
 <tbody>
 <tr><td><code>publish</code></td><td><strong>Yes</strong></td><td>Must be <code>true</code>. Files without this field are ignored by the compiler.</td></tr>
-<tr><td><code>title</code></td><td><strong>Yes</strong></td><td>The post title. Compiled into <code>{{title}}</code> in templates and used in the <code>&lt;title&gt;</code> tag, index listings, tag pages, search results, and the RSS feed.</td></tr>
-<tr><td><code>date</code></td><td><strong>Yes</strong></td><td>Publication date in ISO 8601 format (<code>YYYY-MM-DDTHH:MM:SS</code>). Used to sort posts in the index and RSS feed, and compiled into <code>{{date}}</code> in templates.</td></tr>
+<tr><td><code>title</code></td><td><strong>Yes</strong></td><td>The post title. Compiled into <code>{{title}}</code> in templates and used in the <code>&lt;title&gt;</code> tag, index listings, tag pages, search results, and the <abbr title="Really Simple Syndication">RSS</abbr> feed.</td></tr>
+<tr><td><code>date</code></td><td><strong>Yes</strong></td><td>Publication date in <abbr title="International Organization for Standardization">ISO</abbr> 8601 format (<code>YYYY-MM-DDTHH:MM:SS</code>). Used to sort posts in the index and <abbr title="Really Simple Syndication">RSS</abbr> feed, and compiled into <code>{{date}}</code> in templates.</td></tr>
 <tr><td><code>tags</code></td><td>No</td><td>A list of tag strings. Each tag generates a dedicated tag listing page (<code>tag-tagname.html</code>) and appears in the searchable tag index.</td></tr>
-<tr><td><code>type</code></td><td>No</td><td>Selects the HTML template used for this file. A value of <code>post</code> uses <code>post.html</code>. If omitted or the matching template does not exist, the compiler falls back to <code>post.html</code> then <code>default.html</code>.</td></tr>
+<tr><td><code>type</code></td><td>No</td><td>Selects the <abbr title="HyperText Markup Language">HTML</abbr> template used for this file. A value of <code>post</code> uses <code>post.html</code>. If omitted or the matching template does not exist, the compiler falls back to <code>post.html</code> then <code>default.html</code>.</td></tr>
 <tr><td><code>author</code></td><td>No</td><td>Post author name. Compiled into <code>{{author}}</code> in templates. Falls back to the <code>author</code> value in <code>templates/index.json</code> if not set.</td></tr>
-<tr><td><code>summary</code></td><td>No</td><td>A short description of the post. Shown in index listings and used as the RSS item description. If omitted, the compiler uses the first paragraph of the post body.</td></tr>
+<tr><td><code>summary</code></td><td>No</td><td>A short description of the post. Shown in index listings and used as the <abbr title="Really Simple Syndication">RSS</abbr> item description. If omitted, the compiler uses the first paragraph of the post body.</td></tr>
 </tbody>
-</table><hr /><h2>Compiled Template Variables</h2><p>When the compiler renders a post, the following variables are available to substitute in your HTML templates using <code>{{variable}}</code> syntax:</p><table>
+</table><hr /><h2>Compiled Template Variables</h2><p>When the compiler renders a post, the following variables are available to substitute in your <abbr title="HyperText Markup Language">HTML</abbr> templates using <code>{{variable}}</code> syntax:</p><table>
 <thead>
 <tr><th>Template Variable</th><th>Source</th></tr>
 </thead>
@@ -464,23 +484,28 @@ summary: A short description shown in post listings.
 <tr><td><code>{{title}}</code></td><td><code>title</code> front matter field</td></tr>
 <tr><td><code>{{date}}</code></td><td><code>date</code> field, formatted as a human-readable string</td></tr>
 <tr><td><code>{{author}}</code></td><td><code>author</code> front matter field or <code>index.json</code> global</td></tr>
-<tr><td><code>{{tags}}</code></td><td>Rendered HTML tag links from the <code>tags</code> array</td></tr>
-<tr><td><code>{{content}}</code></td><td>The compiled HTML body of the markdown file</td></tr>
+<tr><td><code>{{tags}}</code></td><td>Rendered <abbr title="HyperText Markup Language">HTML</abbr> tag links from the <code>tags</code> array</td></tr>
+<tr><td><code>{{content}}</code></td><td>The compiled <abbr title="HyperText Markup Language">HTML</abbr> body of the markdown file</td></tr>
 <tr><td><code>{{site_name}}</code></td><td><code>templates/index.json</code> global config</td></tr>
 <tr><td><code>{{site_description}}</code></td><td><code>templates/index.json</code> global config</td></tr>
 <tr><td><code>{{siteUrl}}</code></td><td><code>templates/index.json</code> global config</td></tr>
 </tbody>
-</table><hr /><h2>Minimal Valid File</h2><p>The smallest file that will compile is:</p><pre class="code language-markdown"><code>---
+</table><hr /><h2>Minimal Valid File</h2><p>The smallest file that will compile is:</p><pre class="code" data-lang="markdown"><code>---
 publish: true
 title: &quot;Hello World&quot;
 date: 2026-03-03T00:00:00
 ---
 
-Your content here.</code></pre><hr /><h2>Notes</h2><ul><li>The <code>date</code> field controls sort order. Posts without a valid date may sort unpredictably.</li><li>Tags are normalized to lowercase when generating filenames. <code>My Tag</code> becomes <code>tag-my-tag.html</code>.</li><li>A file with <code>publish: false</code> or no <code>publish</code> field is silently skipped — useful for drafts.</li><li>The <code>type</code> field is free-form. You can create custom templates (e.g. <code>note.html</code>, <code>recipe.html</code>) and target them by setting <code>type</code> accordingly.</li></ul>
+Your content here.</code></pre><hr /><h2>Notes</h2><ul><li>The <code>date</code> field controls sort order. Posts without a valid date may sort unpredictably.</li><li>Tags are normalized to lowercase when generating filenames. <code>My Tag</code> becomes <code>tag-my-tag.html</code>.</li><li>A file with <code>publish: false</code> or no <code>publish</code> field is silently skipped — useful for drafts.</li><li>The <code>type</code> field is free-form. You can create custom templates (e.g. <code>note.html</code>, <code>recipe.html</code>) and target them by setting <code>type</code> accordingly.</li></ul><section class="footnotes" aria-label="Footnotes"><hr><ol>
+<li id="fn-qjs-origin">qjs-mdc is built on QuickJS, a small embeddable JavaScript engine by Fabrice Bellard. The compiled binary is fully self-contained. <a href="#fnref-qjs-origin" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+<li id="fn-fm-required">The front matter block must appear at the very top of the file — the first line must be `---` with no preceding whitespace or blank lines. <a href="#fnref-fm-required" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>
+</ol></section>
     </article>
+
+    <article class="tags-list"><a href="tag-memo.html" class="tag">memo</a> <a href="tag-guide.html" class="tag">guide</a></article>
   </main>
   <footer>
-  <p>made with love by <a href="http://lindseymysse.com/">LNSY</a></p>
+  <p>&copy; 2026 QJS-MDC Default Notebook</p>
 </footer>
 </body>
 </html>

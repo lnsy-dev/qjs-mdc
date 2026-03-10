@@ -263,6 +263,29 @@ check_contains "wikilinks: link converted to anchor" "$OUT/wikilink-post.html" '
 check_contains "wikilinks: anchor text preserved"    "$OUT/wikilink-post.html" "Another Page"
 
 # ─────────────────────────────────────────────────────────────────────────────
+echo "--- 7a. Footnotes ---"
+reset_src
+cat > "$SRC/footnote-post.md" << 'EOF'
+---
+publish: true
+title: "Footnote Post"
+date: 2026-03-03T00:00:00
+---
+
+This claim needs a source.[^source] Another point here.[^note]
+
+[^source]: The original reference document.
+[^note]: An explanatory aside.
+EOF
+compile > /dev/null
+check_contains     "footnotes: inline ref rendered"       "$OUT/footnote-post.html" 'class="footnote-ref"'
+check_contains     "footnotes: superscript link"          "$OUT/footnote-post.html" '<sup>'
+check_contains     "footnotes: footnote section rendered" "$OUT/footnote-post.html" 'class="footnotes"'
+check_contains     "footnotes: first footnote text"       "$OUT/footnote-post.html" 'The original reference document.'
+check_contains     "footnotes: back link rendered"        "$OUT/footnote-post.html" 'class="footnote-back"'
+check_not_contains "footnotes: definition line removed"   "$OUT/footnote-post.html" '[^source]:'
+
+# ─────────────────────────────────────────────────────────────────────────────
 echo "--- 7. Abbreviations ---"
 reset_src
 cat > "$SRC/abbr-post.md" << 'EOF'
