@@ -6,6 +6,30 @@
 import * as std from 'std';
 import * as os from 'os';
 
+function btoa(data) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  let bytes;
+  if (data instanceof ArrayBuffer) {
+    bytes = new Uint8Array(data);
+  } else {
+    bytes = [];
+    for (let i = 0; i < data.length; i++) {
+      bytes.push(data.charCodeAt(i) & 0xff);
+    }
+  }
+  let result = '';
+  for (let i = 0; i < bytes.length; i += 3) {
+    const b0 = bytes[i];
+    const b1 = i + 1 < bytes.length ? bytes[i + 1] : 0;
+    const b2 = i + 2 < bytes.length ? bytes[i + 2] : 0;
+    result += chars[b0 >> 2];
+    result += chars[((b0 & 3) << 4) | (b1 >> 4)];
+    result += i + 1 < bytes.length ? chars[((b1 & 15) << 2) | (b2 >> 6)] : '=';
+    result += i + 2 < bytes.length ? chars[b2 & 63] : '=';
+  }
+  return result;
+}
+
 /**
  * Collects CSS and JS files from templates directory.
  * @param {string} sourceDir - Source directory path

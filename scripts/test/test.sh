@@ -963,6 +963,155 @@ rm -rf "$CF_DIR"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 echo ""
+echo "=== to-json tests ==="
+echo ""
+TJ_DIR="$(mktemp -d)"
+
+to_json() {
+  local input="$1"; shift
+  "$MCD" to-json "$input" "$@" 2>&1
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 44. to-json: output file created and keys present ---"
+cat > "$TJ_DIR/basic.md" << 'EOF'
+---
+title: "Test Doc"
+---
+
+# Hello World
+
+Some paragraph text.
+EOF
+to_json "$TJ_DIR/basic.md" --output "$TJ_DIR/basic.json" > /dev/null
+check_file_exists "to-json: output file created"        "$TJ_DIR/basic.json"
+check_contains    "to-json: valid JSON (opening brace)" "$TJ_DIR/basic.json" '{'
+check_contains    "to-json: frontMatter key present"    "$TJ_DIR/basic.json" '"frontMatter"'
+check_contains    "to-json: content key present"        "$TJ_DIR/basic.json" '"content"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 45. to-json: frontMatter fields populated ---"
+check_contains "to-json: title in frontMatter" "$TJ_DIR/basic.json" '"title"'
+check_contains "to-json: title value"          "$TJ_DIR/basic.json" '"Test Doc"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 46. to-json: heading node structure ---"
+check_contains "to-json: heading type"  "$TJ_DIR/basic.json" '"type": "heading"'
+check_contains "to-json: heading level" "$TJ_DIR/basic.json" '"level": 1'
+check_contains "to-json: heading id"    "$TJ_DIR/basic.json" '"id": "hello-world"'
+check_contains "to-json: heading text"  "$TJ_DIR/basic.json" '"text": "Hello World"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 47. to-json: paragraph inside heading children ---"
+check_contains "to-json: paragraph type" "$TJ_DIR/basic.json" '"type": "paragraph"'
+check_contains "to-json: paragraph text" "$TJ_DIR/basic.json" '"text": "Some paragraph text.'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 48. to-json: default output path (no --output) ---"
+cat > "$TJ_DIR/no-output.md" << 'EOF'
+---
+title: "No Output"
+---
+
+Content.
+EOF
+to_json "$TJ_DIR/no-output.md" > /dev/null
+check_file_exists "to-json: default output is <source>.json" "$TJ_DIR/no-output.json"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 49. to-json: list node with items ---"
+cat > "$TJ_DIR/list.md" << 'EOF'
+---
+title: "List"
+---
+
+# Items
+
+- Alpha
+- Beta
+- Gamma
+EOF
+to_json "$TJ_DIR/list.md" --output "$TJ_DIR/list.json" > /dev/null
+check_contains "to-json: list type"       "$TJ_DIR/list.json" '"type": "list"'
+check_contains "to-json: list not ordered" "$TJ_DIR/list.json" '"ordered": false'
+check_contains "to-json: listItem type"  "$TJ_DIR/list.json" '"type": "listItem"'
+check_contains "to-json: listItem text"  "$TJ_DIR/list.json" '"text": "Alpha"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 50. to-json: task list items ---"
+cat > "$TJ_DIR/tasks.md" << 'EOF'
+---
+title: "Tasks"
+---
+
+# Tasks
+
+- [x] Done item
+- [ ] Pending item
+EOF
+to_json "$TJ_DIR/tasks.md" --output "$TJ_DIR/tasks.json" > /dev/null
+check_contains "to-json: task:true present"     "$TJ_DIR/tasks.json" '"task": true'
+check_contains "to-json: checked:true present"  "$TJ_DIR/tasks.json" '"checked": true'
+check_contains "to-json: checked:false present" "$TJ_DIR/tasks.json" '"checked": false'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 51. to-json: code block node ---"
+cat > "$TJ_DIR/code.md" << 'MDEOF'
+---
+title: "Code"
+---
+
+# Code
+
+```bash
+echo hello
+```
+MDEOF
+to_json "$TJ_DIR/code.md" --output "$TJ_DIR/code.json" > /dev/null
+check_contains "to-json: codeBlock type"     "$TJ_DIR/code.json" '"type": "codeBlock"'
+check_contains "to-json: codeBlock language" "$TJ_DIR/code.json" '"language": "bash"'
+check_contains "to-json: codeBlock code"     "$TJ_DIR/code.json" '"code"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 52. to-json: footnotes collected at document root ---"
+cat > "$TJ_DIR/footnotes.md" << 'EOF'
+---
+title: "Footnotes"
+---
+
+# Section
+
+Text with a note [^1].
+
+[^1]: The footnote text.
+EOF
+to_json "$TJ_DIR/footnotes.md" --output "$TJ_DIR/footnotes.json" > /dev/null
+check_contains "to-json: footnotes array present" "$TJ_DIR/footnotes.json" '"footnotes"'
+check_contains "to-json: footnote id present"     "$TJ_DIR/footnotes.json" '"id": 1'
+check_contains "to-json: footnote text present"   "$TJ_DIR/footnotes.json" 'The footnote text'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 53. to-json: nested heading hierarchy ---"
+cat > "$TJ_DIR/nested.md" << 'EOF'
+---
+title: "Nested"
+---
+
+# Top Level
+
+## Sub Section
+
+Sub paragraph.
+EOF
+to_json "$TJ_DIR/nested.md" --output "$TJ_DIR/nested.json" > /dev/null
+check_contains "to-json: h1 present"     "$TJ_DIR/nested.json" '"level": 1'
+check_contains "to-json: h2 present"     "$TJ_DIR/nested.json" '"level": 2'
+check_contains "to-json: sub-section id" "$TJ_DIR/nested.json" '"id": "sub-section"'
+
+rm -rf "$TJ_DIR"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+echo ""
 echo "=== Results ==="
 echo "  Passed: $PASS"
 echo "  Failed: $FAIL"
