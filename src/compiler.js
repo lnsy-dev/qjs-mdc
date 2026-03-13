@@ -39,6 +39,8 @@ import { processSVGCharts } from './plugins/svg-charts.js';
 import { processTables } from '../plugins/tables.js';
 import { extractCSSColors } from './utils/css-parser.js';
 import { createNewNotebook } from './commands/create-notebook.js';
+import { compileFile } from './commands/compile-file.js';
+import { toJson } from './commands/to-json.js';
 import { formatPrettyDate } from './utils/date-format.js';
 
 /**
@@ -219,6 +221,16 @@ function watch(config) {
  */
 function main() {
   const config = parseArgs(scriptArgs);
+
+  if (config.command === 'compile-file') {
+    compileFile(config.inputFile, config.output);
+    return;
+  }
+
+  if (config.command === 'to-json') {
+    toJson(config.inputFile, config.output);
+    return;
+  }
 
   if (config.command === 'create-notebook') {
     createNewNotebook(config.targetPath);

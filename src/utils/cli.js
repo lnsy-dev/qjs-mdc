@@ -14,11 +14,21 @@ export function printHelp() {
   console.log('  <source-directory> --output <output-directory>');
   console.log('    Compile markdown files with YAML front matter into static HTML');
   console.log('');
+  console.log('  compile-file <source.md> [--output <output.html>]');
+  console.log('    Compile a single markdown file to a self-contained HTML document.');
+  console.log('    YAML front matter sets <head> metadata (title, description, author,');
+  console.log('    tags, date, lang, canonical, image). Output defaults to <source>.html');
+  console.log('    if --output is omitted.');
+  console.log('');
+  console.log('  to-json <source.md> [--output <out.json>]');
+  console.log('    Convert a single markdown file to a JSON AST document.');
+  console.log('    Output defaults to <source>.json if --output is omitted.');
+  console.log('');
   console.log('  create-new-notebook <target-directory>');
   console.log('    Create a new notebook from template with guided setup');
   console.log('');
   console.log('Options:');
-  console.log('  --output, -o    Output directory (required for compilation)');
+  console.log('  --output, -o    Output file/directory (required for site compilation)');
   console.log('  --watch, -w     Watch source directory and recompile on changes');
   console.log('  --target, -t    Filter files by target value in YAML front matter');
   console.log('  --force, -f     Force rebuild of all files, ignoring modification times');
@@ -49,6 +59,40 @@ export function parseArgs(args) {
     std.exit(0);
   }
   
+  // Check for compile-file command
+  if (firstArg === 'compile-file') {
+    if (!args[2]) {
+      console.log('Error: Source file is required for compile-file');
+      console.log('Usage: mdc compile-file <source.md> [--output <output.html>]');
+      std.exit(1);
+    }
+
+    const config = { command: 'compile-file', inputFile: args[2], output: null };
+    for (let i = 3; i < args.length; i++) {
+      if ((args[i] === '--output' || args[i] === '-o') && args[i + 1]) {
+        config.output = args[++i];
+      }
+    }
+    return config;
+  }
+
+  // Check for to-json command
+  if (firstArg === 'to-json') {
+    if (!args[2]) {
+      console.log('Error: Source file is required for to-json');
+      console.log('Usage: mdc to-json <source.md> [--output <out.json>]');
+      std.exit(1);
+    }
+
+    const config = { command: 'to-json', inputFile: args[2], output: null };
+    for (let i = 3; i < args.length; i++) {
+      if ((args[i] === '--output' || args[i] === '-o') && args[i + 1]) {
+        config.output = args[++i];
+      }
+    }
+    return config;
+  }
+
   // Check for create-new-notebook command
   if (firstArg === 'create-new-notebook') {
     if (!args[2]) {

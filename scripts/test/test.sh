@@ -137,6 +137,11 @@ compile() {
   "$MCD" "$SRC" --output "$OUT" "$@" 2>&1
 }
 
+compile_file() {
+  local input="$1"; shift
+  "$MCD" compile-file "$input" "$@" 2>&1
+}
+
 # ═══════════════════════════════════════════════════════════════════════════════
 echo ""
 echo "=== qjs-md integration tests ==="
@@ -765,6 +770,196 @@ Visit https://example.com for more info.
 EOF
 compile > /dev/null
 check_contains "url: bare URL wrapped in anchor" "$OUT/url-post.html" 'href="https://example.com"'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+echo "--- 31. compile-file: basic output created ---"
+CF_DIR="$(mktemp -d)"
+cat > "$CF_DIR/article.md" << 'EOF'
+---
+title: "My Article"
+date: 2026-01-15
+---
+
+Hello from compile-file.
+EOF
+compile_file "$CF_DIR/article.md" --output "$CF_DIR/article.html" > /dev/null
+check_file_exists "compile-file: output file created"    "$CF_DIR/article.html"
+check_contains    "compile-file: content rendered"       "$CF_DIR/article.html" "Hello from compile-file"
+check_contains    "compile-file: DOCTYPE present"        "$CF_DIR/article.html" "<!DOCTYPE html>"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 32. compile-file: title in <title> and og:title ---"
+check_contains "compile-file: <title> set"    "$CF_DIR/article.html" "<title>My Article</title>"
+check_contains "compile-file: og:title set"   "$CF_DIR/article.html" 'og:title'
+check_contains "compile-file: og:title value" "$CF_DIR/article.html" "My Article"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 33. compile-file: description meta tags ---"
+cat > "$CF_DIR/described.md" << 'EOF'
+---
+title: "Described"
+description: "A short summary of the page."
+---
+
+Body text.
+EOF
+compile_file "$CF_DIR/described.md" --output "$CF_DIR/described.html" > /dev/null
+check_contains "compile-file: description meta"         "$CF_DIR/described.html" 'name="description"'
+check_contains "compile-file: description value"        "$CF_DIR/described.html" "A short summary of the page."
+check_contains "compile-file: og:description meta"      "$CF_DIR/described.html" 'og:description'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 34. compile-file: author meta tag ---"
+cat > "$CF_DIR/authored.md" << 'EOF'
+---
+title: "Authored"
+author: "Jane Doe"
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/authored.md" --output "$CF_DIR/authored.html" > /dev/null
+check_contains "compile-file: author meta"  "$CF_DIR/authored.html" 'name="author"'
+check_contains "compile-file: author value" "$CF_DIR/authored.html" "Jane Doe"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 35. compile-file: keywords from tags ---"
+cat > "$CF_DIR/tagged.md" << 'EOF'
+---
+title: "Tagged"
+tags: [javascript, web, tutorial]
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/tagged.md" --output "$CF_DIR/tagged.html" > /dev/null
+check_contains "compile-file: keywords meta"      "$CF_DIR/tagged.html" 'name="keywords"'
+check_contains "compile-file: tag in keywords"    "$CF_DIR/tagged.html" "javascript"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 36. compile-file: date meta tag ---"
+cat > "$CF_DIR/dated.md" << 'EOF'
+---
+title: "Dated"
+date: 2026-06-01
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/dated.md" --output "$CF_DIR/dated.html" > /dev/null
+check_contains "compile-file: date meta" "$CF_DIR/dated.html" 'name="date"'
+check_contains "compile-file: date value" "$CF_DIR/dated.html" "2026-06-01"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 37. compile-file: lang attribute on <html> ---"
+cat > "$CF_DIR/lang-fr.md" << 'EOF'
+---
+title: "French"
+lang: fr
+---
+
+Bonjour.
+EOF
+compile_file "$CF_DIR/lang-fr.md" --output "$CF_DIR/lang-fr.html" > /dev/null
+check_contains "compile-file: lang set on html element" "$CF_DIR/lang-fr.html" 'lang="fr"'
+
+cat > "$CF_DIR/lang-default.md" << 'EOF'
+---
+title: "Default Lang"
+---
+
+Hello.
+EOF
+compile_file "$CF_DIR/lang-default.md" --output "$CF_DIR/lang-default.html" > /dev/null
+check_contains "compile-file: lang defaults to en" "$CF_DIR/lang-default.html" 'lang="en"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 38. compile-file: canonical link ---"
+cat > "$CF_DIR/canonical.md" << 'EOF'
+---
+title: "Canonical"
+canonical: "https://example.com/canonical"
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/canonical.md" --output "$CF_DIR/canonical.html" > /dev/null
+check_contains "compile-file: canonical link"  "$CF_DIR/canonical.html" 'rel="canonical"'
+check_contains "compile-file: canonical href"  "$CF_DIR/canonical.html" "https://example.com/canonical"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 39. compile-file: og:image meta tag ---"
+cat > "$CF_DIR/ogimage.md" << 'EOF'
+---
+title: "OG Image"
+image: "https://example.com/cover.png"
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/ogimage.md" --output "$CF_DIR/ogimage.html" > /dev/null
+check_contains "compile-file: og:image meta"  "$CF_DIR/ogimage.html" 'og:image'
+check_contains "compile-file: og:image value" "$CF_DIR/ogimage.html" "https://example.com/cover.png"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 40. compile-file: default output path (no --output) ---"
+cat > "$CF_DIR/no-output-flag.md" << 'EOF'
+---
+title: "No Output Flag"
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/no-output-flag.md" > /dev/null
+check_file_exists "compile-file: default output is <source>.html" "$CF_DIR/no-output-flag.html"
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 41. compile-file: markdown rendered (bold, links, headings) ---"
+cat > "$CF_DIR/markdown.md" << 'EOF'
+---
+title: "Markdown"
+---
+
+## Section Heading
+
+This is **bold** text and a [link](https://example.com).
+EOF
+compile_file "$CF_DIR/markdown.md" --output "$CF_DIR/markdown.html" > /dev/null
+check_contains "compile-file: heading rendered"    "$CF_DIR/markdown.html" "<h2>"
+check_contains "compile-file: bold rendered"       "$CF_DIR/markdown.html" "<strong>"
+check_contains "compile-file: link rendered"       "$CF_DIR/markdown.html" 'href="https://example.com"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 42. compile-file: code highlighting applied ---"
+cat > "$CF_DIR/code.md" << 'EOF'
+---
+title: "Code"
+---
+
+```js
+const x = true;
+```
+EOF
+compile_file "$CF_DIR/code.md" --output "$CF_DIR/code.html" > /dev/null
+check_contains "compile-file: language class applied" "$CF_DIR/code.html" "language-js"
+check_contains "compile-file: keyword highlighted"    "$CF_DIR/code.html" 'class="keyword"'
+
+# ─────────────────────────────────────────────────────────────────────────────
+echo "--- 43. compile-file: meta tags absent when fields not set ---"
+cat > "$CF_DIR/minimal.md" << 'EOF'
+---
+title: "Minimal"
+---
+
+Content.
+EOF
+compile_file "$CF_DIR/minimal.md" --output "$CF_DIR/minimal.html" > /dev/null
+check_not_contains "compile-file: no description meta when absent" "$CF_DIR/minimal.html" 'name="description"'
+check_not_contains "compile-file: no author meta when absent"      "$CF_DIR/minimal.html" 'name="author"'
+check_not_contains "compile-file: no keywords meta when absent"    "$CF_DIR/minimal.html" 'name="keywords"'
+check_not_contains "compile-file: no canonical when absent"        "$CF_DIR/minimal.html" 'rel="canonical"'
+
+rm -rf "$CF_DIR"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 echo ""
