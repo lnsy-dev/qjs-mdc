@@ -286,6 +286,25 @@ check_contains     "footnotes: back link rendered"        "$OUT/footnote-post.ht
 check_not_contains "footnotes: definition line removed"   "$OUT/footnote-post.html" '[^source]:'
 
 # ─────────────────────────────────────────────────────────────────────────────
+echo "--- 7b. Footnotes: wikilinks stripped from footnote text ---"
+reset_src
+cat > "$SRC/fn-wikilink.md" << 'EOF'
+---
+publish: true
+title: "Footnote Wikilink Post"
+date: 2026-03-03T00:00:00
+---
+
+See the docs.[^ref]
+
+[^ref]: Read [[Getting Started]] for more. Also see https://example.com.
+EOF
+compile > /dev/null
+check_contains     "fn-wikilink: plain text kept"         "$OUT/footnote-wikilink-post.html" "Getting Started"
+check_not_contains "fn-wikilink: wikilink brackets gone"  "$OUT/footnote-wikilink-post.html" "[[Getting Started]]"
+check_contains     "fn-wikilink: http url preserved"      "$OUT/footnote-wikilink-post.html" "https://example.com"
+
+# ─────────────────────────────────────────────────────────────────────────────
 echo "--- 7. Abbreviations ---"
 reset_src
 cat > "$SRC/abbr-post.md" << 'EOF'

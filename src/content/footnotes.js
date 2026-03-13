@@ -47,7 +47,10 @@ export function processFootnotes(content) {
   }
 
   const items = order.map((label) => {
-    const text = defs[label];
+    // Strip [[wikilink]] syntax from footnote text — wikilinks are not processed
+    // in the footnotes section (it is appended after wikilink processing).
+    // Standard markdown links [text](url) and bare URLs are left intact.
+    const text = defs[label].replace(/\[\[([^\]]+)\]\]/g, '$1');
     return `<li id="fn-${label}">${text} <a href="#fnref-${label}" class="footnote-back" aria-label="Back to reference">&#8617;</a></li>`;
   }).join('\n');
 
