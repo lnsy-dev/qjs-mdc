@@ -2,20 +2,17 @@
 
 :root {
   /* Colors */
-
-
-  --foreground: #282828;
-  --background: #FFFDF7;
-  --highlight: darkred;
-  --secondary: #262626;
-  --trinary: #252525;
+  --foreground: #2b2b2b;
+  --background: #ffffff;
+  --highlight: #475c42;
+  --secondary: #404f41;
   --neutral-1: #808080;
-  --neutral-2: #cdcdcd;
+  --neutral-2: #cdd4cd;
   --neutral-3: #f5f5f5;
 
   --bg-color: var(--background);
   --fg-color: var(--foreground);
-  --neutral-background-color: #efefef;
+  --neutral-background-color: var(--neutral-1);
   --highlight-color: var(--highlight);
   --neutral-color: var(--neutral-2);
 
@@ -55,20 +52,31 @@ body {
   line-height: 1.6;
   color: var(--fg-color);
   background: var(--bg-color);
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 1em;
 }
 
 
+.logo {
+  width: 100em;
+  height: auto;
+  float: left;
+
+}
+
 a {
-  color: var(--highlight);
+  color: var(--highlight-color);
+  overflow-wrap: break-word;
 }
 
 header {
   border-bottom: 1px solid #ddd;
   padding: 1rem 0;
   margin-bottom: 2rem;
+}
+
+main {
+  max-width: 80ch;
+  margin: auto;
 }
 
 header nav {
@@ -86,18 +94,13 @@ header nav {
   text-decoration: none;
 }
 
-.logo {
-  width: 4em;
-  height: 4em;
-}
-
 .nav-links {
   display: flex;
   gap: 1.25rem;
 }
 
 .nav-links a {
-  color: var(--highlight-color);
+  color: var(--fg-color);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -106,10 +109,6 @@ header nav {
   color: var(--highlight-color);
 }
 
-main {
-  min-height: 60vh;
-  padding-bottom: 2rem;
-}
 
 h1, h2, h3, h4 {
   margin-top: 1.5em;
@@ -122,12 +121,7 @@ h2 { font-size: 1.5rem; }
 h3 { font-size: 1.2rem; }
 
 p {
-  color: var(--fg-color);
   margin-bottom: 1em;
-}
-
-article {
-  padding-bottom: 2rem;
 }
 
 .post-meta {
@@ -195,10 +189,10 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: var(--highlight); font-weight: 600; }
-.string  { color: var(--secondary); }
-.comment { color: var(--neutral-1); font-style: italic; }
-.literal { color: var(--trinary); }
+.keyword { color: #7928a1; font-weight: 600; }
+.string  { color: #067d17; }
+.comment { color: #888; font-style: italic; }
+.literal { color: #0055aa; }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
@@ -229,20 +223,14 @@ li {
 }
 
 .post-list p {
+  color: #555;
   font-size: 0.9rem;
   margin-bottom: 0.25em;
 }
 
 .post-list small {
-  color: var(--neutral-1);
+  color: #999;
   font-size: 0.8rem;
-}
-
-a.tag {
-  padding: 0.5em;
-  background-color: var(--neutral-background-color);
-  color: var(--highlight);
-  text-decoration: none;
 }
 
 .tags-list {
@@ -252,12 +240,11 @@ a.tag {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  line-height: 3;
 }
 
 .tags-list li a {
   display: inline-block;
-  background: var(--neutral-background-color);
+  background: var(--neutral-color);
   padding: 0.3rem 0.75rem;
   border-radius: 3px;
   text-decoration: none;
@@ -280,11 +267,12 @@ a.tag {
 }
 
 .pagination span {
-  color: var(--neutral-1);
+  color: #999;
   font-size: 0.9rem;
 }
 
 .site-description {
+  color: #666;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -302,7 +290,7 @@ a.tag {
 #search-input:focus,
 #tag-search:focus {
   outline: none;
-  border-color: var(--neutral-1);
+  border-color: #0055aa;
   box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
 }
 
@@ -321,6 +309,15 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin: 1rem 0;
+  display: block;
+  overflow-x: auto;
+}
+
+@media (min-width: 640px) {
+  table {
+    display: table;
+    overflow-x: unset;
+  }
 }
 
 th, td {
@@ -338,7 +335,7 @@ blockquote {
   border-left: 3px solid #ccc;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  color: var(--neutral-1);
+  color: #555;
 }
 
 abbr {
@@ -362,10 +359,6 @@ figure.chart-figure {
   font-size: 0.9rem;
 }
 
-.chart-figcaption td:first-child {
-  width: 30%;
-}
-
 footer {
   border-top: 1px solid #ddd;
   padding: 1rem 0;
@@ -374,6 +367,27 @@ footer {
   font-size: 0.85rem;
   text-align: center;
 }
+
+/* Nav stacks vertically on mobile, inline on wider screens */
+header nav {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  header nav {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Chart caption column is auto on mobile, fixed on wider screens */
+@media (min-width: 640px) {
+  .chart-figcaption td:first-child {
+    width: 30%;
+  }
+}
+
 
 @view-transition {
   navigation: auto;

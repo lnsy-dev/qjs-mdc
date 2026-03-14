@@ -31,13 +31,13 @@ find "$SOURCE_DIR" -type f | sort | while IFS= read -r filepath; do
   escaped_path=$(printf '%s' "$relpath" | sed 's/\\/\\\\/g; s/"/\\"/g')
   
   # Read and escape content - handle special chars
-  escaped_content=$(cat "$filepath" | \
-    tr '\r' '\n' | \
-    sed 's/\\/\\\\/g' | \
-    sed 's/"/\\"/g' | \
-    sed 's/	/\\t/g' | \
+  escaped_content=$(LC_ALL=C cat "$filepath" | \
+    LC_ALL=C tr '\r' '\n' | \
+    LC_ALL=C sed 's/\\/\\\\/g' | \
+    LC_ALL=C sed 's/"/\\"/g' | \
+    LC_ALL=C sed 's/	/\\t/g' | \
     awk '{printf "%s\\n", $0}' | \
-    sed 's/\\n$//')
+    LC_ALL=C sed 's/\\n$//')
   
   # Add to the template object
   echo "  \"$escaped_path\": \"$escaped_content\"," >> "$OUTPUT_FILE"
