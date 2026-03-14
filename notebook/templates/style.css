@@ -4,7 +4,7 @@
   /* Colors */
   --foreground: #2b2b2b;
   --background: #ffffff;
-  --highlight: #475c42;
+  --highlight: #826148;
   --secondary: #404f41;
   --neutral-1: #808080;
   --neutral-2: #cdd4cd;
@@ -12,7 +12,7 @@
 
   --bg-color: var(--background);
   --fg-color: var(--foreground);
-  --neutral-background-color: var(--neutral-1);
+  --neutral-background-color: #f7f6f6;
   --highlight-color: var(--highlight);
   --neutral-color: var(--neutral-2);
 
@@ -36,7 +36,9 @@
   --label-fill: var(--fg-color);
   --label-font-size: 10px;
   --label-font-family:  "Poly", serif;
-;
+
+  /* body width */
+  --document-width: 80ch;
 }
 
 *,
@@ -56,12 +58,6 @@ body {
 }
 
 
-.logo {
-  width: 100em;
-  height: auto;
-  float: left;
-
-}
 
 a {
   color: var(--highlight-color);
@@ -75,7 +71,7 @@ header {
 }
 
 main {
-  max-width: 80ch;
+  max-width: var(--document-width);
   margin: auto;
 }
 
@@ -83,8 +79,8 @@ header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  margin: auto;
+  max-width: var(--document-width);
 }
 
 .site-title {
@@ -167,8 +163,8 @@ svg {
 }
 
 pre.code {
-  background: var(--neutral-background-color);
-  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--neutral-3);
+  border: 1px solid var(--neutral-2);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -179,7 +175,7 @@ pre.code {
 code {
   font-family: monospace;
   font-size: 0.85em;
-  background: var(--neutral-background-color);
+  background: var(--neutral-3);
   padding: 0.15em 0.3em;
   border-radius: 3px;
 }
@@ -189,10 +185,16 @@ pre.code code {
   padding: 0;
 }
 
-.keyword { color: #7928a1; font-weight: 600; }
-.string  { color: #067d17; }
-.comment { color: #888; font-style: italic; }
-.literal { color: #0055aa; }
+/* Syntax highlighting — all colors drawn from CSS variables */
+.keyword  { color: var(--highlight);  font-weight: 600; }
+.string   { color: var(--secondary); }
+.comment  { color: var(--neutral-1); font-style: italic; }
+.literal  { color: var(--highlight); font-style: italic; }
+.number   { color: var(--secondary); }
+.tag      { color: var(--highlight); font-weight: 600; }
+.property { color: var(--secondary); }
+.selector { color: var(--highlight); font-weight: 600; }
+.section  { color: var(--highlight); font-weight: 600; }
 
 ul, ol {
   margin: 0.5em 0 1em 1.5em;
