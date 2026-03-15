@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog</title>
+    <link>https://lindseymysse.com/qjs-mdc</link>
+    <description>Default notebook for QJS-MDC. Edit these values in index.json</description>
+    <atom:link href="https://lindseymysse.com/qjs-mdc/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 14 Mar 2026 03:11:43 GMT</lastBuildDate>
+    <item>
+      <title>Language Highlighting</title>
+      <link>https://lindseymysse.com/qjs-mdc/language-highlighting.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/language-highlighting.html</guid>
+      <description>Syntax highlighting examples for all supported languages.</description>
+      <pubDate>Fri, 13 Mar 2026 07:00:00 GMT</pubDate>
+      <category>docs</category>
+      <category>features</category>
+    </item>
+    <item>
+      <title>Filtering by Target</title>
+      <link>https://lindseymysse.com/qjs-mdc/filtering-by-target.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/filtering-by-target.html</guid>
+      <description>Use the --target flag to filter which markdown files get compiled based on a target field in YAML front matter.</description>
+      <pubDate>Wed, 04 Mar 2026 08:00:00 GMT</pubDate>
+      <category>guide</category>
+      <category>tutorial</category>
+    </item>
+    <item>
+      <title>Setting Up a Markdown File</title>
+      <link>https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/setting-up-a-markdown-file.html</guid>
+      <description>A reference memo covering filename conventions and all front matter fields recognized by the pochade-blog compiler.</description>
+      <pubDate>Tue, 03 Mar 2026 08:00:00 GMT</pubDate>
+      <category>memo</category>
+      <category>guide</category>
+    </item>
+    <item>
+      <title>QJS-MDC SVG without JS!</title>
+      <link>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/qjs-mdc-svg-without-js.html</guid>
+      <description>In addition to rendering code blocks, mdc will render SVG charts from JSON or CSV data inside fenced code blocks.&lt;a href=&quot;undefined&quot;&gt;^svg-inline&lt;/a&gt; See &lt;a href=&quot;undefined&quot;&gt;&lt;a href=&quot;undefined&quot;&gt;Getting Started&lt;/a&gt;&lt;/a&gt; for the basic project setup before working with c</description>
+      <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
+      <category>test</category>
+      <category>charts</category>
+      <category>obsidian</category>
+    </item>
+    <item>
+      <title>Getting Started</title>
+      <link>https://lindseymysse.com/qjs-mdc/getting-started.html</link>
+      <guid>https://lindseymysse.com/qjs-mdc/getting-started.html</guid>
+      <description>Learn how to build your own static site with qjs-md</description>
+      <pubDate>Sat, 28 Feb 2026 08:00:00 GMT</pubDate>
+      <category>tutorial</category>
+      <category>guide</category>
+    </item>
+  </channel>
+</rss>

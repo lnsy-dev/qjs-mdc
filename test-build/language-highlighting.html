@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Language Highlighting">
+<meta property="og:description" content="Default notebook for QJS-MDC. Edit these values in index.json">
+<meta property="og:url" content="https://lindseymysse.com/qjs-mdc">
+<meta property="og:site_name" content="">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Language Highlighting -- ">
+<meta name="twitter:description" content="Syntax highlighting examples for all supported languages.">
+
+<!-- Standard Meta -->
+<meta name="description" content="Syntax highlighting examples for all supported languages.">
+<meta name="keywords" content="docs, features">
+<meta name="author" content="LNSY">
+<title>Language Highlighting — </title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&display=swap');
+
+:root {
+  /* Colors */
+  --foreground: #2b2b2b;
+  --background: #ffffff;
+  --highlight: #826148;
+  --secondary: #404f41;
+  --neutral-1: #808080;
+  --neutral-2: #cdd4cd;
+  --neutral-3: #f5f5f5;
+
+  --bg-color: var(--background);
+  --fg-color: var(--foreground);
+  --neutral-background-color: #f7f6f6;
+  --highlight-color: var(--highlight);
+  --neutral-color: var(--neutral-2);
+
+
+  --color-border: var(--neutral-color);
+  --font-family: "Poly", serif;
+
+  /* SVG pattern fills */
+  --pattern-fill: var(--bg-color);
+  --pattern-stroke: var(--fg-color);
+
+  /* SVG data elements (bars, circles, paths, slices) */
+  --data-element-stroke: var(--fg-color);
+  --data-element-stroke-width: 1;
+
+  /* SVG axes */
+  --axis-stroke: #999;
+  --axis-stroke-width: 1;
+
+  /* SVG labels */
+  --label-fill: var(--fg-color);
+  --label-font-size: 10px;
+  --label-font-family:  "Poly", serif;
+
+  /* body width */
+  --document-width: 80ch;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--fg-color);
+  background: var(--bg-color);
+  padding: 1em;
+}
+
+
+
+a {
+  color: var(--highlight-color);
+  overflow-wrap: break-word;
+}
+
+header {
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+main {
+  max-width: var(--document-width);
+  margin: auto;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  max-width: var(--document-width);
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--fg-color);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav-links a {
+  color: var(--fg-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  color: var(--highlight-color);
+}
+
+
+h1, h2, h3, h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  margin-bottom: 1em;
+}
+
+.post-meta {
+  color: var(--neutral);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-meta time {
+  font-style: italic;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  background: var(--bg-color);
+}
+
+.data-element {
+  stroke: var(--data-element-stroke);
+  stroke-width: var(--data-element-stroke-width);
+}
+
+.axis {
+  stroke: var(--axis-stroke);
+  stroke-width: var(--axis-stroke-width);
+}
+
+.label {
+  fill: var(--label-fill);
+  font-size: var(--label-font-size);
+  font-family: var(--label-font-family);
+  font-weight: 400;
+}
+
+.chart-error {
+  border: 2px solid #d00;
+  padding: 10px;
+  margin: 10px 0;
+  background: #fee;
+}
+
+pre.code {
+  background: var(--neutral-3);
+  border: 1px solid var(--neutral-2);
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: monospace;
+  font-size: 0.85em;
+  background: var(--neutral-3);
+  padding: 0.15em 0.3em;
+  border-radius: 3px;
+}
+
+pre.code code {
+  background: none;
+  padding: 0;
+}
+
+/* Syntax highlighting — all colors drawn from CSS variables */
+.keyword  { color: var(--highlight);  font-weight: 600; }
+.string   { color: var(--secondary); }
+.comment  { color: var(--neutral-1); font-style: italic; }
+.literal  { color: var(--highlight); font-style: italic; }
+.number   { color: var(--secondary); }
+.tag      { color: var(--highlight); font-weight: 600; }
+.property { color: var(--secondary); }
+.selector { color: var(--highlight); font-weight: 600; }
+.section  { color: var(--highlight); font-weight: 600; }
+
+ul, ol {
+  margin: 0.5em 0 1em 1.5em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+.post-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.post-list li {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.post-list li:last-child {
+  border-bottom: none;
+}
+
+.post-list h3 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.post-list p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.25em;
+}
+
+.post-list small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.tags-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags-list li a {
+  display: inline-block;
+  background: var(--neutral-color);
+  padding: 0.3rem 0.75rem;
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--highlight-color);
+  font-size: 0.9rem;
+}
+
+.tags-list li a:hover {
+  background: #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.pagination span {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.site-description {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+#search-input,
+#tag-search {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+#search-input:focus,
+#tag-search:focus {
+  outline: none;
+  border-color: #0055aa;
+  box-shadow: 0 0 0 2px rgba(0, 85, 170, 0.15);
+}
+
+.search-results {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.search-results li {
+  border-bottom: 1px solid #eee;
+  padding: 0.75rem 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  display: block;
+  overflow-x: auto;
+}
+
+@media (min-width: 640px) {
+  table {
+    display: table;
+    overflow-x: unset;
+  }
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+th {
+  background: var(--bg-color);
+  font-weight: 600;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  color: #555;
+}
+
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+figure.chart-figure {
+  margin: 1.5rem 0;
+}
+
+.chart-figcaption {
+  padding: 0.75rem;
+  border-top: none;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.chart-figcaption table {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+footer {
+  border-top: 1px solid #ddd;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  color: var(--fg-color);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Nav stacks vertically on mobile, inline on wider screens */
+header nav {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  header nav {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Chart caption column is auto on mobile, fixed on wider screens */
+@media (min-width: 640px) {
+  .chart-figcaption td:first-child {
+    width: 30%;
+  }
+}
+
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+</style>
+<script>
+// place javascript here
+</script>
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="index.html" class="site-title">QJS-MDC Default Notebook</a>
+    <div class="nav-links">
+      <a href="index.html">Posts</a>
+      <a href="tags.html">Tags</a>
+      <a href="search.html">Search</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+</header>
+  <main>
+    <article>
+      <div class="post-meta">
+        <time>Friday, March 13th 2026 at 12:00 AM</time>
+      </div>
+      <h1>Language Highlighting</h1><p>Code blocks are highlighted using CSS variables <code>--highlight</code>, <code>--secondary</code>, <code>--neutral-1</code>, <code>--neutral-2</code>, and <code>--neutral-3</code>.</p><h2>YAML</h2><pre class="code language-yaml"><code>---
+<span class="keyword">publish</span>: <span class="literal">true</span>
+<span class="keyword">title</span>: <span class="string">'My Post Title'</span>
+<span class="keyword">date</span>: 2026-03-13T00:00:00
+<span class="keyword">tags</span>:
+  - example
+  - guide
+<span class="keyword">type</span>: post
+<span class="keyword">author</span>: Your Name
+<span class="keyword">draft</span>: <span class="literal">false</span>
+---</code></pre><h2>Markdown with YAML Front Matter</h2><pre class="code language-markdown-frontmatter"><code>---
+<span class="keyword">publish</span>: <span class="literal">true</span>
+<span class="keyword">title</span>: <span class="string">'My Post Title'</span>
+<span class="keyword">date</span>: 2026-03-13T00:00:00
+<span class="keyword">tags</span>:
+  - example
+---
+
+<span class="keyword"># Heading One</span>
+
+This is a paragraph with <span class="keyword">**bold**</span> and <span class="literal">*italic*</span> text.
+
+&gt; A blockquote
+
+- list item one
+- list item two
+
+Use <span class="string">`inline code`</span> freely. Here is a <span class="string">[link](<a href="https://example.com)">https://example.com)</a></span>.</code></pre><h2>JavaScript</h2><pre class="code language-js"><code><span class="keyword">import</span> { parse } <span class="keyword">from</span> <span class="string">'./parser.js'</span>;
+
+<span class="keyword">const</span> greet = <span class="keyword">async</span> (name = <span class="string">'world'</span>) =&gt; {
+  <span class="keyword">const</span> msg = <span class="string">`Hello, ${name}!`</span>;
+  <span class="keyword">return</span> msg;
+};
+
+<span class="keyword">class</span> Parser {
+  constructor(input) {
+    <span class="keyword">this</span>.input = input;
+    <span class="keyword">this</span>.pos = <span class="number">0</span>;
+  }
+
+  peek() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.input[<span class="keyword">this</span>.pos] ?? <span class="literal">null</span>;
+  }
+}
+
+<span class="keyword">export</span> <span class="keyword">default</span> greet;</code></pre><h2>Python</h2><pre class="code language-py"><code><span class="keyword">import</span> os
+<span class="keyword">from</span> pathlib <span class="keyword">import</span> Path
+
+<span class="keyword">class</span> Config:
+    debug = <span class="literal">False</span>
+    version = <span class="string">'1.0.0'</span>
+
+    <span class="keyword">def</span> __init__(self, path):
+        self.path = Path(path)
+
+    <span class="keyword">def</span> load(self):
+        <span class="keyword">if</span> <span class="keyword">not</span> self.path.exists():
+            <span class="keyword">raise</span> FileNotFoundError(f<span class="string">'No config at {self.path}'</span>)
+        <span class="keyword">return</span> <span class="literal">True</span>
+
+<span class="keyword">def</span> main():
+    config = Config(<span class="string">'./config.toml'</span>)
+    result = config.load()
+    <span class="keyword">return</span> result <span class="keyword">if</span> result <span class="keyword">else</span> <span class="literal">None</span></code></pre><h2>Rust</h2><pre class="code language-rs"><code><span class="keyword">use</span> std::collections::HashMap;
+
+#[derive(Debug)]
+<span class="keyword">struct</span> Config {
+    values: HashMap&lt;String, String&gt;,
+}
+
+<span class="keyword">impl</span> Config {
+    <span class="keyword">fn</span> new() -&gt; <span class="keyword">Self</span> {
+        <span class="keyword">Self</span> { values: HashMap::new() }
+    }
+
+    <span class="keyword">fn</span> get(&<span class="keyword">self</span>, key: &str) -&gt; Option&lt;&str&gt; {
+        <span class="keyword">self</span>.values.get(key).map(|s| s.as_str())
+    }
+}
+
+<span class="keyword">fn</span> main() {
+    <span class="keyword">let</span> <span class="keyword">mut</span> cfg = Config::new();
+    cfg.values.insert(<span class="string">&quot;host&quot;</span>.to_string(), <span class="string">&quot;localhost&quot;</span>.to_string());
+    println!(<span class="string">&quot;{:?}&quot;</span>, cfg.get(<span class="string">&quot;host&quot;</span>));
+}</code></pre><h2>HTML</h2><pre class="code language-html"><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;
+<span class="tag">&lt;head&gt;</span>
+  &lt;meta charset=<span class="string">&quot;UTF-8&quot;</span>&gt;
+  <span class="tag">&lt;title&gt;</span>Example Page<span class="tag">&lt;/title&gt;</span>
+  &lt;link rel=<span class="string">&quot;stylesheet&quot;</span> href=<span class="string">&quot;style.css&quot;</span>&gt;
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="comment">&lt;!-- Main content --&gt;</span>
+  <span class="tag">&lt;header&gt;</span>
+    <span class="tag">&lt;nav&gt;</span>
+      &lt;a href=<span class="string">&quot;/&quot;</span>&gt;Home<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/nav&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>A paragraph with <span class="tag">&lt;strong&gt;</span>bold<span class="tag">&lt;/strong&gt;</span> text.<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/main&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre><h2>JSON</h2><pre class="code language-json"><code>{
+  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;qjs-md&quot;</span>,
+  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,
+  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;A fast markdown compiler&quot;</span>,
+  <span class="string">&quot;config&quot;</span>: {
+    <span class="string">&quot;output&quot;</span>: <span class="string">&quot;./dist&quot;</span>,
+    <span class="string">&quot;watch&quot;</span>: <span class="literal">false</span>,
+    <span class="string">&quot;pages&quot;</span>: <span class="number">10</span>
+  },
+  <span class="string">&quot;tags&quot;</span>: [<span class="string">&quot;markdown&quot;</span>, <span class="string">&quot;static-site&quot;</span>, <span class="string">&quot;qjs&quot;</span>],
+  <span class="string">&quot;published&quot;</span>: <span class="literal">true</span>,
+  <span class="string">&quot;draft&quot;</span>: <span class="literal">null</span>
+}</code></pre><h2>Markdown</h2><pre class="code language-markdown"><code><span class="keyword"># My Document</span>
+
+A paragraph with <span class="keyword">**bold**</span>, <span class="literal">*italic*</span>, and <span class="string">`inline code`</span>.
+
+&gt; Blockquotes look like this.
+
+- Item one
+- Item two
+  - Nested item
+
+Here is a <span class="string">[link to somewhere](<a href="https://example.com)">https://example.com)</a></span>.</code></pre><h2>Ruby</h2><pre class="code language-rb"><code><span class="keyword">require</span> <span class="string">'json'</span>
+
+<span class="keyword">class</span> PostLoader
+  <span class="keyword">attr_reader</span> :posts
+
+  <span class="keyword">def</span> initialize(dir)
+    @dir = dir
+    @posts = []
+  <span class="keyword">end</span>
+
+  <span class="keyword">def</span> load
+    Dir.glob(<span class="string">&quot;#{@dir}/*.md&quot;</span>).each <span class="keyword">do</span> |path|
+      @posts &lt;&lt; parse(path)
+    <span class="keyword">end</span>
+    <span class="keyword">self</span>
+  <span class="keyword">end</span>
+
+  private
+
+  <span class="keyword">def</span> parse(path)
+    content = File.read(path)
+    { path: path, content: content }
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre><h2>TOML</h2><pre class="code language-toml"><code><span class="comment"># Site configuration</span>
+
+<span class="keyword">[site]</span>
+<span class="literal">title</span> = <span class="string">&quot;My Blog&quot;</span>
+<span class="literal">url</span> = <span class="string">&quot;<a href="https://example.com&amp;quot;">https://example.com&amp;quot;</a></span>
+<span class="literal">author</span> = <span class="string">&quot;Your Name&quot;</span>
+
+<span class="keyword">[build]</span>
+<span class="literal">output</span> = <span class="string">&quot;./dist&quot;</span>
+<span class="literal">drafts</span> = <span class="number">false</span>
+<span class="literal">pages_per_index</span> = 10
+
+<span class="keyword">[features]</span>
+<span class="literal">rss</span> = <span class="number">true</span>
+<span class="literal">search</span> = <span class="number">true</span>
+<span class="literal">tags</span> = <span class="number">true</span></code></pre>
+    </article>
+
+    <article class="tags-list"><a href="tag-docs.html" class="tag">docs</a> <a href="tag-features.html" class="tag">features</a></article>
+  </main>
+  <footer>
+  <p>&copy; 2026 </p>
+</footer>
+</body>
+</html>
