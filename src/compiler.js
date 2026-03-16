@@ -39,6 +39,7 @@ import { processSVGCharts } from './plugins/svg-charts.js';
 import { processTables } from '../plugins/tables.js';
 import { extractCSSColors } from './utils/css-parser.js';
 import { createNewNotebook } from './commands/create-notebook.js';
+import { generateDocs } from './commands/generate-docs.js';
 import { compileFile } from './commands/compile-file.js';
 import { toJson } from './commands/to-json.js';
 import { formatPrettyDate } from './utils/date-format.js';
@@ -234,6 +235,11 @@ function main() {
 
   if (config.command === 'create-notebook') {
     createNewNotebook(config.targetPath);
+    return;
+  }
+
+  if (config.command === 'generate-docs') {
+    generateDocs(config.inputDir, config.output);
     return;
   }
 

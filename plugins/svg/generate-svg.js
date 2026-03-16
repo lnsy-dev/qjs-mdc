@@ -1,4 +1,17 @@
 #!/usr/bin/env -S qjs -m
+/**
+ * @fileoverview CLI entry point for the standalone SVG chart generator.
+ * Reads chart data from a file or stdin, detects or applies the requested
+ * chart type, and writes a complete inline SVG to stdout.
+ *
+ * Usage: qjs generate-svg.js [options] [dataFile]
+ *
+ * Supported chart types (auto-detected from field names if not specified):
+ *   bar, line, scatter, donut, heikin-ashi, map
+ *
+ * Data format: YAML front matter block (---) followed by CSV or JSON rows.
+ * Map data: GeoJSON FeatureCollection with optional YAML config front matter.
+ */
 import * as std from "std";
 import { parseArgs, readInput } from './src/cli.js';
 import { validateInput, parseYAMLFrontMatter, applyFieldMappings, parseData, parseMapConfig, mergeConfig } from './src/utils/parsers.js';
@@ -7,6 +20,10 @@ import { generatePatternDefs } from './src/utils/patterns.js';
 import { detectChartType, getRenderer } from './src/registry.js';
 import { getBackgroundDimensions } from './src/renderers/map.js';
 
+/**
+ * Parses CLI arguments, loads and validates input data, selects the renderer,
+ * builds the SVG string, and writes it to stdout.
+ */
 function main() {
   const options = parseArgs(scriptArgs);
   const rawData = readInput(options.dataArg);

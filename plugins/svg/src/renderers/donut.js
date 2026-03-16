@@ -1,11 +1,31 @@
+/**
+ * @fileoverview Donut (ring) chart renderer for the SVG chart system.
+ * Renders each data row as an arc slice of an annulus, with percentage labels
+ * positioned outside the ring. Interactive data-label popups are attached to
+ * each slice.
+ */
+
 import { path, text, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern, getColor } from '../utils/patterns.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'donut',
   detectFields: ['label', 'value']
 };
 
+/**
+ * Converts polar coordinates (angle in degrees, measured clockwise from the
+ * top) to Cartesian SVG coordinates relative to a given centre point.
+ * @param {number} centerX - X coordinate of the circle centre
+ * @param {number} centerY - Y coordinate of the circle centre
+ * @param {number} radius - Circle radius in pixels
+ * @param {number} angleInDegrees - Angle in degrees, 0 = top, clockwise
+ * @returns {{ x: number, y: number }} Cartesian point on the circle
+ */
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
   return {
@@ -14,6 +34,19 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   };
 }
 
+/**
+ * Renders a donut (ring) chart as an SVG string.
+ * @param {Array<{ label: string, value: number }>} data - Data rows; each row
+ *   must have a `label` and a positive numeric `value`
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ * @param {string} [options.chartId] - Unique ID prefix for element IDs
+ * @param {string[]} [options.cssColors] - CSS custom property declarations for
+ *   theme colors applied per slice
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;

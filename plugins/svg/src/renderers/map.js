@@ -1,12 +1,36 @@
+/**
+ * @fileoverview GeoJSON map renderer for the SVG chart system.
+ * Projects WGS-84 GeoJSON features onto a rectangular SVG canvas using a
+ * simple equirectangular projection bounded by configurable NW/SE corners.
+ * Supports all GeoJSON geometry types: Point, LineString, Polygon,
+ * MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection.
+ * Features are rendered in layer order (polygons → lines → points) for
+ * correct visual stacking. An optional background SVG image can be composited
+ * beneath the features (e.g. a hand-drawn map or satellite tile). Custom icon
+ * SVGs can be assigned to point features by `type` property.
+ */
+
 import { circle, path, createMapDataLabelGroup, escapeXML } from '../utils/svg.js';
 import { getPattern } from '../utils/patterns.js';
 import { createProjection } from '../utils/geo.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'map',
   detectFields: ['type', 'features']
 };
 
+/**
+ * Builds an SVG data-attribute object from a GeoJSON feature's properties and
+ * geometry, optionally including the point coordinates as `lon`/`lat` fields.
+ * @param {Object} properties - GeoJSON feature properties object
+ * @param {{ type: string }} geometry - GeoJSON geometry object (for `geometry-type`)
+ * @param {number[]|null} [coords] - `[lon, lat]` coordinate pair, or omitted
+ * @returns {Object} Flat data-attribute map suitable for SVG element attributes
+ */
 function buildDataAttrs(properties, geometry, coords) {
   const data = { ...properties, 'geometry-type': geometry.type };
   if (coords) {
@@ -16,6 +40,14 @@ function buildDataAttrs(properties, geometry, coords) {
   return data;
 }
 
+/**
+ * Extracts the inner content, width, and height from an SVG string so the icon
+ * can be inlined and repositioned via a `<g transform>` wrapper. Falls back to
+ * `viewBox` dimensions when explicit `width`/`height` attributes are absent.
+ * @param {string|null} iconSvg - Raw SVG markup string, or `null`/falsy
+ * @returns {{ content: string, width: number, height: number }|null} Parsed icon
+ *   data, or `null` if `iconSvg` is falsy
+ */
 function parseIconSvg(iconSvg) {
   if (!iconSvg) return null;
   
@@ -46,6 +78,16 @@ function parseIconSvg(iconSvg) {
   return { content, width, height };
 }
 
+/**
+ * Inlines a parsed icon SVG at a given SVG canvas position, centred on the
+ * point, wrapped in a `<g transform="translate(…)">` with data attributes.
+ * @param {string} iconSvg - Raw SVG markup for the icon
+ * @param {number} x - Target X position (centre of the icon)
+ * @param {number} y - Target Y position (centre of the icon)
+ * @param {Object|null} data - Data attributes to add to the wrapper `<g>`
+ * @param {string} className - CSS class name for the wrapper `<g>`
+ * @returns {string} SVG `<g>` element string, or empty string if parsing fails
+ */
 function embedIcon(iconSvg, x, y, data, className) {
   const parsed = parseIconSvg(iconSvg);
   if (!parsed) return '';
@@ -61,6 +103,12 @@ function embedIcon(iconSvg, x, y, data, className) {
   return `  <g transform="translate(${offsetX},${offsetY})" class="${className}"${dataAttrs}>\n    ${parsed.content}\n  </g>\n`;
 }
 
+/**
+ * Wraps a background SVG's inner content in a `<g class="background">` group
+ * so it renders beneath all chart features.
+ * @param {string|null} backgroundSvg - Raw SVG markup, or falsy for no background
+ * @returns {string} SVG `<g>` element string, or empty string if falsy/unparseable
+ */
 function embedBackgroundSvg(backgroundSvg) {
   if (!backgroundSvg) return '';
   
@@ -70,6 +118,18 @@ function embedBackgroundSvg(backgroundSvg) {
   return `  <g class="background">\n    ${parsed.content}\n  </g>\n`;
 }
 
+/**
+ * Renders a GeoJSON Point feature as a circle (or custom icon if `iconList`
+ * maps the feature's `type` property to an SVG string).
+ * @param {Object} feature - GeoJSON Feature with Point geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class and element ID
+ * @param {Object|null} iconList - Map of feature-type → SVG icon string
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string} linkId - Element ID for the data-label popup link
+ * @returns {string} SVG fragment string
+ */
 function renderPoint(feature, project, externallyStyled, index, iconList, chartId, linkId) {
   const coords = feature.geometry.coordinates;
   const [x, y] = project(coords);
@@ -84,6 +144,15 @@ function renderPoint(feature, project, externallyStyled, index, iconList, chartI
   return circle(x, y, 5, getPattern(index, chartId), 'black', 1, data, className, externallyStyled, linkId);
 }
 
+/**
+ * Renders a GeoJSON LineString feature as an SVG `<path>` element.
+ * @param {Object} feature - GeoJSON Feature with LineString geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class
+ * @param {string} linkId - Element ID for the data-label popup link
+ * @returns {string} SVG `<path>` fragment, or empty string if fewer than 2 coords
+ */
 function renderLineString(feature, project, externallyStyled, index, linkId) {
   const coords = feature.geometry.coordinates;
   const projected = coords.map(c => project(c));
@@ -100,6 +169,17 @@ function renderLineString(feature, project, externallyStyled, index, linkId) {
   return path(d, 'none', 'black', 2, data, className, externallyStyled, linkId);
 }
 
+/**
+ * Renders a GeoJSON Polygon feature (including holes) as a single SVG `<path>`
+ * using even-odd winding rules implied by the GeoJSON ring order.
+ * @param {Object} feature - GeoJSON Feature with Polygon geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class and pattern selection
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string} linkId - Element ID for the data-label popup link
+ * @returns {string} SVG `<path>` fragment, or empty string if no valid rings
+ */
 function renderPolygon(feature, project, externallyStyled, index, chartId, linkId) {
   const coords = feature.geometry.coordinates;
   let d = '';
@@ -122,6 +202,17 @@ function renderPolygon(feature, project, externallyStyled, index, chartId, linkI
   return path(d, getPattern(index, chartId), 'black', 1, data, className, externallyStyled, linkId);
 }
 
+/**
+ * Renders a GeoJSON MultiPoint feature as multiple circles (or icons).
+ * @param {Object} feature - GeoJSON Feature with MultiPoint geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class and pattern selection
+ * @param {Object|null} iconList - Map of feature-type → SVG icon string
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string|null} linkIdBase - Base ID prefix for data-label popup links
+ * @returns {string} Concatenated SVG fragments for each coordinate
+ */
 function renderMultiPoint(feature, project, externallyStyled, index, iconList, chartId, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
@@ -141,6 +232,15 @@ function renderMultiPoint(feature, project, externallyStyled, index, iconList, c
   return svg;
 }
 
+/**
+ * Renders a GeoJSON MultiLineString feature as multiple SVG `<path>` elements.
+ * @param {Object} feature - GeoJSON Feature with MultiLineString geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class
+ * @param {string|null} linkIdBase - Base ID prefix for data-label popup links
+ * @returns {string} Concatenated SVG `<path>` fragments
+ */
 function renderMultiLineString(feature, project, externallyStyled, index, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
@@ -161,6 +261,17 @@ function renderMultiLineString(feature, project, externallyStyled, index, linkId
   return svg;
 }
 
+/**
+ * Renders a GeoJSON MultiPolygon feature as multiple SVG `<path>` elements,
+ * one per polygon member.
+ * @param {Object} feature - GeoJSON Feature with MultiPolygon geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class and pattern selection
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string|null} linkIdBase - Base ID prefix for data-label popup links
+ * @returns {string} Concatenated SVG `<path>` fragments
+ */
 function renderMultiPolygon(feature, project, externallyStyled, index, chartId, linkIdBase) {
   const coords = feature.geometry.coordinates;
   let svg = '';
@@ -187,6 +298,18 @@ function renderMultiPolygon(feature, project, externallyStyled, index, chartId, 
   return svg;
 }
 
+/**
+ * Renders a GeoJSON GeometryCollection feature by delegating each sub-geometry
+ * to the appropriate typed renderer.
+ * @param {Object} feature - GeoJSON Feature with GeometryCollection geometry
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number} index - Feature index for CSS class and pattern selection
+ * @param {Object|null} iconList - Map of feature-type → SVG icon string
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string|null} linkIdBase - Base ID prefix for data-label popup links
+ * @returns {string} Concatenated SVG fragments for each geometry member
+ */
 function renderGeometryCollection(feature, project, externallyStyled, index, iconList, chartId, linkIdBase) {
   let svg = '';
   feature.geometry.geometries.forEach((geom, i) => {
@@ -197,6 +320,15 @@ function renderGeometryCollection(feature, project, externallyStyled, index, ico
   return svg;
 }
 
+/**
+ * Computes the best SVG canvas position for a feature's text label based on
+ * geometry type: point centroid for points, midpoint for lines, ring centroid
+ * for polygons.
+ * @param {Object} feature - GeoJSON Feature
+ * @param {function(number[]): number[]} project - Projection function
+ * @returns {{ x: number, y: number, offsetY: number }|null} Label position with
+ *   a Y offset to clear the geometry, or `null` for unsupported types
+ */
 function computeLabelPoint(feature, project) {
   const type = feature.geometry.type;
   const coords = feature.geometry.coordinates;
@@ -235,6 +367,14 @@ function computeLabelPoint(feature, project) {
   }
 }
 
+/**
+ * Renders the `label` property of a GeoJSON feature as a white-outlined SVG
+ * `<text>` element positioned at the computed label point. Returns an empty
+ * string if the feature has no `label` property or no computable label point.
+ * @param {Object} feature - GeoJSON Feature with optional `properties.label`
+ * @param {function(number[]): number[]} project - Projection function
+ * @returns {string} SVG `<text>` element string, or empty string
+ */
 function renderFeatureLabel(feature, project) {
   const label = feature.properties?.label;
   if (!label) return '';
@@ -254,6 +394,17 @@ function renderFeatureLabel(feature, project) {
   return `  <text x="${pt.x}" y="${pt.y + pt.offsetY}" style="${style}">${escapeXML(label)}</text>\n`;
 }
 
+/**
+ * Dispatches a single GeoJSON feature to the appropriate geometry-type renderer.
+ * @param {Object} feature - GeoJSON Feature
+ * @param {function(number[]): number[]} project - Projection function
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {number|string} index - Feature index for CSS class and pattern selection
+ * @param {Object|null} iconList - Map of feature-type → SVG icon string
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string} linkId - Element ID for the data-label popup link
+ * @returns {string} SVG fragment for the feature's geometry, or empty string
+ */
 function renderGeometry(feature, project, externallyStyled, index, iconList, chartId, linkId) {
   const type = feature.geometry.type;
   
@@ -269,6 +420,27 @@ function renderGeometry(feature, project, externallyStyled, index, iconList, cha
   }
 }
 
+/**
+ * Renders a GeoJSON FeatureCollection as an SVG map fragment.
+ * Features are drawn in layer order: polygons first, then lines, then points,
+ * so that point markers always appear on top.
+ * @param {{ features: Object[] }} data - GeoJSON FeatureCollection
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ * @param {string} [options.chartId] - Unique ID prefix for element IDs
+ * @param {Object|null} [options.iconList] - Map of feature-type → SVG icon string
+ * @param {string|null} [options.backgroundSvg] - Background SVG markup rendered
+ *   beneath all features
+ * @param {number} [options.nwLat] - North-west bounding latitude (overrides `nwBounds`)
+ * @param {number} [options.nwLon] - North-west bounding longitude
+ * @param {number} [options.seLat] - South-east bounding latitude (overrides `seBounds`)
+ * @param {number} [options.seLon] - South-east bounding longitude
+ * @param {number[]} [options.nwBounds=[90,-180]] - `[lat, lon]` NW corner default
+ * @param {number[]} [options.seBounds=[-90,180]] - `[lat, lon]` SE corner default
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;
@@ -340,6 +512,13 @@ export function render(data, width, height, options = {}) {
   return svg;
 }
 
+/**
+ * Extracts the pixel dimensions from a background SVG string so the chart
+ * canvas can be sized to match it exactly.
+ * @param {string} backgroundSvg - Raw SVG markup
+ * @returns {{ width: number, height: number }|null} Dimensions, or `null` if
+ *   the SVG cannot be parsed
+ */
 export function getBackgroundDimensions(backgroundSvg) {
   const parsed = parseIconSvg(backgroundSvg);
   return parsed ? { width: parsed.width, height: parsed.height } : null;

@@ -1,12 +1,39 @@
+/**
+ * @fileoverview Bar chart renderer for the SVG chart system.
+ * Supports both vertical (default) and horizontal orientations.
+ * Each bar is coloured by index from the CSS color palette or the SVG pattern
+ * library, and is wrapped in an interactive `<g class="chart-item">` element
+ * with a linked data-label popup.
+ */
+
 import { rect, line, text, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern, getColor } from '../utils/patterns.js';
 import { calculateMargins } from '../utils/chart.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'bar',
   detectFields: ['label', 'value']
 };
 
+/**
+ * Renders a bar chart as an SVG string.
+ * @param {Array<{ label: string, value: number }>} data - Data rows; each row
+ *   must have a `label` and a numeric `value`
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {string} [options.orientation='vertical'] - `'vertical'` or `'horizontal'`
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ *   when `true` (CSS classes are still applied for external stylesheet control)
+ * @param {string} [options.chartId] - Unique ID prefix for generated element IDs
+ * @param {string[]} [options.cssColors] - CSS custom property declarations used
+ *   to extract theme colors for bar fills
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const orientation = options.orientation || 'vertical';
   const externallyStyled = options.externallyStyled || false;

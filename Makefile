@@ -42,7 +42,8 @@ else
 endif
 
 # ── Sources ───────────────────────────────────────────────────────────────────
-ENTRY := src/compiler.js
+ENTRY   := src/compiler.js
+LIBRARY_ENTRY := src/library.js
 
 SOURCES := \
     $(wildcard lib/*.js)            \
@@ -55,8 +56,10 @@ SOURCES := \
     $(wildcard src/templates/*.js)  \
     $(wildcard src/utils/*.js)
 
+LIBRARY := dist/qjs-md.js
+
 # ── Targets ───────────────────────────────────────────────────────────────────
-.PHONY: all install clean test
+.PHONY: all install clean test library test-library
 
 all: $(BIN)
 	@echo "Built $(BIN) for $(DETECTED_OS)"
@@ -74,3 +77,17 @@ clean:
 
 test: $(BIN)
 	@bash scripts/test/test.sh
+
+# ── Library bundle ────────────────────────────────────────────────────────────
+
+library: $(LIBRARY)
+	@qjs scripts/generate-readme.js
+	@echo "Library: $(LIBRARY)"
+	@echo "README:  dist/README.md"
+
+$(LIBRARY): $(SOURCES) $(LIBRARY_ENTRY)
+	$(MKDIR)
+	npx rollup $(LIBRARY_ENTRY) --file $(LIBRARY) --format esm --external os --external std
+
+test-library: $(LIBRARY)
+	@bash scripts/test/test-library.sh

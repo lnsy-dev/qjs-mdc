@@ -1,12 +1,43 @@
+/**
+ * @fileoverview Heikin-Ashi candlestick chart renderer for the SVG chart system.
+ * Renders OHLC (open/high/low/close) financial data as candlesticks. Bullish
+ * candles (close ≥ open) are filled with the first theme color; bearish candles
+ * are filled solid black. A wick line spans the full high-to-low range. X-axis
+ * date labels are sampled to avoid overlap based on estimated label width.
+ * A bullish/bearish legend is rendered in the top-left corner.
+ */
+
 import { rect, line, text, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern, getColor } from '../utils/patterns.js';
 import { createLinearScale, calculateMargins } from '../utils/chart.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'heikin-ashi',
   detectFields: ['open', 'high', 'low', 'close']
 };
 
+/**
+ * Renders a single candlestick (wick + body rectangle) as an SVG fragment.
+ * @param {number} x - Horizontal centre position of the candle
+ * @param {number} open - Open price
+ * @param {number} high - High price (top of wick)
+ * @param {number} low - Low price (bottom of wick)
+ * @param {number} close - Close price
+ * @param {number} width - Candle body width in pixels
+ * @param {function(number): number} yScale - Linear scale mapping price → SVG Y
+ * @param {boolean} isBullish - `true` if close ≥ open (bullish; colored fill)
+ * @param {string|number} date - Date label attached as a data attribute
+ * @param {number} index - Data index, used for CSS class and element ID
+ * @param {boolean} externallyStyled - Omit inline style attrs when `true`
+ * @param {string} chartId - Unique chart ID prefix
+ * @param {string[]} cssColors - CSS custom property declarations for theme colors
+ * @param {string} linkId - Element ID linking the body to its data-label popup
+ * @returns {string} SVG fragment for the wick line and body rectangle
+ */
 function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, date, index, externallyStyled, chartId, cssColors, linkId) {
   const y1 = yScale(high);
   const y2 = yScale(low);
@@ -34,6 +65,20 @@ function renderCandlestick(x, open, high, low, close, width, yScale, isBullish, 
   return svg;
 }
 
+/**
+ * Renders a Heikin-Ashi candlestick chart as an SVG string.
+ * @param {Array<{ open: number, high: number, low: number, close: number, date?: string }>} data
+ *   - OHLC data rows in chronological order; `date` is an optional label shown
+ *   on the X axis
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ * @param {string} [options.chartId] - Unique ID prefix for element IDs
+ * @param {string[]} [options.cssColors] - CSS custom property declarations for
+ *   the bullish candle fill color
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const chartId = options.chartId;

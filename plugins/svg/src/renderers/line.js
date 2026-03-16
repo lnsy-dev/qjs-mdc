@@ -1,12 +1,38 @@
+/**
+ * @fileoverview Line chart renderer for the SVG chart system.
+ * Plots one line per category (`c` field) with circular data-point markers.
+ * Points within each category are sorted by their `x` value before the
+ * SVG path is drawn. Interactive data-label popups are attached to each point.
+ */
+
 import { circle, line, path, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern, getColor } from '../utils/patterns.js';
 import { createLinearScale, calculateMargins, sanitizeClassName, groupByCategory } from '../utils/chart.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'line',
   detectFields: ['x', 'y', 'c']
 };
 
+/**
+ * Renders a line chart as an SVG string.
+ * @param {Array<{ x: number, y: number, c?: string, r?: number }>} data - Data
+ *   rows; `x` and `y` are required numeric coordinates, `c` is an optional
+ *   category name used to group rows into separate lines, `r` is an optional
+ *   point radius (defaults to 4)
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ * @param {string} [options.chartId] - Unique ID prefix for element IDs
+ * @param {string[]} [options.cssColors] - CSS custom property declarations for
+ *   theme colors applied per category
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const cssColors = options.cssColors;

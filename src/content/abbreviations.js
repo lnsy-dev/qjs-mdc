@@ -1,3 +1,17 @@
+/**
+ * @fileoverview Abbreviation processor for Markdown content.
+ * Converts `*[TERM]: Definition` syntax into HTML `<abbr>` elements.
+ */
+
+/**
+ * Scans content for abbreviation definitions (`*[TERM]: Definition` lines),
+ * removes them, and wraps every subsequent occurrence of each term in an
+ * `<abbr title="Definition">TERM</abbr>` tag. Longer terms are matched first
+ * to avoid partial replacement. Handles non-word-boundary terms such as `C++`
+ * using lookahead/lookbehind instead of `\b`.
+ * @param {string} content - Markdown string possibly containing abbreviation definitions
+ * @returns {string} Content with definition lines removed and terms wrapped in `<abbr>` tags
+ */
 export function processAbbreviations(content) {
   const abbrs = {};
   const lines = content.split('\n');

@@ -6,6 +6,13 @@
 import * as std from 'std';
 import * as os from 'os';
 
+/**
+ * Base64-encodes binary data. Provided because QuickJS does not include a
+ * built-in `btoa`. Accepts either an `ArrayBuffer` or a string treated as
+ * Latin-1 (each character's low byte is used as the byte value).
+ * @param {ArrayBuffer|string} data - Binary data to encode
+ * @returns {string} Base64-encoded string with `=` padding
+ */
 function btoa(data) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
   let bytes;

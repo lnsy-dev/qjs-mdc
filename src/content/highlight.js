@@ -1,3 +1,15 @@
+/**
+ * @fileoverview Syntax highlighter for fenced code blocks.
+ * Operates on the HTML produced by the markdown parser, where code blocks are
+ * already HTML-encoded inside `<pre class="code" data-lang="LANG"><code>` tags.
+ * Supported languages: js/javascript/typescript/ts, py/python, rs/rust,
+ * c, rb/ruby, html, json, css, toml, yaml/yml, markdown/md,
+ * markdown-frontmatter. Unrecognised language names are passed through unchanged.
+ * Colors are applied via CSS class names (`span.keyword`, `span.string`,
+ * `span.comment`, `span.literal`, `span.number`) which should be defined in the
+ * site stylesheet using CSS custom properties for themability.
+ */
+
 // encodeAttr (from the markdown parser) encodes: " → &quot;  < → &lt;  > → &gt;
 // Single quotes, backticks, and all other chars are left as-is.
 // All regexes below must account for this encoding.
@@ -8,6 +20,16 @@ const BT = /(`(?:[^`\\]|\\.)*`)/g;                      // `backtick`
 
 // Slot format: \x00s<index>s\x00
 // The "s" prefix/suffix are word chars so \b\d+\b won't match the index digits.
+/**
+ * Builds a highlighter function from an ordered list of `[regex, className, fmt]`
+ * steps. Matches are replaced with `<span class="className">` wrappers and
+ * temporarily stored in a slot array using a null-byte sentinel so that
+ * earlier matches cannot be re-matched by later steps.
+ * @param {Array<[RegExp, string|null, string|Function]>} steps - Ordered
+ *   highlighting rules; `cls === null` means use `fmt` as a raw replacement
+ * @returns {function(string): string} Highlighter that accepts encoded HTML code
+ *   and returns the same string with syntax spans inserted
+ */
 function makeHighlighter(steps) {
   return (code) => {
     const slots = [];
@@ -180,6 +202,16 @@ HIGHLIGHTERS['language-markdown'] = HIGHLIGHTERS.markdown;
 
 // ─── Main export ─────────────────────────────────────────────────────────────
 
+/**
+ * Applies syntax highlighting to all fenced code blocks in an HTML string.
+ * Matches `<pre class="code" data-lang="LANG"><code>…</code></pre>` blocks
+ * produced by the markdown parser, runs the appropriate language highlighter,
+ * and returns the block with spans inserted and a `language-LANG` class added
+ * to the `<pre>` element. Blocks with an unrecognised or absent language are
+ * returned unchanged.
+ * @param {string} html - HTML string containing zero or more fenced code blocks
+ * @returns {string} HTML with syntax-highlighted code blocks
+ */
 export function highlightCode(html) {
   return html.replace(
     /<pre class="code" data-lang="([^"]*)">\s*<code>([\s\S]*?)<\/code>\s*<\/pre>/g,

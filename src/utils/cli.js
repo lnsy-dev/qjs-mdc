@@ -27,6 +27,10 @@ export function printHelp() {
   console.log('  create-new-notebook <target-directory>');
   console.log('    Create a new notebook from template with guided setup');
   console.log('');
+  console.log('  generate-docs <input-directory> --output <output-directory>');
+  console.log('    Extract JSDoc comments from JavaScript files and write');
+  console.log('    one Markdown file per source file with YAML front matter.');
+  console.log('');
   console.log('Options:');
   console.log('  --output, -o    Output file/directory (required for site compilation)');
   console.log('  --watch, -w     Watch source directory and recompile on changes');
@@ -89,6 +93,28 @@ export function parseArgs(args) {
       if ((args[i] === '--output' || args[i] === '-o') && args[i + 1]) {
         config.output = args[++i];
       }
+    }
+    return config;
+  }
+
+  // Check for generate-docs command
+  if (firstArg === 'generate-docs') {
+    if (!args[2]) {
+      console.log('Error: Input directory is required for generate-docs');
+      console.log('Usage: mdc generate-docs <input-directory> --output <output-directory>');
+      std.exit(1);
+    }
+
+    const config = { command: 'generate-docs', inputDir: args[2], output: null };
+    for (let i = 3; i < args.length; i++) {
+      if ((args[i] === '--output' || args[i] === '-o') && args[i + 1]) {
+        config.output = args[++i];
+      }
+    }
+    if (!config.output) {
+      console.log('Error: Output directory is required for generate-docs (use --output)');
+      console.log('Usage: mdc generate-docs <input-directory> --output <output-directory>');
+      std.exit(1);
     }
     return config;
   }

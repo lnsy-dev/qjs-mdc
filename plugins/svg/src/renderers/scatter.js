@@ -1,12 +1,39 @@
+/**
+ * @fileoverview Scatter plot renderer for the SVG chart system.
+ * Plots one circle per data point, coloured by category (`c` field) using
+ * the CSS color palette or the SVG pattern library. X and Y axis lines and
+ * axis labels are drawn automatically. Interactive data-label popups are
+ * attached to each point.
+ */
+
 import { circle, line, text, createDataLabelGroup } from '../utils/svg.js';
 import { getPattern, getColor } from '../utils/patterns.js';
 import { createLinearScale, calculateMargins, sanitizeClassName, groupByCategory } from '../utils/chart.js';
 
+/**
+ * Renderer metadata used by the chart type auto-detection registry.
+ * @type {{ name: string, detectFields: string[] }}
+ */
 export const metadata = {
   name: 'scatter',
   detectFields: ['x', 'y']
 };
 
+/**
+ * Renders a scatter plot as an SVG string.
+ * @param {Array<{ x: number, y: number, c?: string, r?: number }>} data - Data
+ *   rows; `x` and `y` are required numeric coordinates, `c` is an optional
+ *   category name used to assign fill colors, `r` is an optional point radius
+ *   (defaults to 5)
+ * @param {number} width - Total SVG canvas width in pixels
+ * @param {number} height - Total SVG canvas height in pixels
+ * @param {Object} [options={}] - Rendering options
+ * @param {boolean} [options.externallyStyled=false] - Omit inline style attrs
+ * @param {string} [options.chartId] - Unique ID prefix for element IDs
+ * @param {string[]} [options.cssColors] - CSS custom property declarations for
+ *   theme colors applied per category
+ * @returns {string} SVG fragment string (no outer `<svg>` wrapper)
+ */
 export function render(data, width, height, options = {}) {
   const externallyStyled = options.externallyStyled || false;
   const cssColors = options.cssColors;
