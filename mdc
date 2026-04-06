@@ -1,2 +1,0 @@
-#!/bin/bash
-qjs "$(dirname "$0")/src/compiler.js" "$@"
